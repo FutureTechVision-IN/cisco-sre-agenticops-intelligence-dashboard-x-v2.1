@@ -5573,7 +5573,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
           const worsenedVolume = worsened.reduce((s, c) => s + (c.latest - c.first), 0);
 
           analysis = {
-            title: "Worsened Customers Risk Assessment",
+            title: "Vulnerability Increased: Risk Assessment",
             type: "risk-matrix",
             insights: [
               { label: "Critical (>100% increase)", value: String(severityBuckets.critical), severity: "critical" },
