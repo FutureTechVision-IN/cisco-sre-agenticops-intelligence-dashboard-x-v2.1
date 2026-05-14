@@ -1,0 +1,2290 @@
+/**
+ * ============================================================================
+ * THEME SYSTEM — Light & Dark Mode CSS Custom Properties
+ * ============================================================================
+ *
+ * Architecture:
+ *   <html data-theme="dark|light"> toggles the entire palette.
+ *   Default = dark  (current design).
+ *   System preference + localStorage respected (see ThemeContext.tsx).
+ *
+ * WCAG 2.1 AA compliance — All color combinations maintain ≥ 4.5:1
+ * contrast for normal text and ≥ 3:1 for large text.
+ *
+ * Naming convention:
+ *   --theme-<role>   semantic token  (bg, surface, text, border, accent)
+ *   Roles map 1-to-1 with the Material Design 3 color system.
+ * ============================================================================
+ */
+
+/* =============================================
+   THEME TRANSITION (applied only AFTER first paint)
+   ============================================= */
+html.theme-transition,
+html.theme-transition *,
+html.theme-transition *::before,
+html.theme-transition *::after {
+  transition:
+    background-color 250ms ease-in-out,
+    border-color 250ms ease-in-out,
+    color 250ms ease-in-out,
+    box-shadow 250ms ease-in-out,
+    fill 250ms ease-in-out,
+    stroke 250ms ease-in-out !important;
+}
+
+/* =============================================
+   DARK THEME (default)
+   ============================================= */
+:root,
+[data-theme="dark"] {
+  /* ---- Backgrounds ---- */
+  --theme-bg-primary:       #0f172a;   /* slate-900 — page background */
+  --theme-bg-secondary:     #1e293b;   /* slate-800 — header, elevated */
+  --theme-bg-tertiary:      #334155;   /* slate-700 — buttons, inputs */
+  --theme-bg-elevated:      rgba(30, 41, 59, 0.6);  /* cards, glassmorphism */
+  --theme-bg-overlay:       rgba(0, 0, 0, 0.6);     /* modal overlay */
+
+  /* ---- Surfaces (cards, modals, dropdowns) ---- */
+  --theme-surface:          rgba(30, 41, 59, 0.8);
+  --theme-surface-hover:    rgba(51, 65, 85, 0.5);
+  --theme-surface-active:   rgba(51, 65, 85, 0.7);
+  --theme-surface-variant:  rgba(15, 23, 42, 0.6);
+
+  /* ---- Text ---- */
+  --theme-text-primary:     #f8fafc;   /* slate-50 — headings, emphasis */
+  --theme-text-secondary:   #e2e8f0;   /* slate-200 — body text */
+  --theme-text-tertiary:    #cbd5e1;   /* slate-300 — descriptions */
+  --theme-text-muted:       #94a3b8;   /* slate-400 — labels, meta */
+  --theme-text-faint:       #64748b;   /* slate-500 — disabled, hints */
+  --theme-text-on-primary:  #ffffff;   /* text on primary-color bg */
+
+  /* ---- Borders ---- */
+  --theme-border-primary:   rgba(51, 65, 85, 0.8);   /* slate-700/80 */
+  --theme-border-secondary: rgba(51, 65, 85, 0.5);   /* slate-700/50 */
+  --theme-border-tertiary:  rgba(71, 85, 105, 0.3);  /* slate-600/30 */
+  --theme-border-focus:     rgba(6, 182, 212, 0.6);   /* cyan-500/60 */
+
+  /* ---- Primary brand ---- */
+  --theme-primary:          #06b6d4;   /* cyan-500 */
+  --theme-primary-light:    #22d3ee;   /* cyan-400 */
+  --theme-primary-dark:     #0891b2;   /* cyan-600 */
+  --theme-primary-bg:       rgba(6, 182, 212, 0.15);
+  --theme-primary-border:   rgba(6, 182, 212, 0.4);
+
+  /* ---- Secondary brand ---- */
+  --theme-secondary:        #6366f1;   /* indigo-500 */
+  --theme-secondary-light:  #818cf8;   /* indigo-400 */
+  --theme-secondary-dark:   #4f46e5;   /* indigo-600 */
+  --theme-secondary-bg:     rgba(99, 102, 241, 0.15);
+
+  /* ---- Tertiary brand ---- */
+  --theme-tertiary:         #8b5cf6;   /* violet-500 */
+  --theme-tertiary-light:   #a78bfa;   /* violet-400 */
+  --theme-tertiary-dark:    #7c3aed;   /* violet-600 */
+
+  /* ---- Semantic: Success ---- */
+  --theme-success:          #10b981;   /* emerald-500 */
+  --theme-success-light:    #34d399;   /* emerald-400 */
+  --theme-success-dark:     #059669;   /* emerald-600 */
+  --theme-success-bg:       rgba(16, 185, 129, 0.15);
+  --theme-success-text:     #e6fff0;
+  --theme-success-border:   rgba(16, 185, 129, 0.4);
+
+  /* ---- Semantic: Warning ---- */
+  --theme-warning:          #f59e0b;   /* amber-500 */
+  --theme-warning-light:    #fbbf24;   /* amber-400 */
+  --theme-warning-dark:     #d97706;   /* amber-600 */
+  --theme-warning-bg:       rgba(245, 158, 11, 0.15);
+  --theme-warning-text:     #fff2e2;
+  --theme-warning-border:   rgba(245, 158, 11, 0.4);
+
+  /* ---- Semantic: Error/Danger ---- */
+  --theme-error:            #ef4444;   /* red-500 */
+  --theme-error-light:      #f87171;   /* red-400 */
+  --theme-error-dark:       #dc2626;   /* red-600 */
+  --theme-error-bg:         rgba(239, 68, 68, 0.15);
+  --theme-error-text:       #ffe4e4;
+  --theme-error-border:     rgba(239, 68, 68, 0.4);
+
+  /* ---- Semantic: Info ---- */
+  --theme-info:             #3b82f6;   /* blue-500 */
+  --theme-info-light:       #60a5fa;   /* blue-400 */
+  --theme-info-dark:        #2563eb;   /* blue-600 */
+  --theme-info-bg:          rgba(59, 130, 246, 0.15);
+  --theme-info-text:        #e0ecff;
+
+  /* ---- Interactive States ---- */
+  --theme-hover-overlay:    rgba(255, 255, 255, 0.08);  /* 8% white */
+  --theme-active-overlay:   rgba(255, 255, 255, 0.14);  /* 14% white */
+  --theme-disabled-opacity: 0.38;
+  --theme-focus-ring:       0 0 0 2px var(--theme-bg-primary), 0 0 0 4px var(--theme-border-focus);
+
+  /* ---- Shadows ---- */
+  --theme-shadow-sm:        0 1px 2px rgba(0, 0, 0, 0.3);
+  --theme-shadow-md:        0 4px 6px -1px rgba(0, 0, 0, 0.4);
+  --theme-shadow-lg:        0 10px 15px -3px rgba(0, 0, 0, 0.4);
+  --theme-shadow-xl:        0 20px 25px -5px rgba(0, 0, 0, 0.5);
+  --theme-shadow-glow-cyan: 0 0 15px rgba(6, 182, 212, 0.4);
+
+  /* ---- Charts / Data Viz ---- */
+  --theme-chart-grid:       rgba(51, 65, 85, 0.5);
+  --theme-chart-axis:       #94a3b8;
+  --theme-chart-1:          #06b6d4;   /* cyan */
+  --theme-chart-2:          #6366f1;   /* indigo */
+  --theme-chart-3:          #10b981;   /* emerald */
+  --theme-chart-4:          #f59e0b;   /* amber */
+  --theme-chart-5:          #ef4444;   /* red */
+  --theme-chart-6:          #8b5cf6;   /* violet */
+  --theme-chart-tooltip-bg: rgba(15, 23, 42, 0.95);
+  --theme-chart-tooltip-text: #f8fafc;
+  --theme-chart-tooltip-border: rgba(51, 65, 85, 0.8);
+
+  /* ---- Scrollbar ---- */
+  --theme-scrollbar-track:  #1e293b;
+  --theme-scrollbar-thumb:  #334155;
+  --theme-scrollbar-hover:  #475569;
+
+  /* ---- Radial gradient background ---- */
+  --theme-page-gradient:    radial-gradient(ellipse at top, rgba(20,40,80,0.4), rgba(15,23,42,0.9));
+
+  /* ---- Selection ---- */
+  --theme-selection-bg:     rgba(6, 182, 212, 0.3);
+  --theme-selection-text:   #ffffff;
+
+  /* ---- Glassmorphism ---- */
+  --theme-glass-bg:         rgba(30, 41, 59, 0.6);
+  --theme-glass-border:     rgba(51, 65, 85, 0.5);
+  --theme-glass-blur:       blur(24px);
+}
+
+/* =============================================
+   LIGHT THEME
+   ============================================= */
+[data-theme="light"] {
+  /* Added convenience variables for light theme */
+  --color-bg: var(--theme-bg-primary);
+  --color-text: var(--theme-text-primary);
+  /* ---- Backgrounds ---- */
+  --theme-bg-primary:       #f8fafc;   /* slate-50 */
+  --theme-bg-secondary:     #ffffff;   /* white — header, elevated */
+  --theme-bg-tertiary:      #e2e8f0;   /* slate-200 — buttons, inputs */
+  --theme-bg-elevated:      rgba(255, 255, 255, 0.85);
+  --theme-bg-overlay:       rgba(0, 0, 0, 0.4);
+
+  /* ---- Surfaces ---- */
+  --theme-surface:          rgba(255, 255, 255, 0.9);
+  --theme-surface-hover:    rgba(241, 245, 249, 0.8);  /* slate-100/80 */
+  --theme-surface-active:   rgba(226, 232, 240, 0.8);  /* slate-200/80 */
+  --theme-surface-variant:  rgba(248, 250, 252, 0.8);
+
+  /* ---- Text  (all pass WCAG AA on white/light bg) ---- */
+  --theme-text-primary:     #0f172a;   /* slate-900  — 15.4:1 on white */
+  --theme-text-secondary:   #1e293b;   /* slate-800  — 12.6:1 */
+  --theme-text-tertiary:    #334155;   /* slate-700  —  9.1:1 */
+  --theme-text-muted:       #475569;   /* slate-600  —  7.0:1 (WCAG AAA) */
+  --theme-text-faint:       #64748b;   /* slate-500  —  4.6:1 (WCAG AA) */
+  --theme-text-on-primary:  #ffffff;
+
+  /* ---- Borders ---- */
+  --theme-border-primary:   #cbd5e1;                   /* slate-300 fully opaque — crisper cards */
+  --theme-border-secondary: rgba(203, 213, 225, 0.7);  /* slate-300/70 — subtle dividers */
+  --theme-border-tertiary:  rgba(226, 232, 240, 0.6);  /* slate-200/60 — faint separators */
+  --theme-border-focus:     rgba(6, 182, 212, 0.8);    /* ↑ 0.7→0.8 — sharper focus ring */
+
+  /* ---- Primary brand ---- */
+  --theme-primary:          #0891b2;   /* cyan-600 (darker for contrast) */
+  --theme-primary-light:    #06b6d4;   /* cyan-500 */
+  --theme-primary-dark:     #0e7490;   /* cyan-700 */
+  --theme-primary-bg:       rgba(6, 182, 212, 0.12);  /* ↑ 0.08→0.12 — more visible tint */
+  --theme-primary-border:   rgba(6, 182, 212, 0.45);  /* ↑ 0.3→0.45 — crisper accent border */
+
+  /* ---- Secondary brand ---- */
+  --theme-secondary:        #4f46e5;   /* indigo-600 */
+  --theme-secondary-light:  #6366f1;   /* indigo-500 */
+  --theme-secondary-dark:   #4338ca;   /* indigo-700 */
+  --theme-secondary-bg:     rgba(99, 102, 241, 0.12); /* ↑ 0.08→0.12 */
+
+  /* ---- Tertiary brand ---- */
+  --theme-tertiary:         #7c3aed;   /* violet-600 */
+  --theme-tertiary-light:   #8b5cf6;   /* violet-500 */
+  --theme-tertiary-dark:    #6d28d9;   /* violet-700 */
+
+  /* ---- Semantic: Success ---- */
+  --theme-success:          #059669;   /* emerald-600 */
+  --theme-success-light:    #10b981;
+  --theme-success-dark:     #047857;
+  --theme-success-bg:       rgba(16, 185, 129, 0.12); /* ↑ 0.08→0.12 — richer status tint */
+  --theme-success-text:     #065f46;   /* emerald-800 — 7.1:1 on white */
+  --theme-success-border:   rgba(16, 185, 129, 0.48); /* ↑ 0.3→0.48 — vivid status border */
+
+  /* ---- Semantic: Warning ---- */
+  --theme-warning:          #d97706;   /* amber-600 */
+  --theme-warning-light:    #f59e0b;
+  --theme-warning-dark:     #b45309;
+  --theme-warning-bg:       rgba(245, 158, 11, 0.12); /* ↑ 0.08→0.12 */
+  --theme-warning-text:     #92400e;   /* amber-800 — 7.8:1 */
+  --theme-warning-border:   rgba(245, 158, 11, 0.48); /* ↑ 0.3→0.48 */
+
+  /* ---- Semantic: Error/Danger ---- */
+  --theme-error:            #dc2626;   /* red-600 */
+  --theme-error-light:      #ef4444;
+  --theme-error-dark:       #b91c1c;
+  --theme-error-bg:         rgba(239, 68, 68, 0.12);  /* ↑ 0.08→0.12 */
+  --theme-error-text:       #991b1b;   /* red-800 — 8.0:1 */
+  --theme-error-border:     rgba(239, 68, 68, 0.48);  /* ↑ 0.3→0.48 */
+
+  /* ---- Semantic: Info ---- */
+  --theme-info:             #2563eb;   /* blue-600 */
+  --theme-info-light:       #3b82f6;
+  --theme-info-dark:        #1d4ed8;
+  --theme-info-bg:          rgba(59, 130, 246, 0.12); /* ↑ 0.08→0.12 */
+  --theme-info-text:        #1e3a5f;
+
+  /* ---- Interactive States ---- */
+  --theme-hover-overlay:    rgba(0, 0, 0, 0.06);
+  --theme-active-overlay:   rgba(0, 0, 0, 0.10);
+  --theme-disabled-opacity: 0.38;
+  --theme-focus-ring:       0 0 0 2px var(--theme-bg-primary), 0 0 0 4px var(--theme-border-focus);
+
+  /* ---- Shadows ---- */
+  --theme-shadow-sm:        0 1px 3px rgba(0, 0, 0, 0.08), 0 1px 2px rgba(0, 0, 0, 0.04);
+  --theme-shadow-md:        0 4px 8px -1px rgba(0, 0, 0, 0.10), 0 2px 4px -2px rgba(0, 0, 0, 0.06);
+  --theme-shadow-lg:        0 10px 20px -3px rgba(0, 0, 0, 0.10), 0 4px 8px -4px rgba(0, 0, 0, 0.06);
+  --theme-shadow-xl:        0 20px 32px -5px rgba(0, 0, 0, 0.10), 0 8px 12px -6px rgba(0, 0, 0, 0.05);
+  --theme-shadow-glow-cyan: 0 0 12px rgba(6, 182, 212, 0.30); /* ↑ 0.2→0.30 — visible glow */
+
+  /* ---- Charts / Data Viz ---- */
+  --theme-chart-grid:       rgba(203, 213, 225, 0.6);
+  --theme-chart-axis:       #64748b;
+  --theme-chart-1:          #0891b2;   /* cyan-600 */
+  --theme-chart-2:          #4f46e5;   /* indigo-600 */
+  --theme-chart-3:          #059669;   /* emerald-600 */
+  --theme-chart-4:          #d97706;   /* amber-600 */
+  --theme-chart-5:          #dc2626;   /* red-600 */
+  --theme-chart-6:          #7c3aed;   /* violet-600 */
+  --theme-chart-tooltip-bg: rgba(255, 255, 255, 0.97);
+  --theme-chart-tooltip-text: #0f172a;
+  --theme-chart-tooltip-border: rgba(203, 213, 225, 0.8);
+
+  /* ---- Scrollbar ---- */
+  --theme-scrollbar-track:  #f1f5f9;
+  --theme-scrollbar-thumb:  #cbd5e1;
+  --theme-scrollbar-hover:  #94a3b8;
+
+  /* ---- Radial gradient background ---- */
+  --theme-page-gradient:    radial-gradient(ellipse at top, rgba(186,230,255,0.35), rgba(248,250,252,1));
+
+  /* ---- Selection ---- */
+  --theme-selection-bg:     rgba(6, 182, 212, 0.22);
+  --theme-selection-text:   #0f172a;
+
+  /* ---- Glassmorphism ---- */
+  --theme-glass-bg:         rgba(255, 255, 255, 0.82);
+  --theme-glass-border:     rgba(203, 213, 225, 0.75); /* ↑ 0.5→0.75 — visible glass edge */
+  --theme-glass-blur:       blur(20px);
+}
+
+
+/* =============================================
+   PRIMARY COLOR SCALES (50-900) — both themes
+   ============================================= */
+:root {
+  --color-primary-50:   #ecfeff;
+  --color-primary-100:  #cffafe;
+  --color-primary-200:  #a5f3fc;
+  --color-primary-300:  #67e8f9;
+  --color-primary-400:  #22d3ee;
+  --color-primary-500:  #06b6d4;
+  --color-primary-600:  #0891b2;
+  --color-primary-700:  #0e7490;
+  --color-primary-800:  #155e75;
+  --color-primary-900:  #164e63;
+
+  --color-secondary-50:  #eef2ff;
+  --color-secondary-100: #e0e7ff;
+  --color-secondary-200: #c7d2fe;
+  --color-secondary-300: #a5b4fc;
+  --color-secondary-400: #818cf8;
+  --color-secondary-500: #6366f1;
+  --color-secondary-600: #4f46e5;
+  --color-secondary-700: #4338ca;
+  --color-secondary-800: #3730a3;
+  --color-secondary-900: #312e81;
+
+  --color-tertiary-50:  #f5f3ff;
+  --color-tertiary-100: #ede9fe;
+  --color-tertiary-200: #ddd6fe;
+  --color-tertiary-300: #c4b5fd;
+  --color-tertiary-400: #a78bfa;
+  --color-tertiary-500: #8b5cf6;
+  --color-tertiary-600: #7c3aed;
+  --color-tertiary-700: #6d28d9;
+  --color-tertiary-800: #5b21b6;
+  --color-tertiary-900: #4c1d95;
+
+  --color-neutral-50:   #f8fafc;
+  --color-neutral-100:  #f1f5f9;
+  --color-neutral-200:  #e2e8f0;
+  --color-neutral-300:  #cbd5e1;
+  --color-neutral-400:  #94a3b8;
+  --color-neutral-500:  #64748b;
+  --color-neutral-600:  #475569;
+  --color-neutral-700:  #334155;
+  --color-neutral-800:  #1e293b;
+  --color-neutral-900:  #0f172a;
+}
+
+
+/* =============================================
+   GLOBAL TAILWIND CLASS OVERRIDES (LIGHT MODE)
+   These remap the hard-coded dark Tailwind classes
+   used across components to the theme variables.
+   ============================================= */
+
+/* -- Page & Section Backgrounds -- */
+[data-theme="light"] .bg-slate-900 {
+  background-color: var(--theme-bg-primary) !important;
+}
+[data-theme="light"] .bg-slate-800\/60,
+[data-theme="light"] .bg-slate-800\/80,
+[data-theme="light"] .bg-slate-800\/50,
+[data-theme="light"] .bg-slate-800\/40 {
+  background-color: var(--theme-surface) !important;
+}
+[data-theme="light"] .bg-slate-800 {
+  background-color: var(--theme-bg-secondary) !important;
+}
+[data-theme="light"] .bg-slate-700 {
+  background-color: var(--theme-bg-tertiary) !important;
+}
+[data-theme="light"] .bg-slate-700\/50 {
+  background-color: var(--theme-surface-hover) !important;
+}
+[data-theme="light"] .bg-slate-900\/50 {
+  background-color: rgba(248, 250, 252, 0.5) !important;
+}
+[data-theme="light"] .bg-slate-900\/80 {
+  background-color: rgba(248, 250, 252, 0.8) !important;
+}
+[data-theme="light"] .bg-slate-900\/90 {
+  background-color: rgba(248, 250, 252, 0.9) !important;
+}
+[data-theme="light"] .bg-slate-900\/95 {
+  background-color: rgba(248, 250, 252, 0.95) !important;
+}
+[data-theme="light"] .bg-slate-800\/90 {
+  background-color: rgba(255, 255, 255, 0.9) !important;
+}
+[data-theme="light"] .bg-slate-800\/70 {
+  background-color: rgba(255, 255, 255, 0.7) !important;
+}
+
+/* -- Gradient overrides -- */
+[data-theme="light"] .bg-\[radial-gradient\(ellipse_at_top\,rgba\(20\,40\,80\,0\.4\)\,rgba\(15\,23\,42\,0\.9\)\)\] {
+  background-image: var(--theme-page-gradient) !important;
+}
+[data-theme="light"] .from-slate-900 {
+  --tw-gradient-from: var(--theme-bg-primary) !important;
+}
+[data-theme="light"] .to-slate-900 {
+  --tw-gradient-to: var(--theme-bg-primary) !important;
+}
+[data-theme="light"] .from-slate-800 {
+  --tw-gradient-from: var(--theme-bg-secondary) !important;
+}
+[data-theme="light"] .from-slate-800\/70,
+[data-theme="light"] .from-slate-800\/50 {
+  --tw-gradient-from: rgba(255, 255, 255, 0.94) !important;
+  --tw-gradient-to: rgba(255, 255, 255, 0) !important;
+  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to) !important;
+}
+[data-theme="light"] .to-slate-800\/70,
+[data-theme="light"] .to-slate-800\/50 {
+  --tw-gradient-to: rgba(255, 255, 255, 0.94) !important;
+}
+[data-theme="light"] .via-cyan-900\/10 {
+  --tw-gradient-via: rgba(6, 182, 212, 0.08) !important;
+  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-via), var(--tw-gradient-to) !important;
+}
+[data-theme="light"] .via-red-900\/10 {
+  --tw-gradient-via: rgba(239, 68, 68, 0.08) !important;
+  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-via), var(--tw-gradient-to) !important;
+}
+
+/* -- Text Colors -- */
+[data-theme="light"] .text-white {
+  color: var(--theme-text-primary) !important;
+}
+[data-theme="light"] .text-slate-50 {
+  color: var(--theme-text-primary) !important;
+}
+[data-theme="light"] .text-slate-100 {
+  color: var(--theme-text-primary) !important;
+}
+[data-theme="light"] .text-slate-200 {
+  color: var(--theme-text-secondary) !important;
+}
+[data-theme="light"] .text-slate-300 {
+  color: var(--theme-text-tertiary) !important;
+}
+[data-theme="light"] .text-slate-400 {
+  color: var(--theme-text-muted) !important;
+}
+[data-theme="light"] .text-slate-500 {
+  color: var(--theme-text-muted) !important;
+}
+
+/* -- Accent text colors — darken for contrast on light bg -- */
+[data-theme="light"] .text-cyan-400,
+[data-theme="light"] .text-cyan-300,
+[data-theme="light"] .text-cyan-400\/70 {
+  color: var(--theme-primary-dark) !important;
+}
+[data-theme="light"] .text-cyan-500 {
+  color: var(--theme-primary) !important;
+}
+[data-theme="light"] .text-emerald-400,
+[data-theme="light"] .text-emerald-300 {
+  color: var(--theme-success-dark) !important;
+}
+[data-theme="light"] .text-emerald-500 {
+  color: var(--theme-success) !important;
+}
+[data-theme="light"] .text-amber-400,
+[data-theme="light"] .text-amber-300 {
+  color: var(--theme-warning-dark) !important;
+}
+[data-theme="light"] .text-amber-500 {
+  color: var(--theme-warning) !important;
+}
+[data-theme="light"] .text-red-400,
+[data-theme="light"] .text-red-300 {
+  color: var(--theme-error-dark) !important;
+}
+[data-theme="light"] .text-red-500 {
+  color: var(--theme-error) !important;
+}
+[data-theme="light"] .text-rose-400,
+[data-theme="light"] .text-rose-300 {
+  color: var(--theme-error-dark) !important;
+}
+[data-theme="light"] .text-indigo-400,
+[data-theme="light"] .text-indigo-300 {
+  color: var(--theme-secondary-dark) !important;
+}
+[data-theme="light"] .text-purple-400 {
+  color: var(--theme-tertiary-dark) !important;
+}
+[data-theme="light"] .text-violet-400 {
+  color: var(--theme-tertiary-dark) !important;
+}
+
+/* -- Text on intentionally colored accent surfaces should remain light. -- */
+[data-theme="light"] header button.bg-indigo-700,
+[data-theme="light"] header button.bg-indigo-700 .text-white,
+[data-theme="light"] header button.bg-indigo-700 svg,
+[data-theme="light"] header button.bg-violet-600\/80,
+[data-theme="light"] header button.bg-violet-600\/80 .text-white,
+[data-theme="light"] header button.bg-violet-600\/80 svg,
+[data-theme="light"] header button.bg-rose-600\/80,
+[data-theme="light"] header button.bg-rose-600\/80 .text-white,
+[data-theme="light"] header button.bg-rose-600\/80 svg,
+[data-theme="light"] header button.bg-emerald-600\/80,
+[data-theme="light"] header button.bg-emerald-600\/80 .text-white,
+[data-theme="light"] header button.bg-emerald-600\/80 svg,
+[data-theme="light"] header button.bg-cyan-600\/80,
+[data-theme="light"] header button.bg-cyan-600\/80 .text-white,
+[data-theme="light"] header button.bg-cyan-600\/80 svg,
+[data-theme="light"] .bg-cyan-600 .text-white,
+[data-theme="light"] .bg-emerald-500 .text-white,
+[data-theme="light"] .from-cyan-500.to-purple-600 .text-white,
+[data-theme="light"] .from-cyan-500.via-blue-600.to-purple-600 .text-white {
+  color: #ffffff !important;
+}
+
+[data-theme="light"] header button.bg-amber-600\/80,
+[data-theme="light"] header button.bg-amber-600\/80 .text-white,
+[data-theme="light"] header button.bg-amber-600\/80 svg {
+  color: #0f172a !important;
+}
+
+/* -- Border Colors -- */
+[data-theme="light"] .border-slate-700,
+[data-theme="light"] .border-slate-700\/80 {
+  border-color: var(--theme-border-primary) !important;
+}
+[data-theme="light"] .border-slate-700\/50 {
+  border-color: var(--theme-border-secondary) !important;
+}
+[data-theme="light"] .border-slate-700\/40,
+[data-theme="light"] .border-slate-700\/30 {
+  border-color: var(--theme-border-tertiary) !important;
+}
+[data-theme="light"] .border-slate-600,
+[data-theme="light"] .border-slate-600\/50 {
+  border-color: var(--theme-border-primary) !important;
+}
+[data-theme="light"] .border-slate-800 {
+  border-color: var(--theme-border-primary) !important;
+}
+[data-theme="light"] .border-slate-500 {
+  border-color: var(--theme-border-secondary) !important;
+}
+
+/* -- Accent border colors -- */
+[data-theme="light"] .border-cyan-500\/50 {
+  border-color: var(--theme-primary-border) !important;
+}
+[data-theme="light"] .border-cyan-400\/50 {
+  border-color: var(--theme-primary-border) !important;
+}
+[data-theme="light"] .border-cyan-500\/20,
+[data-theme="light"] .border-cyan-500\/15 {
+  border-color: rgba(6, 182, 212, 0.22) !important;
+}
+[data-theme="light"] .border-emerald-400\/50 {
+  border-color: var(--theme-success-border) !important;
+}
+[data-theme="light"] .border-amber-400\/50 {
+  border-color: var(--theme-warning-border) !important;
+}
+[data-theme="light"] .border-red-500\/20,
+[data-theme="light"] .border-red-500\/15 {
+  border-color: rgba(239, 68, 68, 0.24) !important;
+}
+
+/* -- Divide Colors -- */
+[data-theme="light"] .divide-slate-700 > * + *,
+[data-theme="light"] .divide-slate-700\/50 > * + * {
+  border-color: var(--theme-border-primary) !important;
+}
+[data-theme="light"] .divide-slate-800 > * + * {
+  border-color: var(--theme-border-primary) !important;
+}
+
+/* -- Ring Colors -- */
+[data-theme="light"] .ring-slate-700 {
+  --tw-ring-color: var(--theme-border-primary) !important;
+}
+[data-theme="light"] .ring-cyan-500\/50 {
+  --tw-ring-color: var(--theme-primary-border) !important;
+}
+
+/* -- Shadow Overrides -- */
+[data-theme="light"] .shadow-lg {
+  box-shadow: var(--theme-shadow-lg) !important;
+}
+[data-theme="light"] .shadow-xl {
+  box-shadow: var(--theme-shadow-xl) !important;
+}
+[data-theme="light"] .shadow-2xl {
+  box-shadow: var(--theme-shadow-xl) !important;
+}
+
+/* -- Glow shadow overrides (reduce intensity for light) -- */
+[data-theme="light"] .shadow-\[0_0_15px_rgba\(6\,182\,212\,0\.4\)\] {
+  box-shadow: 0 0 8px rgba(6, 182, 212, 0.15) !important;
+}
+[data-theme="light"] .shadow-\[0_0_15px_rgba\(99\,102\,241\,0\.4\)\] {
+  box-shadow: 0 0 8px rgba(99, 102, 241, 0.15) !important;
+}
+[data-theme="light"] .shadow-\[0_0_15px_rgba\(16\,185\,129\,0\.4\)\] {
+  box-shadow: 0 0 8px rgba(16, 185, 129, 0.15) !important;
+}
+[data-theme="light"] .shadow-\[0_0_15px_rgba\(245\,158\,11\,0\.4\)\] {
+  box-shadow: 0 0 8px rgba(245, 158, 11, 0.15) !important;
+}
+[data-theme="light"] .shadow-\[0_0_15px_rgba\(139\,92\,246\,0\.4\)\] {
+  box-shadow: 0 0 8px rgba(139, 92, 246, 0.15) !important;
+}
+[data-theme="light"] .shadow-cyan-500\/30 {
+  --tw-shadow-color: rgba(6, 182, 212, 0.1) !important;
+}
+
+/* -- Button backgrounds — keep accent colors, reduce transparency -- */
+[data-theme="light"] .bg-indigo-600\/80 {
+  background-color: var(--theme-secondary) !important;
+}
+[data-theme="light"] .bg-violet-600\/80 {
+  background-color: var(--theme-tertiary) !important;
+}
+[data-theme="light"] .bg-emerald-600\/80 {
+  background-color: var(--theme-success) !important;
+}
+[data-theme="light"] .bg-amber-600\/80 {
+  background-color: var(--theme-warning) !important;
+}
+[data-theme="light"] .bg-cyan-600\/80 {
+  background-color: var(--theme-primary) !important;
+}
+
+/* Solid button backgrounds */
+[data-theme="light"] .bg-indigo-600 {
+  background-color: var(--theme-secondary) !important;
+}
+[data-theme="light"] .bg-cyan-600 {
+  background-color: var(--theme-primary-dark) !important;
+}
+[data-theme="light"] .bg-emerald-600 {
+  background-color: var(--theme-success) !important;
+}
+[data-theme="light"] .bg-red-600 {
+  background-color: var(--theme-error) !important;
+}
+
+/* Transparent accent backgrounds → lighter for light mode */
+[data-theme="light"] .bg-cyan-500\/20,
+[data-theme="light"] .bg-cyan-500\/10 {
+  background-color: var(--theme-primary-bg) !important;
+}
+[data-theme="light"] .bg-emerald-500\/20,
+[data-theme="light"] .bg-emerald-500\/10,
+[data-theme="light"] .bg-emerald-900\/20,
+[data-theme="light"] .bg-emerald-900\/40 {
+  background-color: var(--theme-success-bg) !important;
+}
+[data-theme="light"] .bg-amber-500\/20,
+[data-theme="light"] .bg-amber-500\/10,
+[data-theme="light"] .bg-amber-900\/20,
+[data-theme="light"] .bg-amber-900\/40 {
+  background-color: var(--theme-warning-bg) !important;
+}
+[data-theme="light"] .bg-red-500\/20,
+[data-theme="light"] .bg-red-500\/10,
+[data-theme="light"] .bg-red-900\/20,
+[data-theme="light"] .bg-red-900\/40 {
+  background-color: var(--theme-error-bg) !important;
+}
+[data-theme="light"] .bg-indigo-500\/20 {
+  background-color: var(--theme-secondary-bg) !important;
+}
+[data-theme="light"] .bg-purple-500\/20 {
+  background-color: rgba(139, 92, 246, 0.08) !important;
+}
+
+/* -- Gradient button backgrounds -- */
+[data-theme="light"] .bg-gradient-to-r.from-cyan-500.to-purple-600,
+[data-theme="light"] .bg-gradient-to-br.from-cyan-500 {
+  opacity: 0.85;
+}
+
+/* -- Placeholder text -- */
+[data-theme="light"] .placeholder-slate-500::placeholder,
+[data-theme="light"] .placeholder\:text-slate-500::placeholder {
+  color: var(--theme-text-faint) !important;
+}
+
+/* -- Hover state overrides -- */
+[data-theme="light"] .hover\:bg-slate-700\/50:hover,
+[data-theme="light"] .hover\:bg-slate-700:hover {
+  background-color: var(--theme-surface-hover) !important;
+}
+[data-theme="light"] .hover\:bg-slate-600:hover {
+  background-color: var(--theme-surface-active) !important;
+}
+[data-theme="light"] .hover\:text-white:hover {
+  color: var(--theme-text-primary) !important;
+}
+[data-theme="light"] .hover\:text-cyan-400:hover {
+  color: var(--theme-primary-dark) !important;
+}
+[data-theme="light"] .hover\:text-cyan-300:hover {
+  color: var(--theme-primary) !important;
+}
+[data-theme="light"] .hover\:border-cyan-500\/50:hover {
+  border-color: var(--theme-primary-border) !important;
+}
+
+/* -- Focus state overrides -- */
+[data-theme="light"] .focus\:ring-cyan-500:focus {
+  --tw-ring-color: var(--theme-primary) !important;
+}
+[data-theme="light"] .focus\:border-cyan-500:focus {
+  border-color: var(--theme-primary) !important;
+}
+[data-theme="light"] .focus\:outline-cyan-500:focus {
+  outline-color: var(--theme-primary) !important;
+}
+
+/* -- Body / HTML defaults -- */
+[data-theme="light"] body {
+  background-color: var(--theme-bg-primary);
+  color: var(--theme-text-secondary);
+}
+
+/* -- Selection -- */
+[data-theme="light"] .selection\:bg-cyan-500\/30 ::selection,
+[data-theme="light"] ::selection {
+  background-color: var(--theme-selection-bg);
+  color: var(--theme-selection-text);
+}
+
+/* -- Scrollbar -- */
+[data-theme="light"] .custom-scrollbar::-webkit-scrollbar-track {
+  background: var(--theme-scrollbar-track);
+}
+[data-theme="light"] .custom-scrollbar::-webkit-scrollbar-thumb {
+  background: var(--theme-scrollbar-thumb);
+}
+[data-theme="light"] .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: var(--theme-scrollbar-hover);
+}
+
+/* -- Backdrop blur panels -- */
+[data-theme="light"] .backdrop-blur-xl,
+[data-theme="light"] .backdrop-blur-lg {
+  backdrop-filter: var(--theme-glass-blur);
+  -webkit-backdrop-filter: var(--theme-glass-blur);
+}
+
+/* -- Gradient backgrounds for cards/panels -- */
+[data-theme="light"] [style*="linear-gradient(135deg, rgba(30, 41, 59"] {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.8), rgba(248, 250, 252, 0.6)) !important;
+}
+
+/* -- Table striping -- */
+[data-theme="light"] .even\:bg-slate-800\/20:nth-child(even),
+[data-theme="light"] tr:nth-child(even) {
+  background-color: rgba(241, 245, 249, 0.5);
+}
+[data-theme="light"] tr:hover {
+  background-color: var(--theme-surface-hover);
+}
+
+/* -- Drop shadow overrides for glow effects -- */
+[data-theme="light"] .drop-shadow-\[0_0_10px_rgba\(6\,182\,212\,0\.8\)\] {
+  filter: drop-shadow(0 0 6px rgba(6, 182, 212, 0.3)) !important;
+}
+
+/* -- Animated pulse glow — reduce in light mode -- */
+[data-theme="light"] .animate-pulse-glow {
+  animation: pulse-glow-light 3s ease-in-out infinite;
+}
+
+@keyframes pulse-glow-light {
+  0%, 100% { filter: drop-shadow(0 0 1px currentColor); opacity: 1; transform: scale(1); }
+  50% { filter: drop-shadow(0 0 4px currentColor); opacity: 0.95; transform: scale(1.02); }
+}
+
+/* -- Notification dot on light -- */
+[data-theme="light"] .bg-emerald-500 {
+  background-color: var(--theme-success) !important;
+}
+
+/* -- Modal/overlay backdrop -- */
+[data-theme="light"] .bg-black\/50,
+[data-theme="light"] .bg-black\/60,
+[data-theme="light"] .bg-black\/70 {
+  background-color: var(--theme-bg-overlay) !important;
+}
+
+/* -- Input focus backgrounds on light -- */
+[data-theme="light"] input,
+[data-theme="light"] textarea,
+[data-theme="light"] select {
+  color: var(--theme-text-primary);
+}
+
+[data-theme="light"] input::placeholder,
+[data-theme="light"] textarea::placeholder {
+  color: var(--theme-text-faint);
+}
+
+/* -- Tooltip overrides -- */
+[data-theme="light"] [class*="tooltip"],
+[data-theme="light"] .tooltip {
+  background-color: var(--theme-chart-tooltip-bg);
+  color: var(--theme-chart-tooltip-text);
+  border-color: var(--theme-chart-tooltip-border);
+}
+
+/* -- Disabled state -- */
+[data-theme="light"] [disabled],
+[data-theme="light"] .disabled {
+  opacity: var(--theme-disabled-opacity);
+  cursor: not-allowed;
+}
+
+/* =============================================
+   DESIGN SYSTEM CSS VARIABLE BRIDGE
+   Maps the design-system.css vars to theme vars
+   ============================================= */
+[data-theme="light"] {
+  /* Added convenience variables for light theme */
+  --color-bg: var(--theme-bg-primary);
+  --color-text: var(--theme-text-primary);
+  --text-primary:    var(--theme-text-primary);
+  --text-secondary:  var(--theme-text-secondary);
+  --text-tertiary:   var(--theme-text-tertiary);
+  --text-muted:      var(--theme-text-muted);
+  --text-critical:   var(--theme-text-primary);
+  --text-warning:    var(--theme-warning-text);
+  --text-success:    var(--theme-success-text);
+  --surface-primary: var(--theme-bg-secondary);
+  --surface-secondary: var(--theme-bg-primary);
+  --surface-tertiary: var(--theme-bg-tertiary);
+  --shadow-sm:       var(--theme-shadow-sm);
+  --shadow-md:       var(--theme-shadow-md);
+  --shadow-lg:       var(--theme-shadow-lg);
+  --shadow-xl:       var(--theme-shadow-xl);
+  --shadow-2xl:      var(--theme-shadow-xl);
+}
+
+/* =============================================
+   ADDITIONAL LIGHT MODE OVERRIDES
+   Accent-900 dark backgrounds, loading overlays,
+   and other patterns found in components.
+   ============================================= */
+
+/* -- Accent dark backgrounds (icon badges, status pills) -- */
+[data-theme="light"] .bg-cyan-900\/40,
+[data-theme="light"] .bg-cyan-900\/30,
+[data-theme="light"] .bg-cyan-900\/20 {
+  background-color: rgba(6, 182, 212, 0.1) !important;
+}
+[data-theme="light"] .bg-emerald-900\/40,
+[data-theme="light"] .bg-emerald-900\/30 {
+  background-color: rgba(16, 185, 129, 0.1) !important;
+}
+[data-theme="light"] .bg-amber-900\/40,
+[data-theme="light"] .bg-amber-900\/30 {
+  background-color: rgba(245, 158, 11, 0.1) !important;
+}
+[data-theme="light"] .bg-red-900\/40,
+[data-theme="light"] .bg-red-900\/30 {
+  background-color: rgba(239, 68, 68, 0.1) !important;
+}
+
+/* -- Accent pill backgrounds (Processing indicators) -- */
+[data-theme="light"] .bg-cyan-950\/80,
+[data-theme="light"] .bg-cyan-950\/50 {
+  background-color: rgba(6, 182, 212, 0.12) !important;
+}
+
+/* -- Accent border colors from MetricCard -- */
+[data-theme="light"] .border-cyan-500\/50 {
+  border-color: rgba(6, 182, 212, 0.35) !important;
+}
+[data-theme="light"] .border-emerald-500\/50 {
+  border-color: rgba(16, 185, 129, 0.35) !important;
+}
+[data-theme="light"] .border-amber-500\/50 {
+  border-color: rgba(245, 158, 11, 0.35) !important;
+}
+[data-theme="light"] .border-red-500\/50 {
+  border-color: rgba(239, 68, 68, 0.35) !important;
+}
+[data-theme="light"] .border-cyan-500\/30 {
+  border-color: rgba(6, 182, 212, 0.25) !important;
+}
+
+/* -- Glow shadows → soften for light mode -- */
+[data-theme="light"] .shadow-\[0_0_15px_rgba\(34\,211\,238\,0\.3\)\] {
+  box-shadow: 0 0 6px rgba(6, 182, 212, 0.15) !important;
+}
+[data-theme="light"] .shadow-\[0_0_15px_rgba\(52\,211\,153\,0\.3\)\] {
+  box-shadow: 0 0 6px rgba(16, 185, 129, 0.15) !important;
+}
+[data-theme="light"] .shadow-\[0_0_15px_rgba\(251\,191\,36\,0\.3\)\] {
+  box-shadow: 0 0 6px rgba(245, 158, 11, 0.15) !important;
+}
+[data-theme="light"] .shadow-\[0_0_15px_rgba\(248\,113\,113\,0\.3\)\] {
+  box-shadow: 0 0 6px rgba(239, 68, 68, 0.15) !important;
+}
+[data-theme="light"] .shadow-\[0_20px_40px_rgba\(0\,0\,0\,0\.5\)\] {
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1) !important;
+}
+[data-theme="light"] .shadow-\[0_20px_60px_rgba\(0\,0\,0\,0\.5\)\] {
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08) !important;
+}
+[data-theme="light"] .shadow-\[0_0_15px_rgba\(6\,182\,212\,0\.3\)\] {
+  box-shadow: 0 0 6px rgba(6, 182, 212, 0.12) !important;
+}
+
+/* -- Drop shadows on glow icons -- */
+[data-theme="light"] .drop-shadow-\[0_0_8px_rgba\(34\,211\,238\,0\.6\)\] {
+  filter: drop-shadow(0 0 4px rgba(6, 182, 212, 0.25)) !important;
+}
+[data-theme="light"] .drop-shadow-\[0_0_8px_rgba\(52\,211\,153\,0\.6\)\] {
+  filter: drop-shadow(0 0 4px rgba(16, 185, 129, 0.25)) !important;
+}
+[data-theme="light"] .drop-shadow-\[0_0_8px_rgba\(251\,191\,36\,0\.6\)\] {
+  filter: drop-shadow(0 0 4px rgba(245, 158, 11, 0.25)) !important;
+}
+[data-theme="light"] .drop-shadow-\[0_0_8px_rgba\(248\,113\,113\,0\.6\)\] {
+  filter: drop-shadow(0 0 4px rgba(239, 68, 68, 0.25)) !important;
+}
+
+/* -- Card gradient backgrounds (used via style attr in some components) -- */
+[data-theme="light"] .bg-gradient-to-br.from-slate-800.to-slate-900 {
+  background: linear-gradient(to bottom right, #ffffff, #f8fafc) !important;
+}
+
+/* -- Gradient text effects → keep working but adjust base -- */
+[data-theme="light"] .bg-gradient-to-r.from-cyan-400.to-blue-500 {
+  /* Keep gradient for clip-text effects */
+}
+
+/* -- Login page extras -- */
+[data-theme="light"] .bg-gradient-to-br.from-cyan-500\/5 {
+  background: linear-gradient(135deg, rgba(6, 182, 212, 0.04), transparent) !important;
+}
+
+/* -- Hover tab active states for the header buttons -- */
+[data-theme="light"] .hover\:bg-indigo-500:hover {
+  background-color: #4338ca !important;
+}
+[data-theme="light"] .hover\:bg-violet-500:hover {
+  background-color: #6d28d9 !important;
+}
+[data-theme="light"] .hover\:bg-emerald-500:hover {
+  background-color: #047857 !important;
+}
+[data-theme="light"] .hover\:bg-amber-500:hover {
+  background-color: #b45309 !important;
+}
+[data-theme="light"] .hover\:bg-cyan-500:hover {
+  background-color: #0e7490 !important;
+}
+
+/* -- border-t variant (used in MetricCard) -- */
+[data-theme="light"] .border-t-slate-600\/50 {
+  border-top-color: var(--theme-border-secondary) !important;
+}
+
+/* -- Shine/glare effect → reduce for light mode -- */
+[data-theme="light"] .via-white {
+  --tw-gradient-via: rgba(0, 0, 0, 0.04) !important;
+}
+
+/* -- Loading overlay -- */
+[data-theme="light"] .bg-slate-900\/50 {
+  background-color: rgba(248, 250, 252, 0.5) !important;
+}
+
+/* -- Gradient from-cyan-500/10 etc. -- */
+[data-theme="light"] .from-cyan-500\/10 {
+  --tw-gradient-from: rgba(6, 182, 212, 0.06) !important;
+}
+[data-theme="light"] .from-emerald-500\/10 {
+  --tw-gradient-from: rgba(16, 185, 129, 0.06) !important;
+}
+[data-theme="light"] .from-amber-500\/10 {
+  --tw-gradient-from: rgba(245, 158, 11, 0.06) !important;
+}
+[data-theme="light"] .from-red-500\/10 {
+  --tw-gradient-from: rgba(239, 68, 68, 0.06) !important;
+}
+
+/* -- Focus visible ring offset -- */
+[data-theme="light"] .focus-visible\:ring-offset-slate-900 {
+  --tw-ring-offset-color: var(--theme-bg-primary) !important;
+}
+
+/* =============================================
+   MISSING TAILWIND CLASS OVERRIDES (Phase 2)
+   Covers gaps found during comprehensive audit.
+   ============================================= */
+
+/* -- Missing gradient midpoint: via-slate-900, via-slate-800 -- */
+[data-theme="light"] .via-slate-900 {
+  --tw-gradient-via: var(--theme-bg-primary) !important;
+  --tw-gradient-to: var(--theme-bg-primary) !important;
+}
+[data-theme="light"] .via-slate-800 {
+  --tw-gradient-via: var(--theme-bg-secondary) !important;
+}
+[data-theme="light"] .to-slate-800 {
+  --tw-gradient-to: var(--theme-bg-secondary) !important;
+}
+
+/* -- Missing: slate-950 (deeper than 900, used in AdvancedVoiceAssistant) -- */
+[data-theme="light"] .bg-slate-950,
+[data-theme="light"] .from-slate-950,
+[data-theme="light"] .from-slate-950\/95 {
+  background-color: var(--theme-bg-primary) !important;
+  --tw-gradient-from: var(--theme-bg-primary) !important;
+}
+[data-theme="light"] .via-slate-900\/95 {
+  --tw-gradient-via: rgba(248, 250, 252, 0.95) !important;
+}
+[data-theme="light"] .to-slate-950,
+[data-theme="light"] .to-slate-950\/95 {
+  --tw-gradient-to: var(--theme-bg-primary) !important;
+}
+
+/* -- Missing: bg-slate-800/30 (AdvancedSearchPanel, VoiceAssistant, IC) -- */
+[data-theme="light"] .bg-slate-800\/30 {
+  background-color: rgba(255, 255, 255, 0.9) !important;
+}
+[data-theme="light"] .bg-slate-800\/20 {
+  background-color: rgba(255, 255, 255, 0.82) !important;
+}
+[data-theme="light"] .bg-slate-700\/10,
+[data-theme="light"] .bg-slate-900\/30,
+[data-theme="light"] .bg-slate-900\/20 {
+  background-color: rgba(248, 250, 252, 0.86) !important;
+}
+
+/* -- Missing hover states -- */
+[data-theme="light"] .hover\:bg-slate-800:hover {
+  background-color: var(--theme-surface-hover) !important;
+}
+[data-theme="light"] .hover\:bg-slate-800\/50:hover {
+  background-color: var(--theme-surface-hover) !important;
+}
+[data-theme="light"] .hover\:bg-slate-800\/60:hover {
+  background-color: var(--theme-surface-hover) !important;
+}
+[data-theme="light"] .hover\:bg-slate-900:hover {
+  background-color: var(--theme-surface-active) !important;
+}
+
+/* -- Additional shadow overrides for uncovered glow patterns -- */
+[data-theme="light"] .shadow-\[0_0_80px_rgba\(6\,182\,212\,0\.15\)\] {
+  box-shadow: 0 0 30px rgba(6, 182, 212, 0.06) !important;
+}
+[data-theme="light"] .shadow-\[0_0_50px_rgba\(6\,182\,212\,0\.4\)\] {
+  box-shadow: 0 0 20px rgba(6, 182, 212, 0.1) !important;
+}
+[data-theme="light"] .shadow-\[0_0_40px_rgba\(239\,68\,68\,0\.5\)\] {
+  box-shadow: 0 0 15px rgba(239, 68, 68, 0.15) !important;
+}
+[data-theme="light"] .shadow-\[0_0_20px_rgba\(6\,182\,212\,0\.4\)\] {
+  box-shadow: 0 0 10px rgba(6, 182, 212, 0.12) !important;
+}
+[data-theme="light"] .shadow-\[0_0_30px_rgba\(6\,182\,212\,0\.6\)\] {
+  box-shadow: 0 0 12px rgba(6, 182, 212, 0.15) !important;
+}
+[data-theme="light"] .shadow-\[0_0_30px_rgba\(6\,182\,212\,0\.3\)\] {
+  box-shadow: 0 0 10px rgba(6, 182, 212, 0.1) !important;
+}
+[data-theme="light"] .shadow-\[0_0_100px_rgba\(0\,0\,0\,0\.8\)\] {
+  box-shadow: 0 0 40px rgba(0, 0, 0, 0.12) !important;
+}
+[data-theme="light"] .group-hover\:shadow-\[0_15px_30px_rgba\(0\,0\,0\,0\.4\)\] {
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.08) !important;
+}
+
+/* -- Named shadow color overrides -- */
+[data-theme="light"] .shadow-emerald-500\/20 {
+  --tw-shadow-color: rgba(16, 185, 129, 0.08) !important;
+}
+[data-theme="light"] .shadow-amber-500\/20 {
+  --tw-shadow-color: rgba(245, 158, 11, 0.08) !important;
+}
+[data-theme="light"] .shadow-purple-500\/20 {
+  --tw-shadow-color: rgba(139, 92, 246, 0.08) !important;
+}
+[data-theme="light"] .shadow-cyan-500\/20 {
+  --tw-shadow-color: rgba(6, 182, 212, 0.08) !important;
+}
+[data-theme="light"] .shadow-rose-500\/25,
+[data-theme="light"] .shadow-rose-500\/20 {
+  --tw-shadow-color: rgba(244, 63, 94, 0.08) !important;
+}
+[data-theme="light"] .shadow-cyan-500\/25 {
+  --tw-shadow-color: rgba(6, 182, 212, 0.1) !important;
+}
+[data-theme="light"] .shadow-amber-500\/25 {
+  --tw-shadow-color: rgba(245, 158, 11, 0.1) !important;
+}
+[data-theme="light"] .shadow-emerald-500\/25 {
+  --tw-shadow-color: rgba(16, 185, 129, 0.1) !important;
+}
+[data-theme="light"] .shadow-purple-500\/25 {
+  --tw-shadow-color: rgba(139, 92, 246, 0.1) !important;
+}
+
+/* -- Missing accent backgrounds -- */
+[data-theme="light"] .bg-purple-500\/15 {
+  background-color: rgba(139, 92, 246, 0.06) !important;
+}
+[data-theme="light"] .bg-cyan-500\/15 {
+  background-color: rgba(6, 182, 212, 0.06) !important;
+}
+[data-theme="light"] .bg-indigo-500\/15 {
+  background-color: rgba(99, 102, 241, 0.06) !important;
+}
+[data-theme="light"] .bg-amber-500\/15 {
+  background-color: rgba(245, 158, 11, 0.06) !important;
+}
+[data-theme="light"] .bg-rose-500\/15 {
+  background-color: rgba(244, 63, 94, 0.06) !important;
+}
+[data-theme="light"] .bg-emerald-500\/15 {
+  background-color: rgba(16, 185, 129, 0.06) !important;
+}
+
+/* -- More accent borders -- */
+[data-theme="light"] .border-purple-500\/20,
+[data-theme="light"] .border-purple-500\/30 {
+  border-color: rgba(139, 92, 246, 0.25) !important;
+}
+[data-theme="light"] .border-indigo-500\/20,
+[data-theme="light"] .border-indigo-500\/30 {
+  border-color: rgba(99, 102, 241, 0.25) !important;
+}
+[data-theme="light"] .border-rose-500\/20,
+[data-theme="light"] .border-rose-500\/30 {
+  border-color: rgba(244, 63, 94, 0.25) !important;
+}
+[data-theme="light"] .border-amber-500\/30 {
+  border-color: rgba(245, 158, 11, 0.25) !important;
+}
+[data-theme="light"] .border-emerald-500\/30 {
+  border-color: rgba(16, 185, 129, 0.25) !important;
+}
+[data-theme="light"] .border-cyan-400\/30 {
+  border-color: rgba(6, 182, 212, 0.25) !important;
+}
+
+/* -- Text color additions -- */
+[data-theme="light"] .text-blue-400 {
+  color: #2563eb !important;  /* blue-600 for contrast */
+}
+[data-theme="light"] .text-pink-400 {
+  color: #db2777 !important;  /* pink-600 */
+}
+[data-theme="light"] .text-orange-400 {
+  color: #ea580c !important;  /* orange-600 */
+}
+[data-theme="light"] .text-sky-400 {
+  color: #0284c7 !important;  /* sky-600 */
+}
+[data-theme="light"] .text-rose-400 {
+  color: #e11d48 !important;  /* rose-600 */
+}
+[data-theme="light"] .text-teal-400 {
+  color: #0d9488 !important;  /* teal-600 */
+}
+
+/* =============================================
+   DESIGN-SYSTEM.CSS OVERRIDES (Phase 2)
+   Override hardcoded rgb() values in .ds-* classes
+   ============================================= */
+
+[data-theme="light"] .ds-page-subtitle {
+  color: var(--theme-text-muted) !important;
+}
+[data-theme="light"] .ds-back-btn {
+  color: var(--theme-text-muted) !important;
+}
+[data-theme="light"] .ds-back-btn:hover {
+  background: var(--theme-surface-hover) !important;
+  color: var(--theme-primary-dark) !important;
+}
+[data-theme="light"] .ds-nav-tab {
+  color: var(--theme-text-tertiary) !important;
+}
+[data-theme="light"] .ds-nav-tab:hover {
+  color: var(--theme-text-primary) !important;
+  background: var(--theme-surface-hover) !important;
+}
+[data-theme="light"] .ds-nav-tab-active {
+  color: #ffffff !important;
+}
+[data-theme="light"] .ds-sub-tab {
+  color: var(--theme-text-muted) !important;
+}
+[data-theme="light"] .ds-sub-tab:hover {
+  color: var(--theme-text-primary) !important;
+  background: var(--theme-surface-hover) !important;
+}
+[data-theme="light"] .ds-sub-tab-active {
+  color: #ffffff !important;
+}
+[data-theme="light"] .ds-section-title {
+  color: var(--theme-text-muted) !important;
+}
+[data-theme="light"] .ds-card-heading {
+  color: var(--theme-text-muted) !important;
+}
+[data-theme="light"] .ds-text-data {
+  color: var(--theme-text-secondary) !important;
+}
+[data-theme="light"] .ds-text-data-label {
+  color: var(--theme-text-muted) !important;
+}
+[data-theme="light"] .ds-text-micro {
+  color: var(--theme-text-faint) !important;
+}
+[data-theme="light"] .ds-header-action {
+  color: var(--theme-text-muted) !important;
+  background: var(--theme-surface) !important;
+  border-color: var(--theme-border-primary) !important;
+}
+[data-theme="light"] .ds-header-action:hover {
+  color: var(--theme-text-primary) !important;
+  background: var(--theme-surface-hover) !important;
+}
+[data-theme="light"] .ds-btn-icon {
+  color: var(--theme-text-muted) !important;
+}
+[data-theme="light"] .ds-btn-icon:hover {
+  background: var(--theme-surface-hover) !important;
+  color: var(--theme-text-primary) !important;
+}
+[data-theme="light"] .ds-btn-ghost {
+  color: var(--theme-text-muted) !important;
+}
+[data-theme="light"] .ds-btn-ghost:hover {
+  color: var(--theme-text-primary) !important;
+  background: var(--theme-surface-hover) !important;
+}
+[data-theme="light"] .ds-table-header {
+  color: var(--theme-text-faint) !important;
+}
+[data-theme="light"] .ds-table-cell {
+  color: var(--theme-text-secondary) !important;
+}
+[data-theme="light"] .ds-table-row:hover {
+  background: var(--theme-surface-hover) !important;
+}
+[data-theme="light"] .ds-card {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.8), rgba(248, 250, 252, 0.6)) !important;
+  border-color: var(--theme-border-primary) !important;
+}
+[data-theme="light"] .ds-card:hover {
+  border-color: rgba(14, 116, 144, 0.35) !important;
+  box-shadow: 0 4px 20px rgba(14, 116, 144, 0.06) !important;
+}
+[data-theme="light"] .ds-page-header {
+  background: rgba(255, 255, 255, 0.9) !important;
+}
+[data-theme="light"] .ds-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(203, 213, 225, 0.5) !important;
+}
+[data-theme="light"] .ds-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: rgba(148, 163, 184, 0.7) !important;
+}
+
+/* -- Label overrides (near-invisible pastel colors on white) -- */
+[data-theme="light"] .label-critical {
+  color: #991b1b !important;  /* red-800 */
+}
+[data-theme="light"] .label-success {
+  color: #065f46 !important;  /* emerald-800 */
+}
+[data-theme="light"] .label-warning {
+  color: #92400e !important;  /* amber-800 */
+}
+
+/* -- High contrast text: white text is invisible on white bg -- */
+[data-theme="light"] .text-high-contrast {
+  color: var(--theme-text-primary) !important;
+  text-shadow: none !important;
+}
+[data-theme="light"] .text-on-dark {
+  color: var(--theme-text-primary) !important;
+  text-shadow: none !important;
+}
+[data-theme="light"] .text-on-gradient {
+  color: var(--theme-text-primary) !important;
+  text-shadow: none !important;
+}
+
+/* -- Status colors: make them darker on light bg -- */
+[data-theme="light"] .ds-status-critical { color: #dc2626 !important; }
+[data-theme="light"] .ds-status-high { color: #d97706 !important; }
+[data-theme="light"] .ds-status-medium { color: #ea580c !important; }
+[data-theme="light"] .ds-status-low { color: #059669 !important; }
+[data-theme="light"] .ds-status-info { color: #0284c7 !important; }
+
+/* -- Text shadow removal in light mode -- */
+[data-theme="light"] .text-shadow-sm,
+[data-theme="light"] .text-shadow-md,
+[data-theme="light"] .text-shadow-lg {
+  text-shadow: none !important;
+}
+[data-theme="light"] .card-value {
+  text-shadow: none !important;
+  color: var(--theme-text-primary) !important;
+}
+
+/* ================================================================
+   PHASE 3 — Gray palette overrides, accent borders, gradient
+   opacity variants, and remaining component-specific fixes
+   ================================================================ */
+
+/* -- Gray Background Overrides (used by VoiceSettingsPanel, EnhancedVoiceAssistant, ChatGPTStyleChatbot) -- */
+[data-theme="light"] .bg-gray-900,
+[data-theme="light"] .bg-gray-900\/50 {
+  background-color: var(--theme-bg-primary) !important;
+}
+[data-theme="light"] .bg-gray-800 {
+  background-color: var(--theme-surface) !important;
+}
+[data-theme="light"] .bg-gray-800\/50 {
+  background-color: rgba(241, 245, 249, 0.6) !important;
+}
+[data-theme="light"] .bg-gray-800\/30 {
+  background-color: rgba(241, 245, 249, 0.4) !important;
+}
+[data-theme="light"] .bg-gray-700 {
+  background-color: #e2e8f0 !important;
+}
+[data-theme="light"] .bg-gray-700\/50 {
+  background-color: rgba(226, 232, 240, 0.5) !important;
+}
+[data-theme="light"] .bg-gray-600 {
+  background-color: #cbd5e1 !important;
+}
+
+/* -- Gray Text Overrides -- */
+[data-theme="light"] .text-gray-200 {
+  color: var(--theme-text-primary) !important;
+}
+[data-theme="light"] .text-gray-300 {
+  color: var(--theme-text-secondary) !important;
+}
+[data-theme="light"] .text-gray-400 {
+  color: var(--theme-text-muted) !important;
+}
+[data-theme="light"] .text-gray-500 {
+  color: #64748b !important;
+}
+[data-theme="light"] .text-gray-600 {
+  color: #475569 !important;
+}
+
+/* -- Gray Border Overrides -- */
+[data-theme="light"] .border-gray-700,
+[data-theme="light"] .border-gray-700\/50 {
+  border-color: var(--theme-border) !important;
+}
+[data-theme="light"] .border-gray-600 {
+  border-color: #cbd5e1 !important;
+}
+[data-theme="light"] .border-gray-500 {
+  border-color: #94a3b8 !important;
+}
+[data-theme="light"] .border-gray-200 {
+  border-color: #e2e8f0 !important;
+}
+
+/* -- Gray Hover States -- */
+[data-theme="light"] .hover\:bg-gray-700:hover {
+  background-color: #e2e8f0 !important;
+}
+[data-theme="light"] .hover\:bg-gray-600:hover {
+  background-color: #cbd5e1 !important;
+}
+[data-theme="light"] .hover\:bg-gray-800:hover {
+  background-color: #e2e8f0 !important;
+}
+[data-theme="light"] .hover\:bg-gray-800\/50:hover {
+  background-color: rgba(241, 245, 249, 0.7) !important;
+}
+[data-theme="light"] .hover\:text-gray-300:hover {
+  color: var(--theme-text-secondary) !important;
+}
+[data-theme="light"] .hover\:border-gray-600:hover {
+  border-color: #94a3b8 !important;
+}
+
+/* -- Gray Gradient Overrides -- */
+[data-theme="light"] .from-gray-900 {
+  --tw-gradient-from: var(--theme-bg-primary) !important;
+}
+[data-theme="light"] .via-gray-800 {
+  --tw-gradient-via: var(--theme-surface) !important;
+}
+[data-theme="light"] .to-gray-900 {
+  --tw-gradient-to: var(--theme-bg-primary) !important;
+}
+
+/* -- Gradient Opacity Variants (used in Field Notice Analytics headers) -- */
+[data-theme="light"] .from-slate-900\/80 {
+  --tw-gradient-from: rgba(248, 250, 252, 0.9) !important;
+}
+[data-theme="light"] .to-slate-800\/80 {
+  --tw-gradient-to: rgba(241, 245, 249, 0.9) !important;
+}
+[data-theme="light"] .from-slate-900\/50 {
+  --tw-gradient-from: rgba(248, 250, 252, 0.7) !important;
+}
+
+/* -- Accent Border /30 Overrides (Field Notice classification metric cards) -- */
+[data-theme="light"] .border-red-700\/30 {
+  border-color: rgba(220, 38, 38, 0.3) !important;
+}
+[data-theme="light"] .border-amber-700\/30 {
+  border-color: rgba(217, 119, 6, 0.3) !important;
+}
+[data-theme="light"] .border-orange-700\/30 {
+  border-color: rgba(234, 88, 12, 0.3) !important;
+}
+[data-theme="light"] .border-blue-700\/30 {
+  border-color: rgba(29, 78, 216, 0.3) !important;
+}
+[data-theme="light"] .border-purple-700\/30 {
+  border-color: rgba(126, 34, 206, 0.3) !important;
+}
+[data-theme="light"] .border-rose-700\/30 {
+  border-color: rgba(190, 18, 60, 0.3) !important;
+}
+[data-theme="light"] .border-indigo-700\/30 {
+  border-color: rgba(67, 56, 202, 0.3) !important;
+}
+[data-theme="light"] .border-teal-700\/30 {
+  border-color: rgba(15, 118, 110, 0.3) !important;
+}
+[data-theme="light"] .border-emerald-700\/30 {
+  border-color: rgba(4, 120, 87, 0.3) !important;
+}
+[data-theme="light"] .border-cyan-500\/50 {
+  border-color: rgba(6, 182, 212, 0.35) !important;
+}
+[data-theme="light"] .border-red-500\/50 {
+  border-color: rgba(239, 68, 68, 0.35) !important;
+}
+[data-theme="light"] .border-amber-500\/50 {
+  border-color: rgba(245, 158, 11, 0.35) !important;
+}
+[data-theme="light"] .border-orange-500\/50 {
+  border-color: rgba(249, 115, 22, 0.35) !important;
+}
+
+/* -- Hover Border Color Overrides for FN severity cards -- */
+[data-theme="light"] .hover\:border-red-400:hover {
+  border-color: rgba(248, 113, 113, 0.7) !important;
+}
+[data-theme="light"] .hover\:border-amber-400:hover {
+  border-color: rgba(251, 191, 36, 0.7) !important;
+}
+[data-theme="light"] .hover\:border-orange-400:hover {
+  border-color: rgba(251, 146, 60, 0.7) !important;
+}
+[data-theme="light"] .hover\:border-cyan-500\/50:hover {
+  border-color: rgba(6, 182, 212, 0.5) !important;
+}
+[data-theme="light"] .hover\:border-red-500\/50:hover {
+  border-color: rgba(239, 68, 68, 0.5) !important;
+}
+[data-theme="light"] .hover\:border-gray-700\/50:hover {
+  border-color: var(--theme-border) !important;
+}
+
+/* -- Hardcoded Hex Background Override (VoiceSettingsPanel) -- */
+[data-theme="light"] .bg-\[\#1a1a1a\] {
+  background-color: var(--theme-bg-primary) !important;
+}
+
+/* -- Purple/Blue Gradient for VoiceSettingsPanel header -- */
+[data-theme="light"] .from-purple-900\/30 {
+  --tw-gradient-from: rgba(147, 51, 234, 0.08) !important;
+}
+[data-theme="light"] .to-blue-900\/30 {
+  --tw-gradient-to: rgba(59, 130, 246, 0.08) !important;
+}
+
+/* -- Chat/Voice specific text overrides -- */
+[data-theme="light"] .hover\:text-white:hover {
+  color: var(--theme-text-primary) !important;
+}
+
+/* -- Accent text-*-400 colors - ensure adequate contrast on white -- */
+[data-theme="light"] .text-red-400 {
+  color: #b91c1c !important; /* red-700 — 5.9:1 on white (was #dc2626 at 4.5) */
+}
+[data-theme="light"] .text-amber-400 {
+  color: #b45309 !important; /* amber-700 — 4.9:1 on white (was #d97706 at 2.86, failed AA) */
+}
+[data-theme="light"] .text-orange-400 {
+  color: #c2410c !important; /* orange-700 — 5.0:1 (was #ea580c at 3.4) */
+}
+[data-theme="light"] .text-cyan-400 {
+  color: #0e7490 !important; /* cyan-700 — 6.4:1 (was #0891b2 at 4.5) */
+}
+[data-theme="light"] .text-purple-400 {
+  color: #9333ea !important;
+}
+[data-theme="light"] .text-indigo-400 {
+  color: #4f46e5 !important;
+}
+[data-theme="light"] .text-emerald-400 {
+  color: #059669 !important;
+}
+[data-theme="light"] .text-teal-400 {
+  color: #0d9488 !important;
+}
+[data-theme="light"] .text-rose-400 {
+  color: #e11d48 !important;
+}
+[data-theme="light"] .text-blue-400 {
+  color: #2563eb !important;
+}
+
+/* -- Accent bg/20 backgrounds (AI/ML classification badges) -- */
+[data-theme="light"] .bg-red-500\/20 {
+  background-color: rgba(239, 68, 68, 0.12) !important;
+}
+[data-theme="light"] .bg-amber-500\/20 {
+  background-color: rgba(245, 158, 11, 0.12) !important;
+}
+[data-theme="light"] .bg-orange-500\/20 {
+  background-color: rgba(249, 115, 22, 0.12) !important;
+}
+[data-theme="light"] .bg-blue-500\/20 {
+  background-color: rgba(59, 130, 246, 0.12) !important;
+}
+[data-theme="light"] .bg-purple-500\/20 {
+  background-color: rgba(147, 51, 234, 0.12) !important;
+}
+[data-theme="light"] .bg-indigo-500\/20 {
+  background-color: rgba(99, 102, 241, 0.12) !important;
+}
+[data-theme="light"] .bg-teal-500\/20 {
+  background-color: rgba(20, 184, 166, 0.12) !important;
+}
+[data-theme="light"] .bg-cyan-500\/10 {
+  background-color: rgba(6, 182, 212, 0.08) !important;
+}
+[data-theme="light"] .bg-emerald-500\/20 {
+  background-color: rgba(16, 185, 129, 0.12) !important;
+}
+
+/* -- Accent bg/10 backgrounds (subtle category badges) -- */
+[data-theme="light"] .bg-red-500\/10 {
+  background-color: rgba(239, 68, 68, 0.08) !important;
+}
+[data-theme="light"] .hover\:bg-red-500\/20:hover {
+  background-color: rgba(239, 68, 68, 0.12) !important;
+}
+
+/* -- Accent hover border states for voice/chat components -- */
+[data-theme="light"] .hover\:border-red-500\/50:hover {
+  border-color: rgba(239, 68, 68, 0.4) !important;
+}
+
+/* -- Field Notice list hover state -- */
+[data-theme="light"] .hover\:bg-slate-800\/80:hover {
+  background-color: rgba(226, 232, 240, 0.7) !important;
+}
+
+/* -- Range input slider track (VoiceSettingsPanel) -- */
+[data-theme="light"] input[type="range"].bg-gray-700 {
+  background-color: #cbd5e1 !important;
+}
+
+/* -- Checkbox overrides (VoiceSettingsPanel) -- */
+[data-theme="light"] input[type="checkbox"].bg-gray-700 {
+  background-color: #e2e8f0 !important;
+  border-color: #94a3b8 !important;
+}
+
+/* -- Select/dropdown overrides -- */
+[data-theme="light"] select.bg-gray-800,
+[data-theme="light"] .appearance-none.bg-gray-800 {
+  background-color: var(--theme-surface) !important;
+  color: var(--theme-text-primary) !important;
+  border-color: var(--theme-border) !important;
+}
+
+/* -- Slate-500/20 backgrounds (Field Notice type badges) -- */
+[data-theme="light"] .bg-slate-500\/20 {
+  background-color: rgba(100, 116, 139, 0.12) !important;
+}
+
+/* -- Processing stage inactive state -- */
+[data-theme="light"] .bg-gray-800\/50:not(:hover) {
+  background-color: rgba(241, 245, 249, 0.6) !important;
+}
+
+/* -- Hover accent text (Chatbot, Voice) -- */
+[data-theme="light"] .hover\:text-purple-400:hover {
+  color: #9333ea !important;
+}
+[data-theme="light"] .hover\:text-red-400:hover {
+  color: #dc2626 !important;
+}
+[data-theme="light"] .hover\:bg-purple-500\/10:hover {
+  background-color: rgba(147, 51, 234, 0.08) !important;
+}
+
+/* -- Ring accent overrides (processing stages) -- */
+[data-theme="light"] .ring-emerald-500\/50 {
+  --tw-ring-color: rgba(16, 185, 129, 0.35) !important;
+}
+[data-theme="light"] .ring-cyan-500\/50 {
+  --tw-ring-color: rgba(6, 182, 212, 0.35) !important;
+}
+[data-theme="light"] .ring-purple-500\/50 {
+  --tw-ring-color: rgba(147, 51, 234, 0.35) !important;
+}
+[data-theme="light"] .ring-amber-500\/50 {
+  --tw-ring-color: rgba(245, 158, 11, 0.35) !important;
+}
+[data-theme="light"] .ring-cyan-400\/30 {
+  --tw-ring-color: rgba(34, 211, 238, 0.25) !important;
+}
+
+/* -- Input/textarea backgrounds in voice assistant -- */
+[data-theme="light"] .bg-gray-800\/50 {
+  background-color: rgba(241, 245, 249, 0.6) !important;
+}
+
+/* -- EnhancedFilterPanel light-mode specific (already light-first) -- */
+[data-theme="light"] .bg-gray-50 {
+  background-color: #f9fafb !important;
+}
+
+/* ============================================================
+   TYPOGRAPHY SCALE — 16px base (WCAG 2.1 compliant)
+   ─────────────────────────────────────────────────────────────
+   text-xs   → 0.75rem  (12px) — captions, badges, tooltips
+   text-sm   → 0.875rem (14px) — body text, tables, descriptions
+   text-base → 1rem     (16px) — standard body
+   text-lg   → 1.125rem (18px) — sub-section headings
+   text-xl   → 1.25rem  (20px) — H2 / section titles
+   text-2xl  → 1.5rem   (24px) — H1 / page title
+   ─────────────────────────────────────────────────────────────
+   Tailwind defaults are used as-is (no !important overrides).
+   All ds-* component classes below are calibrated to this scale.
+   Contrast ratios on dark bg (#0f172a) exceed WCAG 4.5:1 for
+   normal text and 3:1 for large text (≥18px bold / ≥24px).
+   ============================================================ */
+
+/* ============================================================
+   DESIGN SYSTEM COMPONENT CLASSES
+   Active classes for CircuitMCP, KPI, FN Analytics, ML Monitor.
+   ============================================================ */
+
+/* Page subtitle — under section title bars */
+.ds-page-subtitle {
+  font-size: 0.875rem;          /* 14px — body-level subtitle */
+  font-weight: 400;
+  color: rgb(148, 163, 184);
+  margin-top: 2px;
+  letter-spacing: 0.02em;
+  line-height: 1.5;
+}
+
+/* Primary section nav-tabs (KPI Center, FN Analytics etc.) */
+.ds-nav-tab {
+  font-size: 0.8125rem;         /* 13px — compact uppercase nav */
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 0.4rem 0.875rem;
+  border-radius: 0.5rem;
+  transition: all 150ms ease-in-out;
+  cursor: pointer;
+  white-space: nowrap;
+  color: rgb(203, 213, 225);
+  background: transparent;
+  border: none;
+}
+.ds-nav-tab:hover {
+  color: rgb(248, 250, 252);
+  background: rgba(51, 65, 85, 0.5);
+}
+.ds-nav-tab-active {
+  background: rgb(8, 145, 178);
+  color: rgb(248, 250, 252);
+  box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);
+}
+
+/* Sub-tabs inside content areas (Circuit MCP: Overview / API Keys ...) */
+.ds-sub-tab {
+  font-size: 0.8125rem;         /* 13px — compact uppercase sub-tab */
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 5px 12px;
+  border-radius: 0.375rem;
+  transition: all 150ms ease-in-out;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  color: rgb(148, 163, 184);
+  background: transparent;
+  border: none;
+}
+.ds-sub-tab:hover {
+  color: rgb(248, 250, 252);
+  background: rgba(51, 65, 85, 0.5);
+}
+.ds-sub-tab-active {
+  background: rgba(8, 145, 178, 0.8);
+  color: rgb(248, 250, 252);
+  box-shadow: 0 4px 10px rgba(6, 182, 212, 0.2);
+}
+
+/* Section title (e.g. "AI INSIGHTS", "COMPOSITE RISK SCORE") */
+.ds-section-title {
+  font-size: 0.75rem;           /* 12px — small-caps label, high letter-spacing */
+  font-weight: 700;
+  color: rgb(148, 163, 184);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* Card/panel headings */
+.ds-card-heading {
+  font-size: 0.75rem;           /* 12px — small-caps card label */
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: rgb(148, 163, 184);
+}
+
+/* Header action buttons (Refresh, Export ...) */
+.ds-header-action {
+  font-size: 0.8125rem;         /* 13px — button text */
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 5px 11px;
+  border-radius: 0.5rem;
+  border: 1px solid rgba(51, 65, 85, 0.7);
+  color: rgb(148, 163, 184);
+  background: rgba(30, 41, 59, 0.8);
+  cursor: pointer;
+  transition: all 150ms ease-in-out;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+.ds-header-action:hover {
+  color: rgb(248, 250, 252);
+  background: rgba(51, 65, 85, 0.6);
+  border-color: rgba(71, 85, 105, 0.8);
+}
+
+/* Ghost buttons */
+.ds-btn-ghost {
+  font-size: 0.8125rem;         /* 13px — button text */
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 5px 11px;
+  border-radius: 0.5rem;
+  border: 1px solid transparent;
+  color: rgb(148, 163, 184);
+  background: transparent;
+  cursor: pointer;
+  transition: all 150ms ease-in-out;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+.ds-btn-ghost:hover {
+  color: rgb(248, 250, 252);
+  background: rgba(51, 65, 85, 0.4);
+  border-color: rgba(51, 65, 85, 0.6);
+}
+
+/* Data/table row hover */
+.ds-table-row { transition: background-color 150ms ease-in-out; }
+.ds-table-row:hover { background: rgba(51, 65, 85, 0.3); }
+
+/* =============================================
+   LIGHT THEME — TYPOGRAPHY & METRIC CLARITY
+   Removes dark-mode text-shadows, boosts metric
+   font-weight, and sharpens KPI number readability.
+   ============================================= */
+
+[data-theme="light"] .metric-primary {
+  text-shadow: none !important;
+  color: var(--theme-text-primary) !important;
+  font-weight: 800 !important; /* extrabold for hero KPI numbers */
+}
+
+[data-theme="light"] .metric-secondary {
+  text-shadow: none !important;
+  color: var(--theme-text-secondary) !important;
+  font-weight: 700 !important;
+}
+
+[data-theme="light"] .metric-tertiary {
+  text-shadow: none !important;
+  color: var(--theme-text-tertiary) !important;
+  font-weight: 600 !important;
+}
+
+/* Key metric numbers inside KPI cards — bold emphasis without size increase */
+[data-theme="light"] .card-value {
+  text-shadow: none !important;
+  color: var(--theme-text-primary) !important;
+  font-weight: 800 !important;
+  letter-spacing: 0.02em;
+}
+
+/* Card container — crisp white surface with visible border */
+[data-theme="light"] .card-container {
+  background: rgba(255, 255, 255, 0.95) !important;
+  border: 1px solid var(--theme-border-primary) !important;
+  box-shadow: var(--theme-shadow-md) !important;
+}
+
+[data-theme="light"] .card-container:hover {
+  border-color: var(--theme-primary-border) !important;
+  box-shadow: var(--theme-shadow-lg) !important;
+}
+
+/* Section headers — slightly heavier weight for distinction */
+[data-theme="light"] .header-title,
+[data-theme="light"] .ds-page-title {
+  color: var(--theme-text-primary) !important;
+  font-weight: 800 !important;
+}
+
+[data-theme="light"] .header-subtitle {
+  color: var(--theme-text-muted) !important;
+  letter-spacing: 0.12em;
+}
+
+/* =============================================
+   LIGHT THEME — TAB STATE CLARITY
+   Active tab: solid filled; inactive: clear text
+   with a visible left/bottom accent on hover.
+   ============================================= */
+
+[data-theme="light"] .ds-nav-tab {
+  color: var(--theme-text-muted) !important;
+  border-bottom: 2px solid transparent;
+  transition: color 150ms ease-in-out, border-color 150ms ease-in-out,
+              background 150ms ease-in-out !important;
+}
+
+[data-theme="light"] .ds-nav-tab:hover {
+  color: var(--theme-primary) !important;
+  background: var(--theme-primary-bg) !important;
+  border-bottom-color: var(--theme-primary-light) !important;
+}
+
+[data-theme="light"] .ds-nav-tab-active {
+  background: var(--theme-primary) !important;
+  color: #ffffff !important;
+  border-bottom-color: transparent !important;
+  box-shadow: 0 2px 8px rgba(8, 145, 178, 0.30) !important;
+}
+
+[data-theme="light"] .ds-sub-tab {
+  color: var(--theme-text-muted) !important;
+}
+
+[data-theme="light"] .ds-sub-tab:hover {
+  color: var(--theme-primary) !important;
+  background: var(--theme-primary-bg) !important;
+}
+
+[data-theme="light"] .ds-sub-tab-active {
+  background: var(--theme-primary) !important;
+  color: #ffffff !important;
+  box-shadow: 0 2px 6px rgba(8, 145, 178, 0.25) !important;
+}
+
+/* =============================================
+   LIGHT THEME — CARD & SURFACE DEPTH
+   White cards with clear border + elevation.
+   ds-card backgrounds swap dark gradient for
+   a clean white surface.
+   ============================================= */
+
+[data-theme="light"] .ds-card {
+  background: #ffffff !important;
+  border: 1px solid var(--theme-border-primary) !important;
+  box-shadow: var(--theme-shadow-sm) !important;
+}
+
+[data-theme="light"] .ds-card:hover {
+  border-color: var(--theme-primary-border) !important;
+  box-shadow: var(--theme-shadow-md),
+              0 0 0 1px rgba(8, 145, 178, 0.12) !important;
+  transform: translateY(-1px);
+}
+
+[data-theme="light"] .ds-card-interactive:hover {
+  border-color: var(--theme-primary-border) !important;
+  box-shadow: var(--theme-shadow-lg),
+              0 0 0 1px rgba(8, 145, 178, 0.16) !important;
+  transform: translateY(-2px);
+}
+
+/* =============================================
+   LIGHT THEME — STATUS / PROGRESS BAR VIBRANCY
+   Progress bars and status chips use full-opacity
+   accent colours on a tinted background badge.
+   ============================================= */
+
+/* Status chip backgrounds — more saturated tint */
+[data-theme="light"] .ds-status-critical-bg { background: rgba(220, 38, 38, 0.14) !important; }
+[data-theme="light"] .ds-status-high-bg     { background: rgba(217, 119, 6, 0.14) !important; }
+[data-theme="light"] .ds-status-medium-bg   { background: rgba(234, 88, 12, 0.14) !important; }
+[data-theme="light"] .ds-status-low-bg      { background: rgba(5, 150, 105, 0.14) !important; }
+[data-theme="light"] .ds-status-info-bg     { background: rgba(37, 99, 235, 0.14) !important; }
+
+/* Progress bar track — visible grey channel */
+[data-theme="light"] [role="progressbar"] > div,
+[data-theme="light"] .h-1.rounded-full,
+[data-theme="light"] .h-1\.5.rounded-full,
+[data-theme="light"] .h-2.rounded-full {
+  background-color: rgba(203, 213, 225, 0.7) !important; /* slate-300/70 track */
+}
+
+/* =============================================
+   LIGHT THEME — INPUT & FORM ELEMENT CLARITY
+   ============================================= */
+
+[data-theme="light"] .input-base {
+  background: #ffffff !important;
+  border-color: var(--theme-border-primary) !important;
+  color: var(--theme-text-primary) !important;
+}
+
+[data-theme="light"] .input-base:focus {
+  border-color: var(--theme-primary) !important;
+  box-shadow: 0 0 0 3px rgba(8, 145, 178, 0.18) !important;
+}
+
+/* =============================================
+   LIGHT THEME — PAGE BACKGROUND
+   Ensures the page gradient is applied to the
+   document root when light mode is active.
+   ============================================= */
+
+[data-theme="light"] body {
+  background: var(--theme-page-gradient) fixed !important;
+  background-color: var(--theme-bg-primary) !important;
+}
+
+/* =============================================
+   LIGHT THEME — CHART AXIS & GRID LINES
+   Lighter grid, darker axis labels for contrast.
+   ============================================= */
+
+[data-theme="light"] .recharts-cartesian-grid line,
+[data-theme="light"] .recharts-cartesian-grid-horizontal line,
+[data-theme="light"] .recharts-cartesian-grid-vertical line {
+  stroke: rgba(203, 213, 225, 0.8) !important;
+}
+
+[data-theme="light"] .recharts-text,
+[data-theme="light"] .recharts-cartesian-axis-tick-value {
+  fill: #64748b !important; /* slate-500 — 4.6:1 contrast on white */
+}
+
+/* ================================================================
+   PHASE 4 — AI Feed, Component Coverage & Accessibility Fixes
+   Addresses:
+   - Missing bg-slate-800/30 and bg-slate-900/30 surface overrides
+   - Missing low-opacity border variants (border-slate-700/30, /40)
+   - AI Feed InsightCard and InsightSection header backgrounds
+   - text-slate-500 contrast: faint (#94a3b8) → muted (#64748b)
+   - SVG text visibility (RiskGauge fill="white" score labels)
+   - Icon badge background vibrancy: 0.10 → 0.15 opacity
+   - Orange severity badge text and background
+   ================================================================ */
+
+/* ---------------------------------------------------------------
+   MISSING SURFACE BACKGROUNDS
+   --------------------------------------------------------------- */
+
+/* Subtle panel tint — AdvancedSearchPanel, VoiceAssistant rings */
+[data-theme="light"] .bg-slate-800\/30 {
+  background-color: rgba(248, 250, 252, 0.65) !important;
+}
+
+/* Very-subtle row tint — FNAdvancedAnalytics data rows */
+[data-theme="light"] .bg-slate-900\/30 {
+  background-color: rgba(241, 245, 249, 0.7) !important; /* slate-100/70 */
+}
+
+/* Low-opacity card utility variants */
+[data-theme="light"] .bg-slate-800\/10 {
+  background-color: rgba(255, 255, 255, 0.5) !important;
+}
+[data-theme="light"] .bg-slate-900\/10 {
+  background-color: rgba(248, 250, 252, 0.5) !important;
+}
+[data-theme="light"] .bg-slate-900\/20 {
+  background-color: rgba(248, 250, 252, 0.6) !important;
+}
+
+/* ---------------------------------------------------------------
+   MISSING BORDER OPACITY VARIANTS
+   --------------------------------------------------------------- */
+
+[data-theme="light"] .border-slate-700\/30 {
+  border-color: rgba(203, 213, 225, 0.7) !important; /* slate-300/70 */
+}
+[data-theme="light"] .border-slate-700\/40 {
+  border-color: rgba(203, 213, 225, 0.8) !important;
+}
+[data-theme="light"] .border-slate-500\/20 {
+  border-color: rgba(100, 116, 139, 0.25) !important;
+}
+[data-theme="light"] .border-red-500\/30 {
+  border-color: rgba(220, 38, 38, 0.35) !important;
+}
+[data-theme="light"] .border-orange-500\/25,
+[data-theme="light"] .border-orange-500\/30 {
+  border-color: rgba(234, 88, 12, 0.35) !important;
+}
+[data-theme="light"] .border-amber-500\/30 {
+  border-color: rgba(217, 119, 6, 0.35) !important;
+}
+[data-theme="light"] .border-slate-700\/80 {
+  border-color: var(--theme-border-primary) !important; /* fully opaque */
+}
+
+/* ---------------------------------------------------------------
+   AI FEED — INSIGHT CARD BACKGROUNDS (very-low /8 opacity)
+   Boosted from 0.08 to 0.10 for visibility on white surfaces.
+   --------------------------------------------------------------- */
+
+[data-theme="light"] .bg-red-500\/8 {
+  background-color: rgba(220, 38, 38, 0.10) !important;
+}
+[data-theme="light"] .bg-orange-500\/8 {
+  background-color: rgba(234, 88, 12, 0.10) !important;
+}
+[data-theme="light"] .bg-amber-500\/8 {
+  background-color: rgba(217, 119, 6, 0.10) !important;
+}
+[data-theme="light"] .bg-slate-500\/8 {
+  background-color: rgba(100, 116, 139, 0.10) !important;
+}
+[data-theme="light"] .bg-cyan-500\/8 {
+  background-color: rgba(8, 145, 178, 0.10) !important;
+}
+
+/* ---------------------------------------------------------------
+   AI FEED — SECTION HEADER TINTS (very-low /5 opacity)
+   Boosted from 0.05 to 0.08 for visibility on white.
+   --------------------------------------------------------------- */
+
+[data-theme="light"] .bg-red-500\/5 {
+  background-color: rgba(220, 38, 38, 0.08) !important;
+}
+[data-theme="light"] .bg-cyan-500\/5 {
+  background-color: rgba(8, 145, 178, 0.08) !important;
+}
+[data-theme="light"] .bg-amber-500\/5 {
+  background-color: rgba(217, 119, 6, 0.08) !important;
+}
+[data-theme="light"] .bg-violet-500\/5 {
+  background-color: rgba(124, 58, 237, 0.08) !important;
+}
+
+/* ---------------------------------------------------------------
+   ORANGE SEVERITY BADGE (high-severity items)
+   --------------------------------------------------------------- */
+
+[data-theme="light"] .bg-orange-500\/20 {
+  background-color: rgba(234, 88, 12, 0.12) !important;
+}
+[data-theme="light"] .text-orange-300 {
+  color: #c2410c !important; /* orange-700 — 4.9:1 on white */
+}
+
+/* ---------------------------------------------------------------
+   TEXT CONTRAST FIX
+   text-slate-500 was mapped to --theme-text-faint (#94a3b8, 2.7:1)
+   which fails WCAG AA for normal text. Override to --theme-text-muted
+   (#64748b, 4.6:1) so timestamps and secondary labels remain legible.
+   Later declaration beats the earlier one for same specificity+!important.
+   --------------------------------------------------------------- */
+
+[data-theme="light"] .text-slate-500 {
+  color: var(--theme-text-muted) !important; /* #64748b — 4.6:1 on white */
+}
+
+/* ---------------------------------------------------------------
+   SVG TEXT VISIBILITY
+   RiskGauge uses fill="white" as an inline SVG presentation
+   attribute for the score label inside the arc. CSS fill with
+   !important overrides SVG presentation attributes in modern browsers.
+   Scoped to exclude Recharts text which has its own override.
+   --------------------------------------------------------------- */
+
+[data-theme="light"] svg text:not(.recharts-text):not(.recharts-cartesian-axis-tick-value) {
+  fill: var(--theme-text-primary) !important;
+}
+
+/* ---------------------------------------------------------------
+   ICON BADGE VIBRANCY BOOST
+   Upgrade icon badge bg opacity: 0.10 → 0.15 for crisper
+   color identity on MetricCard and ExtendedKPICard in light mode.
+   (Overrides the earlier /40, /30, /20 rules at ~line 771)
+   --------------------------------------------------------------- */
+
+[data-theme="light"] .bg-cyan-900\/40,
+[data-theme="light"] .bg-cyan-900\/30,
+[data-theme="light"] .bg-cyan-900\/20 {
+  background-color: rgba(6, 182, 212, 0.15) !important;
+}
+[data-theme="light"] .bg-emerald-900\/40,
+[data-theme="light"] .bg-emerald-900\/30 {
+  background-color: rgba(16, 185, 129, 0.15) !important;
+}
+[data-theme="light"] .bg-amber-900\/40,
+[data-theme="light"] .bg-amber-900\/30 {
+  background-color: rgba(245, 158, 11, 0.15) !important;
+}
+[data-theme="light"] .bg-red-900\/40,
+[data-theme="light"] .bg-red-900\/30 {
+  background-color: rgba(239, 68, 68, 0.15) !important;
+}
+[data-theme="light"] .bg-purple-900\/40,
+[data-theme="light"] .bg-indigo-900\/40,
+[data-theme="light"] .bg-violet-900\/40 {
+  background-color: rgba(139, 92, 246, 0.15) !important;
+}
+
+/* ---------------------------------------------------------------
+   PROGRESS BAR TRACK — ui/Card.tsx ProgressBar component
+   The dark bg-slate-700/50 track becomes a light-gray in light mode.
+   --------------------------------------------------------------- */
+
+[data-theme="light"] .bg-slate-700\/50 {
+  background-color: rgba(226, 232, 240, 0.9) !important; /* slate-200/90 */
+}
+
+/* ---------------------------------------------------------------
+   DATA ROW DIVIDERS
+   divide-slate-700/30 for table/list dividers in FNAdvancedAnalytics
+   --------------------------------------------------------------- */
+
+[data-theme="light"] .divide-slate-700\/30 > :not([hidden]) ~ :not([hidden]) {
+  border-color: rgba(203, 213, 225, 0.6) !important;
+}
+
+/* ---------------------------------------------------------------
+   HEADER LINK / NAVIGATION HELPER TEXT
+   The dashboard sub-title "Cisco Systems, Inc." uses text-slate-400
+   already handled, but the header logo badge area needs clarity.
+   --------------------------------------------------------------- */
+
+[data-theme="light"] header h1 {
+  color: var(--theme-text-primary) !important;
+}
+[data-theme="light"] header h2,
+[data-theme="light"] header h3 {
+  color: var(--theme-text-secondary) !important;
+}
+
+/* ---------------------------------------------------------------
+   PHASE 5 — Faded accent text (Tailwind /70 alpha) contrast fixes
+   In dark mode, text-cyan-400/70 on a slate-800 surface is fine.
+   In light mode it composites to ~1.8:1 on white — fails WCAG AA.
+   Map all faded accent text to the fully-opaque dark variant.
+   Discovered by automated QA on ExtendedKPICard "AI Insight available".
+   --------------------------------------------------------------- */
+
+[data-theme="light"] .text-cyan-400\/70,
+[data-theme="light"] .text-cyan-400\/80,
+[data-theme="light"] .text-cyan-300\/70,
+[data-theme="light"] .text-cyan-300\/80 {
+  color: var(--theme-primary-dark) !important; /* #0e7490 — 5.4:1 on white */
+}
+[data-theme="light"] .text-emerald-400\/70,
+[data-theme="light"] .text-emerald-400\/80,
+[data-theme="light"] .text-emerald-300\/70 {
+  color: var(--theme-success-dark) !important; /* #047857 — 5.7:1 on white */
+}
+[data-theme="light"] .text-amber-400\/70,
+[data-theme="light"] .text-amber-400\/80,
+[data-theme="light"] .text-amber-300\/70 {
+  color: var(--theme-warning-dark) !important; /* #b45309 — 4.9:1 on white */
+}
+[data-theme="light"] .text-red-400\/70,
+[data-theme="light"] .text-red-400\/80,
+[data-theme="light"] .text-red-300\/70 {
+  color: var(--theme-error-dark) !important; /* #b91c1c — 5.9:1 on white */
+}
+[data-theme="light"] .text-violet-400\/70,
+[data-theme="light"] .text-violet-300\/70,
+[data-theme="light"] .text-purple-400\/70 {
+  color: var(--theme-tertiary-dark) !important;
+}
+[data-theme="light"] .text-indigo-400\/70,
+[data-theme="light"] .text-indigo-300\/70 {
+  color: var(--theme-secondary-dark) !important;
+}
+[data-theme="light"] .text-slate-400\/70,
+[data-theme="light"] .text-slate-300\/70 {
+  color: var(--theme-text-muted) !important;
+}
+
+/* =============================================
+   PHASE 6 — Per-view sweep WCAG fixes
+   - ML Monitor sub-tabs: bg-slate-700/40, /60 (Tailwind v4 oklab) leaked dark in light mode
+   - Recharts legend text: cyan-500 (#06b6d4) on white = 2.4:1, needs darkening
+   - Sub-tab borders: border-slate-600/30, /50 force light variants
+   ============================================= */
+[data-theme="light"] .bg-slate-700\/40 {
+  background-color: rgba(241, 245, 249, 0.85) !important; /* slate-100/85 */
+}
+[data-theme="light"] .bg-slate-700\/60 {
+  background-color: rgba(226, 232, 240, 0.9) !important;  /* slate-200/90 */
+}
+[data-theme="light"] .bg-slate-700\/30,
+[data-theme="light"] .hover\:bg-slate-700\/30:hover {
+  background-color: rgba(241, 245, 249, 0.7) !important;
+}
+[data-theme="light"] .hover\:bg-slate-700\/60:hover {
+  background-color: rgba(226, 232, 240, 0.95) !important;
+}
+[data-theme="light"] .border-slate-600\/30 {
+  border-color: rgba(203, 213, 225, 0.7) !important; /* slate-300/70 */
+}
+[data-theme="light"] .border-slate-600\/50 {
+  border-color: var(--theme-border-primary) !important; /* slate-300 */
+}
+[data-theme="light"] .border-slate-700\/50 {
+  border-color: var(--theme-border-secondary) !important;
+}
+[data-theme="light"] .hover\:text-slate-200:hover {
+  color: var(--theme-text-primary) !important;
+}
+
+/* Recharts: legend, axis, tooltip text need darker fills on light cards */
+[data-theme="light"] .recharts-legend-item-text {
+  color: var(--theme-text-primary) !important;
+  fill: var(--theme-text-primary) !important;
+}
+[data-theme="light"] .recharts-cartesian-axis-tick-value,
+[data-theme="light"] .recharts-text {
+  fill: var(--theme-text-tertiary) !important; /* slate-700 — 9.1:1 */
+}
+[data-theme="light"] .recharts-default-tooltip {
+  background-color: var(--theme-bg-secondary) !important;
+  border-color: var(--theme-border-primary) !important;
+  color: var(--theme-text-primary) !important;
+}
+
+/* ---------------------------------------------------------------
+   PHASE 6 — Cross-view light theme QA hardening
+   Covers ML Monitor inactive tabs, Recharts legends, and amber/rose
+   numeric callouts found by the per-view visual sweep.
+   --------------------------------------------------------------- */
+
+[data-theme="light"] .bg-slate-700\/40,
+[data-theme="light"] .bg-slate-700\/60 {
+  background-color: rgba(241, 245, 249, 0.96) !important;
+}
+
+[data-theme="light"] .border-slate-600\/30 {
+  border-color: rgba(203, 213, 225, 0.8) !important;
+}
+
+[data-theme="light"] .text-amber-400 {
+  color: #92400e !important;
+}
+
+[data-theme="light"] .text-rose-400 {
+  color: #be123c !important;
+}
+
+[data-theme="light"] .recharts-legend-item-text {
+  color: var(--theme-text-secondary) !important;
+}

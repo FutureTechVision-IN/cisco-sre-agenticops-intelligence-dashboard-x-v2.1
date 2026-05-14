@@ -1,0 +1,87 @@
+════════════════════════════════════════════════════════════════════════════════
+DATA VERIFICATION AUDIT REPORT
+════════════════════════════════════════════════════════════════════════════════
+
+Verification ID: VER-1764247343857-vnbwdiyev
+Run At: 2025-11-27T12:42:24.058Z
+Duration: 201ms
+Data Source: filtered_bcs_apr25-sep25_2025_apr-sep_1763979225097.csv
+
+────────────────────────────────────────────────────────────────────────────────
+OVERALL STATUS
+────────────────────────────────────────────────────────────────────────────────
+Status: CRITICAL
+Data Quality Score: 78/100
+
+────────────────────────────────────────────────────────────────────────────────
+SUMMARY
+────────────────────────────────────────────────────────────────────────────────
+Total Records: 577,603
+Valid Records: 446,535
+Invalid Records: 131,068
+Empty Records: 131,068
+Unique Customers: 873
+Unique Field Notices: 482
+Date Range: 2025-04 to 2025-08
+Expected Latest: 2025-09
+
+────────────────────────────────────────────────────────────────────────────────
+MONTHLY COMPLETENESS
+────────────────────────────────────────────────────────────────────────────────
+✓ 2025-04: 88,907 records (100% complete)
+✓ 2025-05: 89,040 records (100% complete)
+✓ 2025-06: 89,738 records (100% complete)
+✓ 2025-07: 89,428 records (100% complete)
+✓ 2025-08: 89,422 records (100% complete)
+✗ 2025-09: 0 records (0% complete)
+    ⚠ No data found for 2025-09
+
+────────────────────────────────────────────────────────────────────────────────
+DATA GAPS
+────────────────────────────────────────────────────────────────────────────────
+[CRITICAL] missing_month: Data for 2025-09 is completely missing from the dataset
+    Period: 2025-09 | Affected: 89,422 records
+    Action: Import data for 2025-09 from source system. Expected ~89,422 records based on historical average.
+
+[HIGH] data_drop: Significant data drop in 2025-05: 98.5% decrease from 2025-04
+    Period: 2025-05 | Affected: 55,529,527 records
+    Action: Verify if data collection issues occurred or if drop is expected
+
+[HIGH] data_drop: Significant data drop in 2025-06: 74.0% decrease from 2025-05
+    Period: 2025-06 | Affected: 638,987 records
+    Action: Verify if data collection issues occurred or if drop is expected
+
+────────────────────────────────────────────────────────────────────────────────
+QUALITY ISSUES
+────────────────────────────────────────────────────────────────────────────────
+[MEDIUM] missing_required in CUSTOMER_NAME
+    Count: 783 (0.18%)
+
+────────────────────────────────────────────────────────────────────────────────
+RECOMMENDATIONS
+────────────────────────────────────────────────────────────────────────────────
+[HIGH] Import September 2025 Data
+    The dataset filename indicates data through September 2025, but September data is missing. This needs to be imported urgently.
+    Impact: Without September data, trend analysis and forecasts will be inaccurate. Users may make decisions based on incomplete information.
+
+[MEDIUM] Implement Data Pipeline Monitoring
+    Set up automated alerts when monthly data imports fall below expected thresholds.
+    Impact: Early detection of data collection issues prevents downstream reporting problems.
+
+[MEDIUM] Enhance Data Validation Rules
+    Implement validation at data import time to catch quality issues early.
+    Impact: Cleaner data reduces manual cleanup and improves report accuracy.
+
+────────────────────────────────────────────────────────────────────────────────
+CHECKS PERFORMED
+────────────────────────────────────────────────────────────────────────────────
+  ✓ Monthly data completeness
+  ✓ Record count validation
+  ✓ Month-over-month anomaly detection
+  ✓ Required field validation
+  ✓ Data quality scoring
+  ✓ Gap analysis
+
+════════════════════════════════════════════════════════════════════════════════
+END OF AUDIT REPORT
+════════════════════════════════════════════════════════════════════════════════

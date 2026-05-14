@@ -1,0 +1,72 @@
+# Prometheus Configuration for KPI Dashboard Monitoring v3.0
+
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+  external_labels:
+    cluster: 'cisco-sre-dashboard'
+    environment: 'production'
+
+rule_files:
+  - "alerts/*.yml"
+
+scrape_configs:
+  # Main dashboard application metrics
+  - job_name: 'kpi-dashboard'
+    static_configs:
+      - targets: ['localhost:3000']
+    metrics_path: '/api/v3/metrics'
+    scrape_interval: 30s
+    scrape_timeout: 10s
+    
+  # Enhanced KPI endpoint monitoring
+  - job_name: 'kpi-enhanced-metrics'
+    static_configs:
+      - targets: ['localhost:3000']
+    metrics_path: '/api/v3/kpi/performance-metrics'
+    scrape_interval: 60s
+    
+  # WebSocket server monitoring
+  - job_name: 'websocket-servers'
+    static_configs:
+      - targets: ['localhost:8081', 'localhost:8082', 'localhost:8083']
+    metrics_path: '/metrics'
+    scrape_interval: 30s
+    
+  # SSE server monitoring  
+  - job_name: 'sse-servers'
+    static_configs:
+      - targets: ['localhost:8084', 'localhost:8085']
+    metrics_path: '/metrics'
+    scrape_interval: 30s
+    
+  # System metrics
+  - job_name: 'node-exporter'
+    static_configs:
+      - targets: ['localhost:9100']
+    scrape_interval: 15s
+    
+  # Database monitoring
+  - job_name: 'postgres-exporter'
+    static_configs:
+      - targets: ['localhost:9187']
+    scrape_interval: 30s
+    
+  # Redis monitoring (if using Redis cache)
+  - job_name: 'redis-exporter'
+    static_configs:
+      - targets: ['localhost:9121']
+    scrape_interval: 30s
+
+alerting:
+  alertmanagers:
+    - static_configs:
+        - targets:
+          - localhost:9093
+
+# Remote write for long-term storage (optional)
+# remote_write:
+#   - url: "https://prometheus-remote-write.cisco.com/api/v1/write"
+#     basic_auth:
+#       username: "dashboard-metrics"
+#       password: "secure-token"

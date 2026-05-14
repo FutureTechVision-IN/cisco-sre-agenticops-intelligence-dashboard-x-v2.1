@@ -1,0 +1,82 @@
+╔════════════════════════════════════════════════════════════════════════════╗
+║                  SRE AGENTICOPS INTELLIGENCE DASHBOARD                     ║
+║                        QUICK START GUIDE (2 min)                           ║
+╚════════════════════════════════════════════════════════════════════════════╝
+
+STEP 1: Make Scripts Executable (first time only)
+  $ chmod +x start.sh stop.sh
+
+STEP 2: Start the Application
+  $ ./start.sh
+
+STEP 3: Open in Browser
+  → http://localhost:8001
+
+STEP 4: Login
+  User: sre-admin
+  Password: password$$
+
+STEP 5: Explore Dashboard
+  ✓ View KPI metrics
+  ✓ Check vulnerability trends
+  ✓ Generate PDF reports
+  ✓ Export data to CSV
+
+STEP 6: Stop Application
+  $ ./stop.sh
+
+═══════════════════════════════════════════════════════════════════════════════
+
+WHAT'S INSIDE:
+  ✓ Full-stack React + Node.js application
+  ✓ 577,605 vulnerability records (pre-loaded)
+  ✓ PostgreSQL database with 873 customers
+  ✓ AI/ML predictive analytics engine
+  ✓ 5 user roles with authentication
+  ✓ PDF & CSV report generation
+
+SYSTEM REQUIREMENTS:
+  • Node.js 18+
+  • npm 9+
+  • PostgreSQL 15+
+
+DOCUMENTATION:
+  1. INSTALLATION.txt - Basic setup
+  2. README_DEPLOYMENT.md - Quick reference
+  3. DEPLOYMENT_GUIDE.md - Detailed instructions
+  4. PACKAGE_MANIFEST.md - Package contents
+
+FEATURES:
+  📊 Real-time KPI dashboard
+  🤖 AI/ML forecasting & anomaly detection
+  📈 Trend analysis & health scoring
+  📄 PDF/CSV report generation
+  👥 User management & RBAC
+  🔒 JWT authentication
+
+DEFAULT USERS (change these in production!):
+  sre-admin / password$$
+  sre-user / password$$
+  sre-manager / password$$
+  sre-director / password$$
+  sre-vp / password$$
+
+═══════════════════════════════════════════════════════════════════════════════
+
+TROUBLESHOOTING:
+
+Port Already in Use?
+  $ PORT=3000 ./start.sh
+
+Database Error?
+  $ export DATABASE_URL="postgresql://user:pass@host/db"
+  $ ./start.sh
+
+Node.js Not Found?
+  Install from: https://nodejs.org (v18+)
+
+═══════════════════════════════════════════════════════════════════════════════
+
+Ready? Run: chmod +x start.sh && ./start.sh
+
+Then visit: http://localhost:8001

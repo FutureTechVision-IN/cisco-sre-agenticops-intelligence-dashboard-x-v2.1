@@ -1,0 +1,1139 @@
+/**
+ * Advanced ChatGPT-Style Voice Chatbot Component
+ * Cisco SRE AgenticOps Intelligence Dashboard
+ * 
+ * Features:
+ * - ChatGPT-like conversational interface
+ * - Voice input with Web Speech API
+ * - Text-to-speech responses
+ * - Rich message rendering (markdown, code, tables)
+ * - Suggestion chips and quick actions
+ * - Conversation history with context
+ * - Cisco CIRCUIT API integration
+ */
+
+import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react';
+import {
+  X, Mic, MicOff, Send, Bot, User, Sparkles, Volume2, VolumeX,
+  RefreshCw, ThumbsUp, ThumbsDown, Copy, Check, ChevronDown,
+  MessageSquare, Zap, Shield, TrendingUp, Users, FileText,
+  AlertTriangle, BarChart3, Target, Clock, Loader2, Minimize2,
+  Maximize2, Settings, HelpCircle, Trash2, Download, ChevronRight,
+  Sliders, Star
+} from 'lucide-react';
+
+// Enhanced Voice Synthesis Service
+import { 
+  VoiceSynthesisService, 
+  getVoiceSynthesisService, 
+  VoiceProfile,
+  VoiceContext 
+} from '../services/voiceSynthesisService';
+import { VoiceSettingsPanel } from './VoiceSettingsPanel';
+
+// Chatbot Data Persistence Service
+import {
+  ChatbotDataPersistence,
+  getChatbotDataPersistence,
+  PersistentChatMessage,
+  RecoveryReport
+} from '../services/chatbotDataPersistence';
+
+// Admin Settings Service
+import { getAdminSettingsService } from '../services/adminSettingsService';
+
+// ==========================================
+// TYPE DEFINITIONS
+// ==========================================
+
+interface ChatMessage {
+  id: string;
+  role: 'user' | 'assistant';
+  content: string;
+  timestamp: Date;
+  metadata?: {
+    inputType?: 'voice' | 'text';
+    processingTime?: number;
+    model?: string;
+    confidence?: number;
+  };
+  attachments?: MessageAttachment[];
+  feedback?: 'positive' | 'negative' | null;
+}
+
+interface MessageAttachment {
+  type: 'chart' | 'table' | 'metrics' | 'recommendations' | 'workflow' | 'alert';
+  data: any;
+  title?: string;
+}
+
+interface SuggestedAction {
+  id: string;
+  label: string;
+  action: string;
+  icon: string;
+  priority: 'high' | 'medium' | 'low';
+  category: 'query' | 'workflow' | 'navigation' | 'report';
+}
+
+interface Props {
+  isOpen: boolean;
+  onClose: () => void;
+  dashboardData?: {
+    vulnerableCount?: number;
+    potentiallyVulnerableCount?: number;
+    secureCount?: number;
+    fieldNoticeCount?: number;
+    topCustomers?: string;
+  };
+}
+
+// ==========================================
+// QUICK COMMAND PRESETS
+// Expanded set of commands organized by category
+// ==========================================
+
+const QUICK_COMMANDS = [
+  // Executive & Leadership
+  { text: "Generate C-level executive summary", icon: FileText, color: 'emerald', category: 'executive' },
+  { text: "What's our enterprise risk score?", icon: Target, color: 'emerald', category: 'executive' },
+  
+  // Security & Vulnerabilities
+  { text: "What are today's critical vulnerabilities?", icon: Shield, color: 'rose', category: 'security' },
+  { text: "Analyze our security posture", icon: Shield, color: 'rose', category: 'security' },
+  
+  // Dashboard & Metrics
+  { text: "Show me the dashboard summary", icon: BarChart3, color: 'blue', category: 'metrics' },
+  { text: "Compare to last month", icon: TrendingUp, color: 'blue', category: 'metrics' },
+  
+  // Customer Analysis
+  { text: "Which customers have the highest risk?", icon: Users, color: 'purple', category: 'customers' },
+  { text: "Show customer risk breakdown", icon: Users, color: 'purple', category: 'customers' },
+  
+  // Priorities & Actions
+  { text: "What should I prioritize today?", icon: Target, color: 'amber', category: 'priorities' },
+  { text: "Generate a remediation plan", icon: Zap, color: 'amber', category: 'priorities' },
+  
+  // Trends & Predictions
+  { text: "Predict next month's vulnerabilities", icon: TrendingUp, color: 'cyan', category: 'trends' },
+  { text: "Show 30-day forecast", icon: TrendingUp, color: 'cyan', category: 'trends' },
+];
+
+const SUGGESTION_CHIPS = [
+  "Executive summary",
+  "Risk assessment",
+  "Customer analysis",
+  "Compare periods",
+  "Remediation plan",
+  "30-day forecast",
+  "Critical items",
+  "Field notices",
+  "Board report",
+  "Export data"
+];
+
+const ADVANCED_QUESTIONS = [
+  // Executive & Strategic (NEW)
+  "Generate board-level security brief",
+  "What's the financial impact of current risks?",
+  "Create CISO presentation summary",
+  "Show business impact assessment",
+  
+  // ML/AI powered
+  "Run predictive analysis for next 90 days",
+  "Detect anomalies in recent data",
+  "What's driving the vulnerability trend?",
+  "Compare current vs historical risk",
+  
+  // Deep dive
+  "Show me the complete risk matrix",
+  "Analyze field notices by severity",
+  "Which patches should I apply first?",
+  "What resources do I need for remediation?"
+];
+
+// ==========================================
+// MAIN COMPONENT
+// ==========================================
+
+export const ChatGPTStyleChatbot: React.FC<Props> = ({ isOpen, onClose, dashboardData }) => {
+  // State
+  const [messages, setMessages] = useState<ChatMessage[]>([]);
+  const [inputValue, setInputValue] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const [isListening, setIsListening] = useState(false);
+  const [isSpeaking, setIsSpeaking] = useState(false);
+  const [autoSpeak, setAutoSpeak] = useState(true);
+  const [isExpanded, setIsExpanded] = useState(false);
+  const [showSettings, setShowSettings] = useState(false);
+  const [copiedMessageId, setCopiedMessageId] = useState<string | null>(null);
+  const [sessionId] = useState(() => `session_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`);
+  const [suggestions, setSuggestions] = useState<SuggestedAction[]>([]);
+  const [waveformData, setWaveformData] = useState<number[]>(new Array(16).fill(0.2));
+  
+  // Get initial state from admin settings
+  const adminSettingsService = getAdminSettingsService();
+  const initialSettings = adminSettingsService.getSettings();
+  const [showAdvancedQuestions, setShowAdvancedQuestions] = useState(initialSettings.expandSuggestionsByDefault);
+  
+  const [showVoiceSettings, setShowVoiceSettings] = useState(false);
+  const [currentVoiceProfile, setCurrentVoiceProfile] = useState<VoiceProfile | null>(null);
+  const [voiceRating, setVoiceRating] = useState<number>(0);
+  const [recoveryInProgress, setRecoveryInProgress] = useState(false);
+
+  // Refs
+  const messagesEndRef = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLTextAreaElement>(null);
+  const recognitionRef = useRef<any>(null);
+  const animationRef = useRef<number>();
+
+  // Enhanced Voice Synthesis Service (memoized singleton)
+  const voiceService = useMemo(() => {
+    const service = getVoiceSynthesisService();
+    service.onSpeakingStateChange(setIsSpeaking);
+    return service;
+  }, []);
+
+  // Chatbot Data Persistence Service (memoized singleton)
+  const persistenceService = useMemo(() => {
+    const service = getChatbotDataPersistence(sessionId);
+    
+    // Setup recovery callbacks
+    service.onDataRestoredCallback((restoredMessages) => {
+      console.log('[Chatbot] Data restored via persistence service');
+      const convertedMessages: ChatMessage[] = restoredMessages.map(m => ({
+        ...m,
+        id: m.id,
+        role: m.role,
+        content: m.content,
+        timestamp: new Date(m.timestamp),
+        metadata: m.metadata,
+        feedback: m.feedback as 'positive' | 'negative' | null
+      }));
+      setMessages(convertedMessages);
+      setRecoveryInProgress(false);
+    });
+    
+    service.onZeroDataDetectedCallback((report) => {
+      console.warn('[Chatbot] Zero data detected:', report);
+      if (report.messageCount > 0) {
+        console.log('[Chatbot] Recovery successful:', report);
+      }
+    });
+    
+    return service;
+  }, [sessionId]);
+
+  // Initialize voice profile
+  useEffect(() => {
+    if (voiceService) {
+      setCurrentVoiceProfile(voiceService.getProfile());
+    }
+  }, [voiceService]);
+
+  // ==========================================
+  // EFFECTS
+  // ==========================================
+
+  // Subscribe to admin settings changes
+  useEffect(() => {
+    const unsubscribe = adminSettingsService.onSettingsChange((newSettings) => {
+      setShowAdvancedQuestions(newSettings.expandSuggestionsByDefault);
+    });
+    return () => unsubscribe();
+  }, []);
+
+  // Scroll to bottom when new messages arrive
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [messages]);
+
+  // Focus input when opened
+  useEffect(() => {
+    if (isOpen && inputRef.current) {
+      setTimeout(() => inputRef.current?.focus(), 100);
+    }
+  }, [isOpen]);
+
+  // Waveform animation
+  useEffect(() => {
+    if (isListening) {
+      const animate = () => {
+        setWaveformData(prev => prev.map(() => 0.2 + Math.random() * 0.8));
+        animationRef.current = requestAnimationFrame(animate);
+      };
+      animate();
+    } else {
+      if (animationRef.current) cancelAnimationFrame(animationRef.current);
+      setWaveformData(new Array(16).fill(0.2));
+    }
+    return () => {
+      if (animationRef.current) cancelAnimationFrame(animationRef.current);
+    };
+  }, [isListening]);
+
+  // Welcome message and persistence initialization
+  useEffect(() => {
+    if (isOpen && messages.length === 0) {
+      // Try to restore messages from persistence
+      const storedMessages = persistenceService.getMessages();
+      
+      if (storedMessages.length > 0) {
+        // Restore from persistence
+        const convertedMessages: ChatMessage[] = storedMessages.map(m => ({
+          ...m,
+          timestamp: new Date(m.timestamp)
+        }));
+        setMessages(convertedMessages);
+        console.log('[Chatbot] Restored messages from persistence:', convertedMessages.length);
+      } else {
+        // Show welcome message
+        const welcomeMessage: ChatMessage = {
+          id: 'welcome',
+          role: 'assistant',
+          content: `👋 **Hello! I'm your SRE AgenticOps AI Assistant.**
+
+I'm powered by Cisco CIRCUIT AI and can help you with:
+
+• **Security Analysis** - Vulnerability insights and risk assessment
+• **Customer Intelligence** - Risk profiles and impact analysis  
+• **Operational Metrics** - Dashboard summaries and trends
+• **Recommendations** - Actionable remediation guidance
+• **Reports** - Executive summaries and exports
+
+You can type your questions or click the microphone to speak. How can I help you today?`,
+          timestamp: new Date(),
+          metadata: { model: 'system' }
+        };
+        setMessages([welcomeMessage]);
+        
+        // Persist welcome message
+        persistenceService.addMessage({
+          id: welcomeMessage.id,
+          role: welcomeMessage.role,
+          content: welcomeMessage.content,
+          metadata: welcomeMessage.metadata
+        });
+      }
+    }
+  }, [isOpen, persistenceService]);
+
+  // Cleanup on close
+  useEffect(() => {
+    if (!isOpen) {
+      stopListening();
+      stopSpeaking();
+    }
+  }, [isOpen]);
+
+  // ==========================================
+  // VOICE FUNCTIONS
+  // ==========================================
+
+  const startListening = useCallback(() => {
+    const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
+    
+    if (!SpeechRecognition) {
+      alert('Voice recognition is not supported in your browser. Please use Chrome, Edge, or Safari.');
+      return;
+    }
+
+    const recognition = new SpeechRecognition();
+    recognition.continuous = false;
+    recognition.interimResults = true;
+    recognition.lang = 'en-US';
+
+    recognition.onstart = () => {
+      setIsListening(true);
+      setInputValue('');
+    };
+
+    recognition.onresult = (event: any) => {
+      const transcript = Array.from(event.results)
+        .map((result: any) => result[0].transcript)
+        .join('');
+      setInputValue(transcript);
+    };
+
+    recognition.onend = () => {
+      setIsListening(false);
+      // Auto-submit if we have a transcript
+      if (inputRef.current?.value) {
+        handleSend(inputRef.current.value, 'voice');
+      }
+    };
+
+    recognition.onerror = (event: any) => {
+      console.error('Speech recognition error:', event.error);
+      setIsListening(false);
+    };
+
+    recognitionRef.current = recognition;
+    recognition.start();
+  }, []);
+
+  const stopListening = useCallback(() => {
+    if (recognitionRef.current) {
+      recognitionRef.current.stop();
+    }
+    setIsListening(false);
+  }, []);
+
+  const speakText = useCallback((text: string, responseContext?: string) => {
+    if (!voiceService) return;
+
+    // Auto-detect context from response content for natural voice adaptation
+    const context: VoiceContext = voiceService.detectContext(text);
+    
+    // Enhance context based on response type
+    if (responseContext) {
+      if (responseContext.includes('executive') || responseContext.includes('summary')) {
+        context.type = 'executive';
+        context.emotionalTone = 'confident';
+      } else if (responseContext.includes('alert') || responseContext.includes('critical')) {
+        context.type = 'urgent';
+        context.emotionalTone = 'urgent';
+      } else if (responseContext.includes('success') || responseContext.includes('resolved')) {
+        context.type = 'success';
+        context.emotionalTone = 'friendly';
+      }
+    }
+
+    // Use enhanced voice synthesis with natural prosody
+    voiceService.speak(text, context);
+  }, [voiceService]);
+
+  const stopSpeaking = useCallback(() => {
+    voiceService?.stop();
+    setIsSpeaking(false);
+  }, [voiceService]);
+
+  // Voice rating handler
+  const handleVoiceRating = useCallback((rating: number) => {
+    setVoiceRating(rating);
+    voiceService?.submitRating(rating);
+  }, [voiceService]);
+
+  // Handle voice profile change from settings panel
+  const handleVoiceProfileChange = useCallback((profile: VoiceProfile) => {
+    setCurrentVoiceProfile(profile);
+  }, []);
+
+  // ==========================================
+  // MESSAGE HANDLING
+  // ==========================================
+
+  const handleSend = async (text?: string, inputType: 'voice' | 'text' = 'text') => {
+    const messageText = text || inputValue.trim();
+    if (!messageText || isLoading) return;
+
+    // Add user message
+    const userMessage: ChatMessage = {
+      id: `user_${Date.now()}`,
+      role: 'user',
+      content: messageText,
+      timestamp: new Date(),
+      metadata: { inputType }
+    };
+    setMessages(prev => [...prev, userMessage]);
+    
+    // Persist user message immediately
+    persistenceService.addMessage({
+      id: userMessage.id,
+      role: 'user',
+      content: messageText,
+      metadata: { inputType }
+    });
+    
+    setInputValue('');
+    setIsLoading(true);
+
+    try {
+      const response = await fetch('/api/chatbot/message', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          message: messageText,
+          sessionId,
+          inputType,
+          dashboardData
+        })
+      });
+
+      const data = await response.json();
+
+      // Handle rate limit errors (429)
+      if (response.status === 429) {
+        const retryAfter = data.retryAfter || 10;
+        const rateLimitMessage: ChatMessage = {
+          id: `ratelimit_${Date.now()}`,
+          role: 'assistant',
+          content: `**Rate Limit Reached**\n\n${data.message || 'Too many requests. Please wait a moment.'}\n\n*Retry in ${retryAfter} seconds...*`,
+          timestamp: new Date()
+        };
+        setMessages(prev => [...prev, rateLimitMessage]);
+        
+        // Persist rate limit message
+        persistenceService.addMessage({
+          id: rateLimitMessage.id,
+          role: 'assistant',
+          content: rateLimitMessage.content
+        });
+        
+        // Auto-retry after the specified time
+        setTimeout(() => {
+          setSuggestions([
+            { id: 'retry', label: 'Retry my request', action: 'retry', icon: 'refresh', priority: 'high', category: 'action' as const }
+          ]);
+        }, retryAfter * 1000);
+        return;
+      }
+
+      // Handle service unavailable (503) - circuit breaker open
+      if (response.status === 503) {
+        const serviceMessage: ChatMessage = {
+          id: `service_${Date.now()}`,
+          role: 'assistant',
+          content: `🔧 **Service Temporarily Unavailable**\n\n${data.message || 'The AI service is experiencing high load.'}\n\nPlease try again in a moment. Your request has been noted.`,
+          timestamp: new Date()
+        };
+        setMessages(prev => [...prev, serviceMessage]);
+        
+        // Persist service message
+        persistenceService.addMessage({
+          id: serviceMessage.id,
+          role: 'assistant',
+          content: serviceMessage.content
+        });
+        return;
+      }
+
+      if (data.success) {
+        const assistantMessage: ChatMessage = {
+          id: data.message?.id || `assistant_${Date.now()}`,
+          role: 'assistant',
+          content: data.message?.content || 'I processed your request.',
+          timestamp: new Date(),
+          metadata: data.message?.metadata,
+          attachments: data.message?.attachments
+        };
+        setMessages(prev => [...prev, assistantMessage]);
+        setSuggestions(data.suggestions || []);
+
+        // Persist assistant message
+        persistenceService.addMessage({
+          id: assistantMessage.id,
+          role: 'assistant',
+          content: assistantMessage.content,
+          metadata: assistantMessage.metadata
+        });
+
+        // Auto-speak response if enabled
+        if (autoSpeak && data.voiceOutput?.text) {
+          speakText(data.voiceOutput.text);
+        }
+      } else {
+        // Error response from API
+        const errorContent = data.suggestion 
+          ? `I'm sorry, I encountered an issue: ${data.details || 'Unknown error'}\n\nSuggestion: ${data.suggestion}`
+          : `I'm sorry, I encountered an issue processing your request. Please try again.`;
+        
+        const errorMessage: ChatMessage = {
+          id: `error_${Date.now()}`,
+          role: 'assistant',
+          content: errorContent,
+          timestamp: new Date()
+        };
+        setMessages(prev => [...prev, errorMessage]);
+      }
+    } catch (error) {
+      console.error('Chat error:', error);
+      
+      // Provide more specific error messages
+      let errorContent = "I'm having trouble connecting to the server.";
+      
+      if (error instanceof TypeError && error.message.includes('Failed to fetch')) {
+        errorContent = "**Connection Error**\n\nUnable to reach the server. Please check:\n- Your internet connection\n- Server status at port 5050\n\nTry refreshing the page or contact support if the issue persists.";
+      } else if (error instanceof Error) {
+        errorContent = `**Error**\n\n${error.message}\n\nPlease try again or contact support.`;
+      }
+      
+      const errorMessage: ChatMessage = {
+        id: `error_${Date.now()}`,
+        role: 'assistant',
+        content: errorContent,
+        timestamp: new Date()
+      };
+      setMessages(prev => [...prev, errorMessage]);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      handleSend();
+    }
+  };
+
+  const handleQuickCommand = (text: string) => {
+    setInputValue(text);
+    handleSend(text);
+  };
+
+  const handleSuggestionClick = (suggestion: SuggestedAction) => {
+    handleSend(suggestion.label);
+  };
+
+  // ==========================================
+  // UTILITY FUNCTIONS
+  // ==========================================
+
+  const copyToClipboard = (text: string, messageId: string) => {
+    navigator.clipboard.writeText(text);
+    setCopiedMessageId(messageId);
+    setTimeout(() => setCopiedMessageId(null), 2000);
+  };
+
+  const handleFeedback = (messageId: string, type: 'positive' | 'negative') => {
+    setMessages(prev => prev.map(m => 
+      m.id === messageId ? { ...m, feedback: type } : m
+    ));
+    
+    // Update feedback in persistence
+    persistenceService.updateMessageFeedback(messageId, type);
+    
+    // Send feedback to API
+    fetch('/api/chatbot/feedback', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ messageId, sessionId, rating: type === 'positive' ? 1 : -1 })
+    }).catch(console.error);
+  };
+
+  const clearChat = () => {
+    setMessages([]);
+    setSuggestions([]);
+    
+    // Clear via persistence service (creates backup first)
+    persistenceService.clearMessages();
+    
+    fetch(`/api/chatbot/session/${sessionId}`, { method: 'DELETE' }).catch(console.error);
+  };
+
+  const formatTime = (date: Date) => {
+    return new Date(date).toLocaleTimeString('en-US', { 
+      hour: 'numeric', 
+      minute: '2-digit',
+      hour12: true 
+    });
+  };
+
+  // ==========================================
+  // RENDER FUNCTIONS
+  // ==========================================
+
+  const renderMarkdown = (content: string) => {
+    // Simple markdown rendering
+    return content
+      .split('\n')
+      .map((line, i) => {
+        // Headers
+        if (line.startsWith('### ')) {
+          return <h3 key={i} className="text-base font-semibold text-white mt-3 mb-1">{line.replace('### ', '')}</h3>;
+        }
+        if (line.startsWith('## ')) {
+          return <h2 key={i} className="text-lg font-semibold text-white mt-3 mb-1">{line.replace('## ', '')}</h2>;
+        }
+        if (line.startsWith('# ')) {
+          return <h1 key={i} className="text-xl font-bold text-white mt-3 mb-2">{line.replace('# ', '')}</h1>;
+        }
+        
+        // Bullet points
+        if (line.startsWith('• ') || line.startsWith('- ') || line.startsWith('* ')) {
+          const text = line.replace(/^[•\-\*]\s/, '');
+          return (
+            <div key={i} className="flex items-start gap-2 my-1">
+              <span className="text-cyan-400 mt-1">•</span>
+              <span dangerouslySetInnerHTML={{ __html: formatInlineMarkdown(text) }} />
+            </div>
+          );
+        }
+
+        // Empty lines
+        if (!line.trim()) {
+          return <div key={i} className="h-2" />;
+        }
+
+        // Regular paragraphs
+        return (
+          <p key={i} className="my-1" dangerouslySetInnerHTML={{ __html: formatInlineMarkdown(line) }} />
+        );
+      });
+  };
+
+  const formatInlineMarkdown = (text: string) => {
+    return text
+      .replace(/\*\*(.+?)\*\*/g, '<strong class="font-semibold text-white">$1</strong>')
+      .replace(/\*(.+?)\*/g, '<em class="text-gray-300">$1</em>')
+      .replace(/`(.+?)`/g, '<code class="px-1 py-0.5 bg-slate-700 rounded text-cyan-300 text-sm">$1</code>');
+  };
+
+  const renderMessage = (message: ChatMessage) => {
+    const isUser = message.role === 'user';
+    
+    return (
+      <div 
+        key={message.id}
+        className={`flex gap-3 ${isUser ? 'flex-row-reverse' : ''} mb-4 animate-fadeIn`}
+      >
+        {/* Avatar */}
+        <div className={`flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center ${
+          isUser 
+            ? 'bg-gradient-to-br from-blue-500 to-purple-600' 
+            : 'bg-gradient-to-br from-cyan-500 to-blue-600'
+        }`}>
+          {isUser ? <User className="w-4 h-4 text-white" /> : <Bot className="w-4 h-4 text-white" />}
+        </div>
+
+        {/* Message Content */}
+        <div className={`flex-1 max-w-[85%] ${isUser ? 'text-right' : ''}`}>
+          <div className={`inline-block rounded-2xl px-4 py-3 ${
+            isUser 
+              ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-br-md' 
+              : 'bg-slate-800/80 border border-slate-700/50 text-gray-200 rounded-bl-md'
+          }`}>
+            {/* Voice indicator */}
+            {message.metadata?.inputType === 'voice' && (
+              <div className="flex items-center gap-1 text-xs text-gray-400 mb-1">
+                <Mic className="w-3 h-3" />
+                <span>Voice input</span>
+              </div>
+            )}
+
+            {/* Content */}
+            <div className="text-sm leading-relaxed">
+              {isUser ? message.content : renderMarkdown(message.content)}
+            </div>
+
+            {/* Attachments */}
+            {message.attachments && message.attachments.length > 0 && (
+              <div className="mt-3 space-y-2">
+                {message.attachments.map((att, i) => (
+                  <div key={i} className="p-3 bg-slate-700/50 rounded-lg">
+                    <div className="text-xs text-gray-400 mb-1">{att.title || att.type}</div>
+                    <pre className="text-xs text-gray-300 overflow-x-auto">
+                      {JSON.stringify(att.data, null, 2)}
+                    </pre>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+
+          {/* Message meta & actions */}
+          <div className={`flex items-center gap-2 mt-1 ${isUser ? 'justify-end' : 'justify-start'}`}>
+            <span className="text-xs text-gray-500">{formatTime(message.timestamp)}</span>
+            
+            {!isUser && message.id !== 'welcome' && (
+              <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                <button
+                  onClick={() => copyToClipboard(message.content, message.id)}
+                  className="p-1 text-gray-500 hover:text-gray-300 transition-colors"
+                  title="Copy"
+                >
+                  {copiedMessageId === message.id ? (
+                    <Check className="w-3.5 h-3.5 text-green-400" />
+                  ) : (
+                    <Copy className="w-3.5 h-3.5" />
+                  )}
+                </button>
+                <button
+                  onClick={() => speakText(message.content)}
+                  className="p-1 text-gray-500 hover:text-gray-300 transition-colors"
+                  title="Read aloud"
+                >
+                  <Volume2 className="w-3.5 h-3.5" />
+                </button>
+                <button
+                  onClick={() => handleFeedback(message.id, 'positive')}
+                  className={`p-1 transition-colors ${
+                    message.feedback === 'positive' ? 'text-green-400' : 'text-gray-500 hover:text-gray-300'
+                  }`}
+                  title="Helpful"
+                >
+                  <ThumbsUp className="w-3.5 h-3.5" />
+                </button>
+                <button
+                  onClick={() => handleFeedback(message.id, 'negative')}
+                  className={`p-1 transition-colors ${
+                    message.feedback === 'negative' ? 'text-red-400' : 'text-gray-500 hover:text-gray-300'
+                  }`}
+                  title="Not helpful"
+                >
+                  <ThumbsDown className="w-3.5 h-3.5" />
+                </button>
+              </div>
+            )}
+
+            {message.metadata?.model && (
+              <span className="text-xs text-gray-600 ml-2">{message.metadata.model}</span>
+            )}
+          </div>
+        </div>
+      </div>
+    );
+  };
+
+  // ==========================================
+  // RENDER
+  // ==========================================
+
+  if (!isOpen) return null;
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-fadeIn">
+      <div 
+        className={`relative flex flex-col bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 
+          rounded-2xl shadow-2xl border border-slate-700/50 overflow-hidden transition-all duration-300
+          ${isExpanded ? 'w-full h-full max-w-none max-h-none' : 'w-full max-w-2xl h-[85vh] max-h-[800px]'}`}
+      >
+        {/* Header */}
+        <div className="flex items-center justify-between px-5 py-4 border-b border-slate-700/50 bg-slate-800/50">
+          <div className="flex items-center gap-3">
+            <div className="relative">
+              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-cyan-500 via-blue-600 to-purple-600 
+                flex items-center justify-center shadow-lg shadow-cyan-500/20">
+                <Sparkles className="w-5 h-5 text-white" />
+              </div>
+              <div className="absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-green-500 rounded-full border-2 border-slate-800" />
+            </div>
+            <div>
+              <h2 className="text-base font-semibold text-white">SRE AI Assistant</h2>
+              <p className="text-xs text-gray-400">Powered by Cisco CIRCUIT AI</p>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-2">
+            {/* Voice Profile Indicator */}
+            {currentVoiceProfile && (
+              <div className="hidden sm:flex items-center gap-1.5 px-2 py-1 bg-purple-500/10 rounded-lg border border-purple-500/20">
+                <Mic className="w-3 h-3 text-purple-400" />
+                <span className="text-xs text-purple-400">
+                  {currentVoiceProfile.name}
+                </span>
+              </div>
+            )}
+            
+            {/* Voice Settings Button */}
+            <button
+              onClick={() => setShowVoiceSettings(true)}
+              className="p-2 text-gray-400 hover:text-purple-400 hover:bg-purple-500/10 rounded-lg transition-colors"
+              title="Voice Settings"
+            >
+              <Sliders className="w-4 h-4" />
+            </button>
+            
+            <button
+              onClick={() => setAutoSpeak(!autoSpeak)}
+              className={`p-2 rounded-lg transition-colors ${
+                autoSpeak ? 'bg-cyan-500/20 text-cyan-400' : 'text-gray-400 hover:text-gray-300 hover:bg-slate-700'
+              }`}
+              title={autoSpeak ? 'Auto-speak enabled' : 'Auto-speak disabled'}
+            >
+              {autoSpeak ? <Volume2 className="w-4 h-4" /> : <VolumeX className="w-4 h-4" />}
+            </button>
+            <button
+              onClick={clearChat}
+              className="p-2 text-gray-400 hover:text-gray-300 hover:bg-slate-700 rounded-lg transition-colors"
+              title="Clear chat"
+            >
+              <Trash2 className="w-4 h-4" />
+            </button>
+            <button
+              onClick={() => setIsExpanded(!isExpanded)}
+              className="p-2 text-gray-400 hover:text-gray-300 hover:bg-slate-700 rounded-lg transition-colors"
+              title={isExpanded ? 'Minimize' : 'Maximize'}
+            >
+              {isExpanded ? <Minimize2 className="w-4 h-4" /> : <Maximize2 className="w-4 h-4" />}
+            </button>
+            <button
+              onClick={onClose}
+              className="p-2 text-gray-400 hover:text-red-400 hover:bg-red-500/10 rounded-lg transition-colors"
+              title="Close"
+            >
+              <X className="w-4 h-4" />
+            </button>
+          </div>
+        </div>
+
+        {/* Messages Area */}
+        <div className="flex-1 overflow-y-auto p-5 space-y-1">
+          {messages.map(message => (
+            <div key={message.id} className="group">
+              {renderMessage(message)}
+            </div>
+          ))}
+
+          {/* Loading indicator */}
+          {isLoading && (
+            <div className="flex gap-3 mb-4">
+              <div className="w-8 h-8 rounded-full bg-gradient-to-br from-cyan-500 to-blue-600 flex items-center justify-center">
+                <Bot className="w-4 h-4 text-white" />
+              </div>
+              <div className="bg-slate-800/80 border border-slate-700/50 rounded-2xl rounded-bl-md px-4 py-3">
+                <div className="flex items-center gap-2">
+                  <Loader2 className="w-4 h-4 animate-spin text-cyan-400" />
+                  <span className="text-sm text-gray-400">Thinking...</span>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Suggestions */}
+          {suggestions.length > 0 && !isLoading && (
+            <div className="flex flex-wrap gap-2 mt-4">
+              {suggestions.map(suggestion => (
+                <button
+                  key={suggestion.id}
+                  onClick={() => handleSuggestionClick(suggestion)}
+                  className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium
+                    transition-all hover:scale-105 ${
+                      suggestion.priority === 'high' 
+                        ? 'bg-rose-500/20 text-rose-300 hover:bg-rose-500/30' 
+                        : suggestion.priority === 'medium'
+                        ? 'bg-amber-500/20 text-amber-300 hover:bg-amber-500/30'
+                        : 'bg-slate-700/50 text-gray-300 hover:bg-slate-700'
+                    }`}
+                >
+                  <ChevronRight className="w-3 h-3" />
+                  {suggestion.label}
+                </button>
+              ))}
+            </div>
+          )}
+
+          {/* Quick commands for empty state */}
+          {messages.length <= 1 && !isLoading && (
+            <div className="mt-6">
+              <p className="text-sm text-gray-500 mb-3">Try asking:</p>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                {QUICK_COMMANDS.slice(0, showAdvancedQuestions ? QUICK_COMMANDS.length : 6).map((cmd, i) => {
+                  const Icon = cmd.icon;
+                  return (
+                    <button
+                      key={i}
+                      onClick={() => handleQuickCommand(cmd.text)}
+                      className={`flex items-center gap-3 p-3 rounded-xl bg-slate-800/50 border border-slate-700/50
+                        hover:bg-slate-700/50 hover:border-slate-600 transition-all group text-left`}
+                    >
+                      <div className={`p-2 rounded-lg bg-${cmd.color}-500/20`}>
+                        <Icon className={`w-4 h-4 text-${cmd.color}-400`} />
+                      </div>
+                      <span className="text-sm text-gray-300 group-hover:text-white transition-colors">
+                        {cmd.text}
+                      </span>
+                    </button>
+                  );
+                })}
+              </div>
+              
+              {/* Advanced Questions Section */}
+              {showAdvancedQuestions && (
+                <div className="mt-4">
+                  <p className="text-sm text-purple-400 mb-3 flex items-center gap-2">
+                    <Sparkles className="w-4 h-4" />
+                    ML/AI Powered Analysis:
+                  </p>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                    {ADVANCED_QUESTIONS.map((question, i) => (
+                      <button
+                        key={i}
+                        onClick={() => handleQuickCommand(question)}
+                        className="flex items-center gap-2 p-2.5 rounded-lg bg-purple-900/20 border border-purple-500/30
+                          hover:bg-purple-900/40 hover:border-purple-500/50 transition-all text-left"
+                      >
+                        <Zap className="w-3 h-3 text-purple-400 flex-shrink-0" />
+                        <span className="text-xs text-purple-200">{question}</span>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
+              
+              {/* Show More/Less Button */}
+              <button
+                onClick={() => setShowAdvancedQuestions(!showAdvancedQuestions)}
+                className="mt-4 w-full py-2 text-sm text-cyan-400 hover:text-cyan-300 
+                  flex items-center justify-center gap-2 transition-colors"
+              >
+                {showAdvancedQuestions ? (
+                  <>Show Less</>
+                ) : (
+                  <>
+                    <Sparkles className="w-4 h-4" />
+                    Show More Questions & ML Analysis
+                  </>
+                )}
+              </button>
+            </div>
+          )}
+
+          <div ref={messagesEndRef} />
+        </div>
+
+        {/* Voice Indicator */}
+        {isListening && (
+          <div className="px-5 py-3 border-t border-slate-700/50 bg-slate-800/50">
+            <div className="flex items-center justify-center gap-3">
+              <div className="flex items-center gap-1 h-8">
+                {waveformData.map((height, i) => (
+                  <div
+                    key={i}
+                    className="w-1 bg-gradient-to-t from-cyan-500 to-blue-400 rounded-full transition-all duration-75"
+                    style={{ height: `${height * 100}%` }}
+                  />
+                ))}
+              </div>
+              <span className="text-sm text-cyan-400">Listening...</span>
+            </div>
+          </div>
+        )}
+
+        {/* Speaking Indicator with Enhanced Voice Info */}
+        {isSpeaking && (
+          <div className="px-5 py-3 border-t border-slate-700/50 bg-gradient-to-r from-purple-500/10 to-blue-500/10">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                {/* Animated Waveform */}
+                <div className="flex items-center gap-0.5">
+                  {[1, 2, 3, 4, 5].map((i) => (
+                    <div 
+                      key={i}
+                      className="w-1 bg-purple-400 rounded-full animate-pulse"
+                      style={{ 
+                        height: `${8 + Math.random() * 12}px`,
+                        animationDelay: `${i * 0.1}s`
+                      }}
+                    />
+                  ))}
+                </div>
+                <div className="flex flex-col">
+                  <span className="text-sm text-purple-300 font-medium">Speaking...</span>
+                  {currentVoiceProfile && (
+                    <span className="text-xs text-gray-500">
+                      Voice: {currentVoiceProfile.name} • {currentVoiceProfile.accent}
+                    </span>
+                  )}
+                </div>
+              </div>
+              
+              <div className="flex items-center gap-2">
+                {/* Quick Voice Rating */}
+                <div className="hidden sm:flex items-center gap-1 text-xs text-gray-500">
+                  <span>Rate:</span>
+                  {[1, 2, 3, 4, 5].map(star => (
+                    <button
+                      key={star}
+                      onClick={() => handleVoiceRating(star)}
+                      className={`text-sm transition-colors hover:scale-110 ${
+                        star <= voiceRating ? 'text-yellow-400' : 'text-gray-600 hover:text-yellow-300'
+                      }`}
+                    >
+                      ★
+                    </button>
+                  ))}
+                </div>
+                
+                <button
+                  onClick={stopSpeaking}
+                  className="px-3 py-1.5 text-xs bg-red-500/20 hover:bg-red-500/30 text-red-400 rounded-lg transition-colors flex items-center gap-1"
+                >
+                  <Square className="w-3 h-3" /> Stop
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Input Area */}
+        <div className="p-4 border-t border-slate-700/50 bg-slate-800/30">
+          {/* Suggestion chips */}
+          <div className="flex flex-wrap gap-2 mb-3">
+            {SUGGESTION_CHIPS.slice(0, 4).map((chip, i) => (
+              <button
+                key={i}
+                onClick={() => handleQuickCommand(chip)}
+                className="px-3 py-1 text-xs bg-slate-700/50 text-gray-400 hover:text-gray-300 
+                  hover:bg-slate-700 rounded-full transition-colors"
+              >
+                {chip}
+              </button>
+            ))}
+          </div>
+
+          <div className="flex items-end gap-2">
+            {/* Mic button */}
+            <button
+              onClick={isListening ? stopListening : startListening}
+              disabled={isLoading}
+              className={`flex-shrink-0 p-3 rounded-xl transition-all ${
+                isListening 
+                  ? 'bg-red-500 text-white animate-pulse' 
+                  : 'bg-slate-700 text-gray-400 hover:text-cyan-400 hover:bg-slate-600'
+              } disabled:opacity-50`}
+            >
+              {isListening ? <MicOff className="w-5 h-5" /> : <Mic className="w-5 h-5" />}
+            </button>
+
+            {/* Text input */}
+            <div className="flex-1 relative">
+              <textarea
+                ref={inputRef}
+                value={inputValue}
+                onChange={(e) => setInputValue(e.target.value)}
+                onKeyDown={handleKeyDown}
+                placeholder="Ask me anything about your SRE operations..."
+                disabled={isListening || isLoading}
+                rows={1}
+                className="w-full px-4 py-3 bg-slate-700/50 border border-slate-600/50 rounded-xl
+                  text-sm text-white placeholder-gray-500 resize-none
+                  focus:outline-none focus:border-cyan-500/50 focus:ring-1 focus:ring-cyan-500/20
+                  disabled:opacity-50 transition-all"
+                style={{ minHeight: '48px', maxHeight: '120px' }}
+              />
+            </div>
+
+            {/* Send button */}
+            <button
+              onClick={() => handleSend()}
+              disabled={!inputValue.trim() || isLoading || isListening}
+              className="flex-shrink-0 p-3 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600
+                text-white hover:from-cyan-400 hover:to-blue-500 
+                disabled:opacity-50 disabled:cursor-not-allowed transition-all
+                shadow-lg shadow-cyan-500/20 hover:shadow-cyan-500/30"
+            >
+              <Send className="w-5 h-5" />
+            </button>
+          </div>
+
+          {/* Footer info */}
+          <p className="mt-3 text-center text-xs text-gray-600">
+            Powered by Cisco CIRCUIT AI • Your conversations are secure
+          </p>
+        </div>
+      </div>
+
+      {/* Voice Settings Panel */}
+      <VoiceSettingsPanel
+        isOpen={showVoiceSettings}
+        onClose={() => setShowVoiceSettings(false)}
+        voiceService={voiceService}
+        onProfileChange={handleVoiceProfileChange}
+      />
+    </div>
+  );
+};
+
+export default ChatGPTStyleChatbot;

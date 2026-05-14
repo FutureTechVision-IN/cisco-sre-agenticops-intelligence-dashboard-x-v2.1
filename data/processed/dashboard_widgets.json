@@ -1,0 +1,20 @@
+{
+  "detected_anomalies": {
+    "value": 689,
+    "trend": "stable",
+    "confidence": "95-100%",
+    "description": "Critical vulnerability patterns detected"
+  },
+  "trend_predictions": {
+    "value": 27651340,
+    "trend": "increasing",
+    "confidence": "85-95%",
+    "description": "Potential vulnerabilities requiring attention"
+  },
+  "top_recommendations": {
+    "value": 10,
+    "trend": "actionable",
+    "confidence": "90-100%",
+    "description": "High-priority customers needing immediate attention"
+  }
+}

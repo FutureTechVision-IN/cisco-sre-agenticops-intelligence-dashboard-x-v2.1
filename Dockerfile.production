@@ -1,0 +1,111 @@
+# ==============================================================================
+# Cisco SRE AgenticOps Intelligence Dashboard - Production Dockerfile
+# Version: 2.0.0
+# 
+# Multi-stage build for optimized production deployment
+# Includes AI/ML capabilities and full dashboard functionality
+# ==============================================================================
+
+# Stage 1: Dependencies
+FROM node:20-alpine AS deps
+LABEL stage=deps
+
+WORKDIR /app
+
+# Install build dependencies for native modules
+RUN apk add --no-cache \
+    python3 \
+    make \
+    g++ \
+    git
+
+# Copy package files
+COPY package.json package-lock.json* ./
+
+# Install all dependencies (including devDependencies for build)
+RUN npm ci --legacy-peer-deps
+
+# Stage 2: Builder
+FROM node:20-alpine AS builder
+LABEL stage=builder
+
+WORKDIR /app
+
+# Copy dependencies from deps stage
+COPY --from=deps /app/node_modules ./node_modules
+
+# Copy source files
+COPY . .
+
+# Set build-time environment variables
+ENV NODE_ENV=production
+ENV SKIP_ENV_VALIDATION=true
+
+# Build the application
+RUN npm run build:prod
+
+# Stage 3: Production Runtime
+FROM node:20-alpine AS runner
+LABEL maintainer="Cisco SRE Team"
+LABEL description="Cisco SRE AgenticOps Intelligence Dashboard"
+LABEL version="2.0.0"
+
+WORKDIR /app
+
+# Create non-root user for security
+RUN addgroup --system --gid 1001 nodejs && \
+    adduser --system --uid 1001 dashboard
+
+# Install runtime dependencies only
+RUN apk add --no-cache \
+    curl \
+    tini \
+    tzdata
+
+# Set timezone
+ENV TZ=UTC
+
+# Copy built application from builder stage
+COPY --from=builder --chown=dashboard:nodejs /app/build ./build
+COPY --from=builder --chown=dashboard:nodejs /app/dist ./dist
+COPY --from=builder --chown=dashboard:nodejs /app/package.json ./
+COPY --from=builder --chown=dashboard:nodejs /app/node_modules ./node_modules
+
+# Copy static assets and data
+COPY --from=builder --chown=dashboard:nodejs /app/public ./public
+COPY --from=builder --chown=dashboard:nodejs /app/data ./data
+COPY --from=builder --chown=dashboard:nodejs /app/attached_assets ./attached_assets
+
+# Copy configuration files
+COPY --from=builder --chown=dashboard:nodejs /app/drizzle.config.ts ./
+COPY --from=builder --chown=dashboard:nodejs /app/components.json ./
+
+# Create necessary directories
+RUN mkdir -p /app/logs /app/.pids /app/config && \
+    chown -R dashboard:nodejs /app/logs /app/.pids /app/config
+
+# Copy scripts
+COPY --from=builder --chown=dashboard:nodejs /app/scripts/start-dashboard.sh ./scripts/
+COPY --from=builder --chown=dashboard:nodejs /app/scripts/stop-dashboard.sh ./scripts/
+RUN chmod +x ./scripts/*.sh
+
+# Set environment variables
+ENV NODE_ENV=production
+ENV PORT=8000
+ENV HOST=0.0.0.0
+
+# Expose the application port
+EXPOSE 8000
+
+# Health check
+HEALTHCHECK --interval=30s --timeout=10s --start-period=60s --retries=3 \
+    CMD curl -f http://localhost:8000/ || exit 1
+
+# Switch to non-root user
+USER dashboard
+
+# Use tini as init system
+ENTRYPOINT ["/sbin/tini", "--"]
+
+# Start the application
+CMD ["npx", "tsx", "backend/index-prod.ts"]

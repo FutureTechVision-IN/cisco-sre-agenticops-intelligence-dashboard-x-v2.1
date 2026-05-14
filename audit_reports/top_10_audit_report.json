@@ -1,0 +1,205 @@
+{
+  "auditTimestamp": "2025-12-10T17:22:52.665030",
+  "dataSource": "./data/filtered_bcs_apr25-aug25_2025.csv",
+  "qualityChecks": {
+    "total_records": 445752,
+    "total_field_notices": 482,
+    "total_customers": 873,
+    "null_field_notice": 0,
+    "null_customer": 0,
+    "negative_tot_vuln": 0,
+    "negative_pot_vuln": 0,
+    "negative_not_vuln": 0,
+    "max_tot_vuln": 114229,
+    "max_pot_vuln": 104160,
+    "max_not_vuln": 86613,
+    "total_vulnerabilities": 6986297,
+    "total_potential": 32730032,
+    "total_not_vulnerable": 240548140
+  },
+  "complianceStatus": {
+    "overallStatus": "COMPLIANT",
+    "checks": {
+      "data_completeness": "PASS",
+      "no_negative_values": "PASS",
+      "top_10_fn_count": "PASS",
+      "top_10_cust_count": "PASS",
+      "fn_format_valid": "PASS",
+      "customer_names_not_empty": "PASS"
+    }
+  },
+  "topFieldNotices": [
+    {
+      "rank": 1,
+      "fieldNoticeId": "FN70496",
+      "title": "FN70496 - Cisco IP Phones Might Fail to Operate Correctly Due to Expired Manufacturer Installed Certificate - Configuration Change Recommended",
+      "totalVulnerable": 3240684,
+      "totalPotential": 0,
+      "totalNotVulnerable": 0,
+      "affectedCustomers": 98
+    },
+    {
+      "rank": 2,
+      "fieldNoticeId": "FN70546",
+      "title": "FN70546 - Webex Calling (formerly Spark Call) Does Not Work With HW V15 or Later 8811/8841/8851/8861 and HW V20 or Later 7821/7841/7861 IP Phones - Replace on Failure",
+      "totalVulnerable": 2494443,
+      "totalPotential": 0,
+      "totalNotVulnerable": 0,
+      "affectedCustomers": 86
+    },
+    {
+      "rank": 3,
+      "fieldNoticeId": "FN70464",
+      "title": "FN70464 - ASR 900/NCS 4200 with RSP2 and ASR 920/NCS 4201/4202 Products Do Not Support Software Version Rollback from Certain Cisco IOS XE Versions - Workaround Provided",
+      "totalVulnerable": 222554,
+      "totalPotential": 0,
+      "totalNotVulnerable": 0,
+      "affectedCustomers": 130
+    },
+    {
+      "rank": 4,
+      "fieldNoticeId": "FN72270",
+      "title": "FN72270 - PAK Licenses Will Not Be Supported on ASR 920 and NCS 520 Routers with Cisco IOS XE Release 17.7.x and Later - Software Upgrade Recommended",
+      "totalVulnerable": 194379,
+      "totalPotential": 0,
+      "totalNotVulnerable": 0,
+      "affectedCustomers": 117
+    },
+    {
+      "rank": 5,
+      "fieldNoticeId": "FN72399",
+      "title": "FN72399 - Catalyst 2960X/2960XR: Counterfeit Detection With the SUDI Verification Feature Supported in Release 15.2(7)E4 or Later - Software Upgrade Recommended",
+      "totalVulnerable": 147032,
+      "totalPotential": 13208,
+      "totalNotVulnerable": 2639795,
+      "affectedCustomers": 726
+    },
+    {
+      "rank": 6,
+      "fieldNoticeId": "FN64190",
+      "title": "FN64190 - Cisco IOS XE - Show commands on Cisco IOS XE based platforms might not report true platform memory usage - Software Upgrade Recommended",
+      "totalVulnerable": 127277,
+      "totalPotential": 105,
+      "totalNotVulnerable": 5223297,
+      "affectedCustomers": 812
+    },
+    {
+      "rank": 7,
+      "fieldNoticeId": "FN72294",
+      "title": "FN72294 - PAK Licenses Will Not Be Supported on ASR 903/902/907/914 Routers with Cisco IOS XE Release 17.7.x and Later - Software Upgrade Recommended",
+      "totalVulnerable": 113128,
+      "totalPotential": 0,
+      "totalNotVulnerable": 0,
+      "affectedCustomers": 76
+    },
+    {
+      "rank": 8,
+      "fieldNoticeId": "FN70320",
+      "title": "FN70320 - Nexus 3000, 3500, and 9000 BIOS Upgrade Might Fail at Install - Software Upgrade Recommended",
+      "totalVulnerable": 69197,
+      "totalPotential": 7810,
+      "totalNotVulnerable": 1294597,
+      "affectedCustomers": 722
+    },
+    {
+      "rank": 9,
+      "fieldNoticeId": "FN74186",
+      "title": "FN74186 - Certain Operations on Nexus Dashboard Insights May Cause an ACI Switch Reload  - Software Upgrade Recommended",
+      "totalVulnerable": 49085,
+      "totalPotential": 0,
+      "totalNotVulnerable": 313665,
+      "affectedCustomers": 311
+    },
+    {
+      "rank": 10,
+      "fieldNoticeId": "FN64131",
+      "title": "FN64131 - RSP720 Accelerated Battery Discharge While Unplugged/Powered Off - Replace on Failure",
+      "totalVulnerable": 29942,
+      "totalPotential": 0,
+      "totalNotVulnerable": 0,
+      "affectedCustomers": 96
+    }
+  ],
+  "topCustomers": [
+    {
+      "rank": 1,
+      "customerName": "WELLS FARGO MASTER ACCOUNT",
+      "totalVulnerable": 776525,
+      "totalPotential": 969592,
+      "totalNotVulnerable": 4694822,
+      "affectedFieldNotices": 121
+    },
+    {
+      "rank": 2,
+      "customerName": "HOME DEPOT USA, INC.",
+      "totalVulnerable": 667766,
+      "totalPotential": 537732,
+      "totalNotVulnerable": 961642,
+      "affectedFieldNotices": 135
+    },
+    {
+      "rank": 3,
+      "customerName": "HCA HEALTHCARE",
+      "totalVulnerable": 564655,
+      "totalPotential": 682272,
+      "totalNotVulnerable": 3763836,
+      "affectedFieldNotices": 272
+    },
+    {
+      "rank": 4,
+      "customerName": "MORGAN STANLEY - GLOBAL",
+      "totalVulnerable": 424990,
+      "totalPotential": 372549,
+      "totalNotVulnerable": 1783221,
+      "affectedFieldNotices": 181
+    },
+    {
+      "rank": 5,
+      "customerName": "NAVY FEDERAL CREDIT UNION",
+      "totalVulnerable": 262894,
+      "totalPotential": 176777,
+      "totalNotVulnerable": 279171,
+      "affectedFieldNotices": 183
+    },
+    {
+      "rank": 6,
+      "customerName": "GEISINGER HEALTH SYSTEM FOUNDATION",
+      "totalVulnerable": 191121,
+      "totalPotential": 157722,
+      "totalNotVulnerable": 223710,
+      "affectedFieldNotices": 171
+    },
+    {
+      "rank": 7,
+      "customerName": "PIEDMONT HOSPITAL INC",
+      "totalVulnerable": 165248,
+      "totalPotential": 196126,
+      "totalNotVulnerable": 362686,
+      "affectedFieldNotices": 182
+    },
+    {
+      "rank": 8,
+      "customerName": "VERIZON ITNUC",
+      "totalVulnerable": 162587,
+      "totalPotential": 287705,
+      "totalNotVulnerable": 1284904,
+      "affectedFieldNotices": 189
+    },
+    {
+      "rank": 9,
+      "customerName": "COSTCO WHOLESALE",
+      "totalVulnerable": 156951,
+      "totalPotential": 210888,
+      "totalNotVulnerable": 1016730,
+      "affectedFieldNotices": 183
+    },
+    {
+      "rank": 10,
+      "customerName": "NYC HEALTH AND HOSPITALS CORPORATION",
+      "totalVulnerable": 152666,
+      "totalPotential": 191830,
+      "totalNotVulnerable": 267144,
+      "affectedFieldNotices": 208
+    }
+  ]
+}

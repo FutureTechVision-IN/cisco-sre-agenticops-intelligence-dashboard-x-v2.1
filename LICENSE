@@ -1,0 +1,45 @@
+MIT License
+
+Copyright (c) 2025 Cisco Systems, Inc. - Future Tech Vision AI
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+---
+
+Additional Terms for Cisco Internal Use:
+
+This software is developed and maintained by the Cisco Future Tech Vision AI 
+team for Site Reliability Engineering (SRE) operations intelligence. It 
+integrates with Cisco CIRCUIT AI services and processes Cisco security 
+vulnerability data.
+
+For questions or support regarding this software, please contact:
+- Cisco Future Tech Vision AI Team
+- SRE AgenticOps Intelligence Division
+
+Third-Party Dependencies:
+This project includes third-party open source software components, each of 
+which has its own license. The list of dependencies and their respective 
+licenses can be found in the package.json file and their corresponding 
+LICENSE files in node_modules.
+
+Data Privacy Notice:
+This software processes security vulnerability data. Users are responsible 
+for ensuring compliance with applicable data protection regulations and 
+Cisco's data handling policies when deploying and using this software.

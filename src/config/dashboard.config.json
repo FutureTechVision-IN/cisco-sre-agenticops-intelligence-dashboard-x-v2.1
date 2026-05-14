@@ -1,0 +1,262 @@
+{
+  "version": "3.0",
+  "environment": "production",
+  "database": {
+    "connectionString": "postgresql://dashboard_user:secure_password@localhost:5432/cisco_dashboard",
+    "poolSize": 25,
+    "timeoutMs": 30000,
+    "retryAttempts": 3,
+    "enableDeduplication": true,
+    "queryOptimization": true
+  },
+  "cache": {
+    "provider": "redis",
+    "defaultTTL": 300000,
+    "maxSize": 2000,
+    "compressionEnabled": true,
+    "cleanupInterval": 60000,
+    "hitRateTarget": 90.0
+  },
+  "streaming": {
+    "enabled": true,
+    "refreshInterval": 30000,
+    "maxConnections": 500,
+    "heartbeatInterval": 10000,
+    "bufferSize": 2048,
+    "compressionLevel": 6
+  },
+  "ml": {
+    "anomalyDetection": {
+      "enabled": true,
+      "algorithms": ["IsolationForest", "StatisticalAnalysis", "ClusteringBased", "DeepLearning"],
+      "sensitivityLevel": 0.95,
+      "minimumDataPoints": 50,
+      "confidenceThreshold": 0.92
+    },
+    "predictiveAnalytics": {
+      "enabled": true,
+      "forecastHorizon": 12,
+      "ensembleModels": ["LinearRegression", "RandomForest", "ARIMA", "NeuralNetwork", "XGBoost"],
+      "retrainingInterval": 43200000,
+      "accuracyThreshold": 0.88
+    },
+    "modelPersistence": {
+      "enabled": true,
+      "saveInterval": 1800000,
+      "modelPath": "./models/production",
+      "versioningEnabled": true
+    }
+  },
+  "performance": {
+    "monitoring": {
+      "enabled": true,
+      "metricsInterval": 30000,
+      "historyRetention": 172800000,
+      "alertThresholds": {
+        "responseTime": 800,
+        "errorRate": 0.02,
+        "memoryUsage": 0.80,
+        "cpuUsage": 0.75
+      }
+    },
+    "optimization": {
+      "queryBatching": true,
+      "responseCompression": true,
+      "lazyLoading": true,
+      "prefetching": true
+    }
+  },
+  "security": {
+    "rateLimiting": {
+      "globalLimit": 12,
+      "windowSize": 60000,
+      "excludePatterns": ["/health", "/metrics", "/docs"]
+    },
+    "cors": {
+      "origins": ["https://dashboard.cisco.com", "https://staging.cisco.com"],
+      "methods": ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+      "credentials": true
+    },
+    "headers": {
+      "securityHeaders": true,
+      "customHeaders": {
+        "X-Dashboard-Version": "3.0",
+        "X-Cisco-SRE": "AgenticOps-Intelligence"
+      }
+    }
+  },
+  "features": {
+    "realTimeKPIs": true,
+    "anomalyDetection": true,
+    "predictiveAnalytics": true,
+    "performanceMonitoring": true,
+    "dataPipelines": true,
+    "advancedCaching": true
+  },
+  "dataPipelines": {
+    "vulnerabilityProcessor": {
+      "enabled": true,
+      "batchSize": 10000,
+      "processingInterval": 300000,
+      "retryPolicy": {
+        "maxRetries": 3,
+        "backoffMultiplier": 2,
+        "initialDelay": 1000
+      }
+    },
+    "deduplicationEngine": {
+      "enabled": true,
+      "rule": "RULE-001",
+      "distinctFields": ["field_notice_id", "cpy_key", "customer_name"],
+      "processingInterval": 180000,
+      "performanceTarget": {
+        "throughputPerSecond": 2000,
+        "maxProcessingTime": 120000
+      }
+    },
+    "anomalyProcessor": {
+      "enabled": true,
+      "processingInterval": 60000,
+      "alertingEnabled": true,
+      "severityLevels": ["low", "medium", "high", "critical"]
+    }
+  },
+  "realTimeStreaming": {
+    "webSocketConfig": {
+      "enabled": true,
+      "port": 8081,
+      "maxConnections": 1000,
+      "connectionTimeout": 30000,
+      "messageQueueSize": 1000
+    },
+    "serverSentEvents": {
+      "enabled": true,
+      "keepAliveInterval": 30000,
+      "maxEventHistory": 100,
+      "compressionEnabled": true
+    },
+    "dataChannels": [
+      {
+        "name": "kpi-metrics",
+        "refreshRate": 30000,
+        "dataSource": "enhanced-metrics",
+        "compressionLevel": 6
+      },
+      {
+        "name": "anomaly-alerts",
+        "refreshRate": 10000,
+        "dataSource": "anomaly-detection",
+        "priority": "high"
+      },
+      {
+        "name": "performance-stats",
+        "refreshRate": 60000,
+        "dataSource": "system-performance",
+        "bufferSize": 50
+      }
+    ]
+  },
+  "aiAnalytics": {
+    "naturalLanguageProcessing": {
+      "enabled": true,
+      "insightGeneration": true,
+      "recommendationEngine": true,
+      "contextualAnalysis": true
+    },
+    "automatedReporting": {
+      "enabled": true,
+      "scheduledReports": [
+        {
+          "name": "daily-security-summary",
+          "frequency": "daily",
+          "time": "06:00",
+          "recipients": ["security-team@cisco.com"]
+        },
+        {
+          "name": "weekly-trend-analysis",
+          "frequency": "weekly",
+          "day": "monday",
+          "time": "09:00",
+          "recipients": ["management@cisco.com"]
+        }
+      ]
+    },
+    "intelligentAlerting": {
+      "enabled": true,
+      "smartFiltering": true,
+      "correlationAnalysis": true,
+      "escalationRules": [
+        {
+          "condition": "anomaly_score > 0.9",
+          "action": "immediate_alert",
+          "recipients": ["critical-alerts@cisco.com"]
+        },
+        {
+          "condition": "vulnerability_trend_increasing",
+          "action": "daily_digest",
+          "recipients": ["security-team@cisco.com"]
+        }
+      ]
+    }
+  },
+  "monitoring": {
+    "healthChecks": {
+      "enabled": true,
+      "interval": 30000,
+      "endpoints": [
+        "/api/v3/health",
+        "/api/v3/kpi/enhanced-metrics",
+        "/api/v3/system/performance"
+      ]
+    },
+    "logging": {
+      "level": "info",
+      "format": "json",
+      "destinations": ["console", "file", "elasticsearch"],
+      "retention": {
+        "console": "7d",
+        "file": "30d",
+        "elasticsearch": "90d"
+      }
+    },
+    "metrics": {
+      "prometheus": {
+        "enabled": true,
+        "port": 9090,
+        "path": "/metrics"
+      },
+      "customMetrics": [
+        "dashboard_requests_total",
+        "cache_hit_rate",
+        "ml_prediction_accuracy",
+        "anomaly_detection_rate",
+        "data_processing_throughput"
+      ]
+    }
+  },
+  "deployment": {
+    "containerization": {
+      "enabled": true,
+      "orchestration": "kubernetes",
+      "replicas": 3,
+      "resources": {
+        "cpu": "2",
+        "memory": "4Gi",
+        "storage": "10Gi"
+      }
+    },
+    "loadBalancing": {
+      "enabled": true,
+      "algorithm": "round_robin",
+      "healthCheckPath": "/api/v3/health",
+      "sessionAffinity": false
+    },
+    "autoscaling": {
+      "enabled": true,
+      "minReplicas": 2,
+      "maxReplicas": 10,
+      "targetCpuUtilization": 70,
+      "targetMemoryUtilization": 75
+    }
+  }
+}

@@ -1,0 +1,8 @@
+/* Tailwind CSS v4 entry point — processed by @tailwindcss/vite plugin */
+@import "tailwindcss";
+
+/* ── Tailwind v4 theme customization ──────────────────────────── */
+@theme {
+  --font-sans: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-mono: 'IBM Plex Mono', 'Menlo', 'Consolas', monospace;
+}

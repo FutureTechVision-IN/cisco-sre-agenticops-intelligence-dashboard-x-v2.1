@@ -1,0 +1,48 @@
+{
+  "loadBalancing": {
+    "enabled": true,
+    "algorithm": "least_connections",
+    "healthCheck": {
+      "enabled": true,
+      "interval": 10000,
+      "timeout": 5000,
+      "healthyThreshold": 3,
+      "unhealthyThreshold": 2,
+      "path": "/health"
+    },
+    "upstreams": [
+      {
+        "name": "websocket-servers",
+        "servers": [
+          {"host": "localhost", "port": 8081, "weight": 1},
+          {"host": "localhost", "port": 8082, "weight": 1},
+          {"host": "localhost", "port": 8083, "weight": 1}
+        ],
+        "sessionAffinity": true
+      },
+      {
+        "name": "sse-servers",
+        "servers": [
+          {"host": "localhost", "port": 8084, "weight": 1},
+          {"host": "localhost", "port": 8085, "weight": 1}
+        ],
+        "sessionAffinity": false
+      }
+    ],
+    "proxy": {
+      "timeouts": {
+        "connect": 5000,
+        "read": 300000,
+        "write": 30000
+      },
+      "buffering": {
+        "enabled": false,
+        "size": 0
+      },
+      "headers": {
+        "upgrade": "websocket",
+        "connection": "upgrade"
+      }
+    }
+  }
+}

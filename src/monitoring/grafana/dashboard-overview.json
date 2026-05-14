@@ -1,0 +1,127 @@
+{
+  "dashboard": {
+    "id": null,
+    "title": "Cisco SRE KPI Dashboard - System Overview v3.0",
+    "tags": ["cisco", "sre", "kpi", "dashboard"],
+    "timezone": "UTC",
+    "panels": [
+      {
+        "id": 1,
+        "title": "Enhanced KPI Metrics",
+        "type": "stat",
+        "targets": [
+          {
+            "expr": "total_assets_current",
+            "legendFormat": "Total Assets"
+          },
+          {
+            "expr": "secure_assets_percentage", 
+            "legendFormat": "Secure %"
+          },
+          {
+            "expr": "vulnerable_assets_count",
+            "legendFormat": "Vulnerable"
+          }
+        ],
+        "gridPos": {"h": 8, "w": 12, "x": 0, "y": 0}
+      },
+      {
+        "id": 2,
+        "title": "API Performance",
+        "type": "graph",
+        "targets": [
+          {
+            "expr": "histogram_quantile(0.95, rate(http_request_duration_seconds_bucket[5m]))",
+            "legendFormat": "95th Percentile Response Time"
+          },
+          {
+            "expr": "rate(http_requests_total[5m])",
+            "legendFormat": "Request Rate"
+          }
+        ],
+        "gridPos": {"h": 8, "w": 12, "x": 12, "y": 0}
+      },
+      {
+        "id": 3,
+        "title": "Streaming Connections",
+        "type": "graph",
+        "targets": [
+          {
+            "expr": "websocket_active_connections",
+            "legendFormat": "WebSocket Connections"
+          },
+          {
+            "expr": "sse_active_streams",
+            "legendFormat": "SSE Streams"
+          }
+        ],
+        "gridPos": {"h": 8, "w": 12, "x": 0, "y": 8}
+      },
+      {
+        "id": 4,
+        "title": "ML Analytics Performance",
+        "type": "graph",
+        "targets": [
+          {
+            "expr": "ml_model_accuracy",
+            "legendFormat": "Model Accuracy"
+          },
+          {
+            "expr": "anomaly_detection_rate",
+            "legendFormat": "Anomaly Detection Rate"
+          }
+        ],
+        "gridPos": {"h": 8, "w": 12, "x": 12, "y": 8}
+      },
+      {
+        "id": 5,
+        "title": "Cache Performance", 
+        "type": "stat",
+        "targets": [
+          {
+            "expr": "cache_hit_rate",
+            "legendFormat": "Hit Rate %"
+          },
+          {
+            "expr": "cache_entries_total",
+            "legendFormat": "Total Entries"
+          }
+        ],
+        "gridPos": {"h": 6, "w": 8, "x": 0, "y": 16}
+      },
+      {
+        "id": 6,
+        "title": "System Resources",
+        "type": "graph",
+        "targets": [
+          {
+            "expr": "100 - (avg(irate(node_cpu_seconds_total{mode=\"idle\"}[5m])) * 100)",
+            "legendFormat": "CPU Usage %"
+          },
+          {
+            "expr": "(node_memory_MemTotal_bytes - node_memory_MemAvailable_bytes) / node_memory_MemTotal_bytes * 100",
+            "legendFormat": "Memory Usage %"
+          }
+        ],
+        "gridPos": {"h": 6, "w": 8, "x": 8, "y": 16}
+      },
+      {
+        "id": 7,
+        "title": "Alert Summary",
+        "type": "table",
+        "targets": [
+          {
+            "expr": "ALERTS{alertstate=\"firing\"}",
+            "legendFormat": "Active Alerts"
+          }
+        ],
+        "gridPos": {"h": 6, "w": 8, "x": 16, "y": 16}
+      }
+    ],
+    "time": {
+      "from": "now-1h",
+      "to": "now"
+    },
+    "refresh": "30s"
+  }
+}

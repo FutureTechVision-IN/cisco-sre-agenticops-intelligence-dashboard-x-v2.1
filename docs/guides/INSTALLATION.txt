@@ -1,0 +1,70 @@
+================================================================================
+SRE AgenticOps Intelligence Dashboard - Cisco Internal Application
+================================================================================
+
+QUICK START (2 minutes):
+1. chmod +x start.sh stop.sh
+2. ./start.sh
+3. Visit http://localhost:8001
+4. Login: sre-admin / password$$
+
+SYSTEM REQUIREMENTS:
+- Node.js 18+ (check: node -v)
+- npm 9+ (check: npm -v)
+- PostgreSQL 15+ database
+- 100 MB+ free disk space
+
+WHAT'S INCLUDED:
+✓ Complete React frontend with dashboards
+✓ Express.js backend with REST API
+✓ PostgreSQL database with 577,605 records
+✓ Cisco CIRCUIT AI-powered analytics engine
+✓ PDF & CSV report generation
+✓ User authentication & role-based access
+✓ Automated startup/shutdown scripts
+
+STARTUP SCRIPT FEATURES:
+- Automatically installs npm dependencies
+- Creates/migrates database schema
+- Seeds 98,966+ vulnerability records
+- Validates data integrity
+- Starts application on port 8001
+- Provides helpful status messages
+
+SHUTDOWN SCRIPT FEATURES:
+- Graceful application termination
+- Process cleanup
+- Database connection closure
+- Preserves all data for next run
+
+DEFAULT USERS (Change these in production!):
+- sre-admin / password$$
+- sre-user / password$$
+- sre-manager / password$$
+- sre-director / password$$
+- sre-vp / password$$
+
+ENVIRONMENT VARIABLES:
+- DATABASE_URL=postgresql://postgres:postgres@localhost:5432/cisco_sre_dashboard
+- CISCO_CIRCUIT_API_KEY=your-cisco-circuit-api-key
+- CISCO_CIRCUIT_ENDPOINT=https://circuit.cisco.com/api/v1
+- SESSION_SECRET=your-secure-session-secret
+- PORT=8001
+
+TROUBLESHOOTING:
+- Port 8001 in use? Change port: PORT=3000 ./start.sh
+- Database error? Set: export DATABASE_URL="postgresql://..."
+- Node not found? Install from nodejs.org
+- Memory error? Increase: NODE_OPTIONS="--max-old-space-size=4096"
+
+DOCUMENTATION:
+- CISCO_INTERNAL_DEPLOYMENT.md - Cisco internal deployment guide
+- DEPLOYMENT_GUIDE.md - Full deployment instructions
+- README_DEPLOYMENT.md - Quick reference guide
+- AI_ML_SYSTEM_AUDIT_REPORT.md - System audit findings
+
+CISCO INTERNAL SUPPORT:
+- Slack: #sre-agenticops-alerts
+- Email: sre-agenticops@cisco.com
+
+Ready? Run: chmod +x start.sh && ./start.sh

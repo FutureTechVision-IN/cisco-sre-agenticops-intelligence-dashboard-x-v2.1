@@ -1,0 +1,64 @@
+{
+  "monitoring": {
+    "metrics": {
+      "enabled": true,
+      "collection_interval": 30000,
+      "retention_period": 86400000,
+      "exporters": ["prometheus", "json", "logs"]
+    },
+    "streamingMetrics": [
+      {
+        "name": "active_websocket_connections",
+        "type": "gauge",
+        "description": "Number of active WebSocket connections",
+        "labels": ["channel", "server_instance"]
+      },
+      {
+        "name": "sse_active_streams",
+        "type": "gauge", 
+        "description": "Number of active Server-Sent Event streams",
+        "labels": ["endpoint", "client_ip"]
+      },
+      {
+        "name": "message_throughput",
+        "type": "counter",
+        "description": "Total messages sent through streaming channels",
+        "labels": ["channel", "message_type"]
+      },
+      {
+        "name": "stream_latency",
+        "type": "histogram",
+        "description": "Message processing and delivery latency",
+        "buckets": [1, 5, 10, 25, 50, 100, 250, 500, 1000, 2500, 5000],
+        "labels": ["channel", "processing_stage"]
+      },
+      {
+        "name": "connection_duration",
+        "type": "histogram",
+        "description": "Duration of streaming connections",
+        "buckets": [1, 10, 30, 60, 300, 600, 1800, 3600, 7200],
+        "labels": ["connection_type", "disconnect_reason"]
+      }
+    ],
+    "alerts": [
+      {
+        "name": "high_connection_count",
+        "condition": "active_websocket_connections > 800",
+        "severity": "warning",
+        "description": "WebSocket connection count approaching limit"
+      },
+      {
+        "name": "streaming_latency_high",
+        "condition": "stream_latency_p95 > 5000",
+        "severity": "critical",
+        "description": "Streaming latency exceeding acceptable threshold"
+      },
+      {
+        "name": "connection_failure_rate_high",
+        "condition": "connection_failure_rate > 0.1",
+        "severity": "warning",
+        "description": "High connection failure rate detected"
+      }
+    ]
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "websocket": {
+    "enabled": true,
+    "port": 3001,
+    "maxConnections": 100
+  },
+  "dataStreams": {
+    "metrics": { "interval": 30000, "priority": "high" },
+    "anomalies": { "interval": 15000, "priority": "critical" },
+    "predictions": { "interval": 300000, "priority": "medium" }
+  },
+  "caching": {
+    "enabled": true,
+    "ttl": 300000,
+    "maxSize": "100MB"
+  }
+}

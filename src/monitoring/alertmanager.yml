@@ -1,0 +1,113 @@
+# Alertmanager Configuration v3.0
+
+global:
+  smtp_smarthost: 'smtp.cisco.com:587'
+  smtp_from: 'dashboard-alerts@cisco.com'
+  smtp_auth_username: 'dashboard-alerts@cisco.com'
+  smtp_auth_password: 'secure-email-password'
+
+templates:
+  - '/etc/alertmanager/templates/*.tmpl'
+
+route:
+  group_by: ['alertname', 'severity', 'component']
+  group_wait: 10s
+  group_interval: 10s
+  repeat_interval: 12h
+  receiver: 'default-receiver'
+  
+  routes:
+    # Critical alerts - immediate notification
+    - match:
+        severity: critical
+      receiver: 'critical-alerts'
+      group_wait: 10s
+      repeat_interval: 5m
+      
+    # Warning alerts - standard notification
+    - match:
+        severity: warning
+      receiver: 'warning-alerts'
+      group_wait: 30s
+      repeat_interval: 30m
+      
+    # Component-specific routing
+    - match:
+        component: ml
+      receiver: 'ml-team'
+      
+    - match:
+        component: database
+      receiver: 'database-team'
+      
+    - match:
+        component: streaming
+      receiver: 'streaming-team'
+
+receivers:
+  - name: 'default-receiver'
+    email_configs:
+      - to: 'sre-team@cisco.com'
+        subject: '[Dashboard Alert] {{ .GroupLabels.alertname }}'
+        body: |
+          {{ range .Alerts }}
+          Alert: {{ .Annotations.summary }}
+          Description: {{ .Annotations.description }}
+          Instance: {{ .Labels.instance }}
+          Severity: {{ .Labels.severity }}
+          Time: {{ .StartsAt }}
+          {{ end }}
+        
+  - name: 'critical-alerts'
+    email_configs:
+      - to: 'critical-alerts@cisco.com,sre-oncall@cisco.com'
+        subject: '[CRITICAL] Dashboard Alert - {{ .GroupLabels.alertname }}'
+        body: |
+          🚨 CRITICAL ALERT 🚨
+          
+          {{ range .Alerts }}
+          Alert: {{ .Annotations.summary }}
+          Description: {{ .Annotations.description }}
+          Instance: {{ .Labels.instance }}
+          Component: {{ .Labels.component }}
+          Time: {{ .StartsAt }}
+          
+          Action Required: Immediate investigation needed
+          {{ end }}
+    slack_configs:
+      - api_url: 'https://hooks.slack.com/services/CISCO/DASHBOARD/ALERTS'
+        channel: '#critical-alerts'
+        title: '🚨 Critical Dashboard Alert'
+        text: |
+          {{ range .Alerts }}
+          *{{ .Annotations.summary }}*
+          {{ .Annotations.description }}
+          Instance: {{ .Labels.instance }}
+          {{ end }}
+        
+  - name: 'warning-alerts'
+    email_configs:
+      - to: 'sre-team@cisco.com'
+        subject: '[WARNING] Dashboard Alert - {{ .GroupLabels.alertname }}'
+        
+  - name: 'ml-team'
+    email_configs:
+      - to: 'ml-team@cisco.com,sre-team@cisco.com'
+        subject: '[ML Alert] Dashboard ML Component - {{ .GroupLabels.alertname }}'
+        
+  - name: 'database-team'
+    email_configs:
+      - to: 'database-team@cisco.com,sre-team@cisco.com'
+        subject: '[DB Alert] Dashboard Database - {{ .GroupLabels.alertname }}'
+        
+  - name: 'streaming-team'
+    email_configs:
+      - to: 'streaming-team@cisco.com,sre-team@cisco.com'
+        subject: '[Streaming Alert] Dashboard Streaming - {{ .GroupLabels.alertname }}'
+
+inhibit_rules:
+  - source_match:
+      severity: 'critical'
+    target_match:
+      severity: 'warning'
+    equal: ['alertname', 'instance']

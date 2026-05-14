@@ -1,0 +1,166 @@
+# Hybrid Configuration for Cisco SRE AgenticOps Dashboard
+# YAML configuration file for startup/shutdown behavior
+
+# General Configuration
+service:
+  name: "cisco-sre-dashboard"
+  description: "Cisco SRE AgenticOps Intelligence Dashboard"
+  version: "1.1.0"
+  
+# Startup Configuration  
+startup:
+  # Execution modes: auto, docker, normal
+  mode: "auto"
+  
+  # Port configuration
+  ports:
+    default: 5000
+    docker: 3001
+    python_ai: 5001
+  
+  # Health check settings
+  health_check:
+    enabled: true
+    timeout: 30
+    max_attempts: 3
+    endpoint: "/api"
+  
+  # Dependency validation
+  dependencies:
+    required:
+      - "node"
+      - "npm"
+    optional:
+      - "docker"
+      - "python3"
+    
+# Docker Configuration
+docker:
+  # Docker business container settings
+  business_container:
+    name: "docker.business"
+    auto_start: true
+    network: "cisco-sre-network"
+  
+  # Docker Compose settings
+  compose:
+    file: "docker-compose.hybrid.yml"
+    project_name: "cisco-sre"
+    
+  # Container settings
+  container:
+    name: "cisco-sre-dashboard"
+    restart_policy: "unless-stopped"
+    memory_limit: "2g"
+    cpu_limit: "1.0"
+    
+# Database Configuration
+database:
+  # Default connection if DATABASE_URL not set
+  default_url: "postgresql://localhost:5432/cisco_sre_dashboard"
+  
+  # Connection pool settings
+  pool:
+    min: 2
+    max: 10
+    idle_timeout: 30
+    
+# Logging Configuration
+logging:
+  # Log directory (relative to script location)
+  directory: "logs"
+  
+  # Log file retention
+  retention:
+    startup_logs: 30  # days
+    service_logs: 7   # days
+    
+  # Log levels: DEBUG, INFO, WARN, ERROR
+  level: "INFO"
+  
+  # Verbose mode settings
+  verbose:
+    enabled: false
+    include_timestamps: true
+    include_colors: true
+    
+# Environment Configuration
+environment:
+  # Node.js settings
+  node:
+    env: "production"
+    max_memory: "2048"
+    
+  # Python AI Engine settings  
+  python:
+    virtual_env: "ai-engine/.venv"
+    requirements: "ai-engine/requirements.txt"
+    
+# Service Management
+service_management:
+  # PID file locations
+  pid_files:
+    main: ".hybrid-service.pid"
+    status: ".hybrid-status"
+    legacy_node: "/tmp/sre_node.pid"
+    legacy_python: "/tmp/sre_python.pid"
+    
+  # Shutdown settings
+  shutdown:
+    graceful_timeout: 30
+    force_timeout: 10
+    cleanup_temp_files: true
+    
+# Security Settings
+security:
+  # File permissions
+  file_permissions:
+    logs: "0644"
+    configs: "0600"
+    scripts: "0755"
+    
+  # Network settings
+  network:
+    bind_localhost_only: false
+    allowed_origins:
+      - "http://localhost:*"
+      - "http://127.0.0.1:*"
+
+# Development Settings
+development:
+  # Auto-reload settings
+  auto_reload:
+    enabled: false
+    watch_patterns:
+      - "*.js"
+      - "*.ts"
+      - "*.py"
+      
+  # Debug settings
+  debug:
+    enabled: false
+    port: 9229
+    
+# Monitoring Settings
+monitoring:
+  # Health check endpoints
+  health_endpoints:
+    frontend: "/api"
+    python_ai: "/health"
+    
+  # Metrics collection
+  metrics:
+    enabled: true
+    interval: 60  # seconds
+    
+# Backup and Recovery
+backup:
+  # Configuration backup
+  config_backup:
+    enabled: true
+    location: "config/backups"
+    
+  # Data backup (if applicable)
+  data_backup:
+    enabled: false
+    schedule: "daily"

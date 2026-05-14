@@ -1,0 +1,80 @@
+# Cisco SRE AgenticOps Dashboard - Multi-stage Dockerfile
+# Optimized for production deployment with Node.js application
+# Requires Node.js 20+ for Vite 7.x compatibility
+
+# ==================== BUILD STAGE ====================
+FROM node:20-alpine AS builder
+
+# Set working directory
+WORKDIR /app
+
+# Install build dependencies
+RUN apk add --no-cache \
+    git \
+    python3 \
+    make \
+    g++ \
+    && rm -rf /var/cache/apk/*
+
+# Copy package files first for better layer caching
+COPY package*.json ./
+COPY tsconfig.json ./
+COPY vite.config.ts ./
+COPY postcss.config.js ./
+COPY components.json ./
+
+# Install all dependencies (including devDependencies for build)
+RUN npm ci --legacy-peer-deps --silent
+
+# Copy source code
+COPY frontend/ ./frontend/
+COPY backend/ ./backend/
+COPY shared-types/ ./shared-types/
+COPY attached_assets/ ./attached_assets/
+
+# Build the application (frontend dist + backend build)
+RUN npm run build:prod
+
+# ==================== PRODUCTION STAGE ====================
+FROM node:20-alpine AS production
+
+# Set NODE_ENV
+ENV NODE_ENV=production
+
+# Install runtime dependencies
+RUN apk add --no-cache \
+    curl \
+    && rm -rf /var/cache/apk/*
+
+# Create app user
+RUN addgroup -g 1001 -S nodejs && \
+    adduser -S nextjs -u 1001
+
+# Set working directory
+WORKDIR /app
+
+# Copy built backend
+COPY --from=builder --chown=nextjs:nodejs /app/build ./build
+# Copy frontend dist to build/public for static serving
+COPY --from=builder --chown=nextjs:nodejs /app/dist ./build/public
+COPY --from=builder --chown=nextjs:nodejs /app/package*.json ./
+COPY --from=builder --chown=nextjs:nodejs /app/node_modules ./node_modules
+# Copy data assets for CSV processing
+COPY --from=builder --chown=nextjs:nodejs /app/attached_assets ./attached_assets
+
+# Create required directories
+RUN mkdir -p /app/logs /app/data /app/uploads /app/cache && \
+    chown -R nextjs:nodejs /app/logs /app/data /app/uploads /app/cache
+
+# Switch to non-root user
+USER nextjs
+
+# Expose port
+EXPOSE 8000
+
+# Health check
+HEALTHCHECK --interval=30s --timeout=10s --start-period=60s --retries=3 \
+    CMD curl -f http://localhost:8000/ || exit 1
+
+# Start application
+CMD ["node", "build/index.js"]

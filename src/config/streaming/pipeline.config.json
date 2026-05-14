@@ -1,0 +1,84 @@
+{
+  "dataPipelines": {
+    "realtimeProcessing": {
+      "enabled": true,
+      "maxThroughput": 10000,
+      "batchSize": 1000,
+      "processingInterval": 5000,
+      "parallelWorkers": 4,
+      "memoryLimit": "2GB"
+    },
+    "pipelines": [
+      {
+        "id": "vulnerability-stream-processor",
+        "name": "Real-time Vulnerability Data Processing",
+        "enabled": true,
+        "inputSource": "vulnerability-data-feed",
+        "outputTargets": ["websocket:kpi-realtime", "sse:kpi-metrics"],
+        "processingSteps": [
+          "deduplication",
+          "normalization",
+          "enrichment",
+          "aggregation"
+        ],
+        "performance": {
+          "targetThroughput": 5000,
+          "maxLatency": 2000,
+          "errorThreshold": 0.01
+        }
+      },
+      {
+        "id": "anomaly-detection-stream",
+        "name": "ML Anomaly Detection Stream",
+        "enabled": true,
+        "inputSource": "processed-vulnerability-data",
+        "outputTargets": ["websocket:anomaly-alerts", "sse:anomaly-detection"],
+        "mlModels": [
+          "isolation-forest",
+          "statistical-analysis",
+          "clustering-based"
+        ],
+        "performance": {
+          "targetLatency": 500,
+          "confidenceThreshold": 0.95,
+          "alertSeverityLevels": ["low", "medium", "high", "critical"]
+        }
+      },
+      {
+        "id": "performance-metrics-stream",
+        "name": "System Performance Metrics Stream",
+        "enabled": true,
+        "inputSource": "system-metrics-collector",
+        "outputTargets": ["websocket:performance-metrics"],
+        "metricsTypes": [
+          "cpu-utilization",
+          "memory-usage",
+          "network-io",
+          "disk-io",
+          "api-response-times",
+          "cache-hit-rates"
+        ],
+        "aggregationWindow": 60000
+      }
+    ],
+    "errorHandling": {
+      "retryPolicy": {
+        "maxRetries": 3,
+        "backoffMultiplier": 2,
+        "initialDelay": 1000
+      },
+      "deadLetterQueue": {
+        "enabled": true,
+        "maxSize": 10000,
+        "retentionPeriod": 86400000
+      },
+      "alerting": {
+        "enabled": true,
+        "thresholds": {
+          "errorRate": 0.05,
+          "processingDelay": 10000
+        }
+      }
+    }
+  }
+}

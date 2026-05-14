@@ -1,0 +1,15 @@
+{
+    "startup_time": "2025-12-08T13:33:48Z",
+    "status": "failed",
+    "mode": "DOCKER",
+    "port": 8000,
+    "pid": ,
+    "started_services": [],
+    "failed_services": [],
+    "errors": 1,
+    "warnings": 3,
+    "duration_seconds": 1,
+    "hostname": "BIPBABU-M-X9V3",
+    "user": "bipbabu",
+    "version": "5.0.0"
+}

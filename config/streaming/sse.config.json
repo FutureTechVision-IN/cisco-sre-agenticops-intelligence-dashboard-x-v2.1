@@ -1,0 +1,57 @@
+{
+  "serverSentEvents": {
+    "enabled": true,
+    "endpoints": [
+      {
+        "path": "/stream/kpi-metrics",
+        "description": "Enhanced KPI metrics stream",
+        "contentType": "text/event-stream",
+        "keepAliveInterval": 30000,
+        "maxConnections": 200,
+        "dataSource": "enhanced-kpi-controller",
+        "cacheControl": "no-cache",
+        "compression": {
+          "enabled": true,
+          "level": 6,
+          "threshold": 1024
+        }
+      },
+      {
+        "path": "/stream/anomaly-detection",
+        "description": "Real-time anomaly detection stream",
+        "contentType": "text/event-stream",
+        "keepAliveInterval": 10000,
+        "maxConnections": 100,
+        "dataSource": "ml-anomaly-engine",
+        "priority": "high"
+      },
+      {
+        "path": "/stream/predictive-analytics",
+        "description": "ML predictions and forecasting stream",
+        "contentType": "text/event-stream",
+        "keepAliveInterval": 60000,
+        "maxConnections": 50,
+        "dataSource": "predictive-analytics-engine",
+        "bufferEvents": true,
+        "maxEventHistory": 50
+      }
+    ],
+    "globalSettings": {
+      "maxConnectionsPerIP": 10,
+      "connectionTimeout": 300000,
+      "heartbeatMessage": "heartbeat",
+      "reconnectInterval": 5000,
+      "corsHeaders": {
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Methods": "GET, OPTIONS",
+        "Access-Control-Allow-Headers": "Cache-Control, Last-Event-ID"
+      }
+    },
+    "dataFormatting": {
+      "eventIdPrefix": "kpi-dashboard-",
+      "timestampFormat": "ISO8601",
+      "messageCompression": true,
+      "jsonMinification": true
+    }
+  }
+}

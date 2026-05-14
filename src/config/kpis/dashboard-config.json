@@ -1,0 +1,19 @@
+{
+  "refreshIntervals": {
+    "metrics": 30000,
+    "trends": 60000,
+    "predictions": 300000,
+    "anomalies": 15000
+  },
+  "thresholds": {
+    "vulnerability_spike": 50,
+    "anomaly_score": 0.75,
+    "performance_degradation": 20
+  },
+  "features": {
+    "realTimeUpdates": true,
+    "predictiveAnalytics": true,
+    "anomalyDetection": true,
+    "autoAlerts": true
+  }
+}

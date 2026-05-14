@@ -1,0 +1,63 @@
+{
+  "server": {
+    "port": 8081,
+    "host": "0.0.0.0",
+    "maxConnections": 1000,
+    "connectionTimeout": 30000,
+    "heartbeatInterval": 10000,
+    "compressionEnabled": true,
+    "corsOrigins": ["*"],
+    "rateLimiting": {
+      "maxConnectionsPerIP": 10,
+      "messageLimitPerMinute": 100
+    }
+  },
+  "channels": [
+    {
+      "name": "kpi-realtime",
+      "description": "Real-time KPI metrics streaming",
+      "refreshInterval": 30000,
+      "dataSource": "enhanced-kpi-metrics",
+      "maxSubscribers": 500,
+      "bufferSize": 100,
+      "compressionLevel": 6
+    },
+    {
+      "name": "anomaly-alerts",
+      "description": "ML-powered anomaly detection alerts",
+      "refreshInterval": 10000,
+      "dataSource": "anomaly-detection-engine",
+      "maxSubscribers": 100,
+      "priority": "high",
+      "alertingEnabled": true
+    },
+    {
+      "name": "performance-metrics",
+      "description": "System performance and optimization metrics",
+      "refreshInterval": 60000,
+      "dataSource": "system-performance",
+      "maxSubscribers": 50,
+      "historicalDataPoints": 100
+    },
+    {
+      "name": "pipeline-status",
+      "description": "Data pipeline health and processing status",
+      "refreshInterval": 120000,
+      "dataSource": "data-pipelines",
+      "maxSubscribers": 25,
+      "statusUpdatesOnly": true
+    }
+  ],
+  "security": {
+    "authenticationRequired": false,
+    "encryptionEnabled": true,
+    "allowedMethods": ["subscribe", "unsubscribe", "heartbeat"],
+    "maxPayloadSize": 1048576
+  },
+  "monitoring": {
+    "metricsEnabled": true,
+    "healthCheckInterval": 30000,
+    "logLevel": "info",
+    "performanceTracking": true
+  }
+}

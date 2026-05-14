@@ -1,0 +1,133 @@
+{
+  "generatedAt": "2025-12-08T12:14:07.755Z",
+  "endpoints": [
+    {
+      "path": "/api/filters",
+      "filename": "filters.json",
+      "description": "Filter options (customers, field notices, types)"
+    },
+    {
+      "path": "/api/metrics/summary",
+      "filename": "metrics-summary.json",
+      "description": "Summary metrics"
+    },
+    {
+      "path": "/api/trends/monthly",
+      "filename": "trends-monthly.json",
+      "description": "Monthly trend data"
+    },
+    {
+      "path": "/api/trends/monthly/cumulative",
+      "filename": "trends-monthly-cumulative.json",
+      "description": "Cumulative monthly data"
+    },
+    {
+      "path": "/api/trends/forecast",
+      "filename": "trends-forecast.json",
+      "description": "Forecast predictions"
+    },
+    {
+      "path": "/api/intelligence/insights",
+      "filename": "intelligence-insights.json",
+      "description": "AI intelligence insights"
+    },
+    {
+      "path": "/api/kpi/comprehensive-intelligence",
+      "filename": "kpi-comprehensive-intelligence.json",
+      "description": "Comprehensive KPI intelligence"
+    },
+    {
+      "path": "/api/kpi/predictive-analytics",
+      "filename": "kpi-predictive-analytics.json",
+      "description": "Predictive analytics data"
+    },
+    {
+      "path": "/api/kpi/anomaly-detection",
+      "filename": "kpi-anomaly-detection.json",
+      "description": "Anomaly detection results"
+    },
+    {
+      "path": "/api/kpi/health-scores",
+      "filename": "kpi-health-scores.json",
+      "description": "System health scores"
+    },
+    {
+      "path": "/api/kpi/vulnerability-trend",
+      "filename": "kpi-vulnerability-trend.json",
+      "description": "Vulnerability trend data"
+    },
+    {
+      "path": "/api/kpi/customer-risk-concentration",
+      "filename": "kpi-customer-risk-concentration.json",
+      "description": "Customer risk concentration"
+    },
+    {
+      "path": "/api/kpi/field-notice-impact",
+      "filename": "kpi-field-notice-impact.json",
+      "description": "Field notice impact analysis"
+    },
+    {
+      "path": "/api/kpi/remediation-velocity",
+      "filename": "kpi-remediation-velocity.json",
+      "description": "Remediation velocity metrics"
+    },
+    {
+      "path": "/api/kpi/temporal-patterns",
+      "filename": "kpi-temporal-patterns.json",
+      "description": "Temporal pattern analysis"
+    },
+    {
+      "path": "/api/kpi/risk-prioritization",
+      "filename": "kpi-risk-prioritization.json",
+      "description": "Risk prioritization data"
+    },
+    {
+      "path": "/api/kpi/predictive-intelligence",
+      "filename": "kpi-predictive-intelligence.json",
+      "description": "Predictive intelligence data"
+    },
+    {
+      "path": "/api/reports/top-field-notices?year=2025&limit=500",
+      "filename": "reports-top-field-notices-2025.json",
+      "description": "Top field notices for 2025"
+    },
+    {
+      "path": "/api/reports/top-customers?year=2025&limit=500",
+      "filename": "reports-top-customers-2025.json",
+      "description": "Top customers for 2025"
+    },
+    {
+      "path": "/api/field-notices?limit=1000",
+      "filename": "field-notices.json",
+      "description": "Field notice records"
+    },
+    {
+      "path": "/api/sync/status",
+      "filename": "sync-status.json",
+      "description": "Data sync status"
+    }
+  ],
+  "filteredData": {
+    "months": [
+      "apr",
+      "may",
+      "jun",
+      "jul",
+      "aug",
+      "sep",
+      "oct",
+      "nov",
+      "dec",
+      "jan",
+      "feb"
+    ],
+    "types": [
+      "monthly",
+      "metrics",
+      "field-notices",
+      "customers",
+      "top-customers",
+      "top-field-notices"
+    ]
+  }
+}

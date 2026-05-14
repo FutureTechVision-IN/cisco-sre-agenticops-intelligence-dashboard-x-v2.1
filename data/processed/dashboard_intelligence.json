@@ -1,0 +1,300 @@
+{
+  "lastUpdated": "2025-11-24T17:32:56.033Z",
+  "dataSource": "vulnerability_data.csv",
+  "processingInfo": {
+    "totalRecordsProcessed": 367866,
+    "dataQuality": 100,
+    "processingTime": "2025-11-24T17:32:56.033Z"
+  },
+  "kpiInsights": {
+    "detectedAnomalies": {
+      "value": 689,
+      "trend": "stable",
+      "confidence": "95-100%",
+      "description": "Critical vulnerability patterns detected",
+      "details": [
+        "689 customers with extreme vulnerability counts (>1000)",
+        "2873 records with inconsistent vulnerability patterns",
+        "2288 critical vulnerabilities identified",
+        "2288 entries in critical risk category"
+      ]
+    },
+    "trendPredictions": {
+      "value": 27651340,
+      "trend": "increasing",
+      "confidence": "85-95%",
+      "description": "Potential vulnerabilities requiring attention",
+      "details": [
+        "27,651,340 potential vulnerabilities identified",
+        "6,175,462 confirmed vulnerabilities",
+        "447.8% increase in potential threats",
+        "2 vulnerability types tracked"
+      ]
+    },
+    "topRecommendations": {
+      "value": 10,
+      "trend": "actionable",
+      "confidence": "90-100%",
+      "description": "High-priority customers needing immediate attention",
+      "details": [
+        "861 total customers analyzed",
+        "Top 10 customers account for 2,993,310 vulnerabilities",
+        "3248 customers in high/critical risk categories",
+        "Average 7172.43 vulnerabilities per customer"
+      ]
+    },
+    "systemMetrics": {
+      "totalRecords": 367866,
+      "dataQuality": 100,
+      "lastUpdated": "2025-11-24T22:59:37.704054",
+      "processingStatus": "completed",
+      "uniqueFieldNotices": 420,
+      "vulnerabilityTypes": {
+        "Software": 209826,
+        "Hardware": 158040
+      }
+    }
+  },
+  "reports": [
+    {
+      "id": "vulnerability-summary",
+      "title": "Vulnerability Landscape Overview",
+      "type": "executive-summary",
+      "priority": "high",
+      "generated": "2025-11-24T17:32:56.033Z",
+      "content": {
+        "summary": "Analysis of 367,866 vulnerability records reveals 6,175,462 confirmed vulnerabilities across 861 customers.",
+        "keyFindings": [
+          "447.8% potential vulnerability growth rate",
+          "10 high-exposure customers identified",
+          "420 unique field notices processed",
+          "100% data completeness achieved"
+        ],
+        "recommendations": [
+          "Prioritize immediate remediation for customers with >100 vulnerabilities",
+          "Implement proactive monitoring for potential vulnerabilities trending upward",
+          "Focus security resources on software vulnerabilities (57% of total)",
+          "Establish automated alerting for critical risk threshold breaches"
+        ]
+      }
+    },
+    {
+      "id": "customer-risk-analysis",
+      "title": "Customer Risk Assessment",
+      "type": "risk-analysis",
+      "priority": "medium",
+      "generated": "2025-11-24T17:32:56.033Z",
+      "content": {
+        "summary": "Customer risk analysis identifies 10 high-priority accounts requiring immediate attention.",
+        "riskDistribution": {
+          "zero_vulnerabilities": 348717,
+          "low_risk_1_10": 11921,
+          "medium_risk_11_50": 3980,
+          "high_risk_51_100": 960,
+          "critical_risk_100_plus": 2288
+        },
+        "topRiskCustomers": [
+          {
+            "customer": "WELLS FARGO MASTER ACCOUNT",
+            "vulnerabilityCount": 776519,
+            "riskLevel": "Critical"
+          },
+          {
+            "customer": "HCA HEALTHCARE",
+            "vulnerabilityCount": 563722,
+            "riskLevel": "Critical"
+          },
+          {
+            "customer": "MORGAN STANLEY - GLOBAL",
+            "vulnerabilityCount": 424983,
+            "riskLevel": "High"
+          },
+          {
+            "customer": "NAVY FEDERAL CREDIT UNION",
+            "vulnerabilityCount": 262877,
+            "riskLevel": "High"
+          },
+          {
+            "customer": "GEISINGER HEALTH SYSTEM FOUNDATION",
+            "vulnerabilityCount": 191027,
+            "riskLevel": "Medium"
+          }
+        ],
+        "recommendations": [
+          "Engage with top 5 customers for immediate risk mitigation",
+          "Develop customer-specific remediation timelines",
+          "Implement continuous monitoring for high-risk accounts"
+        ]
+      }
+    },
+    {
+      "id": "vulnerability-trends",
+      "title": "Vulnerability Trend Analysis",
+      "type": "trend-analysis",
+      "priority": "medium",
+      "generated": "2025-11-24T17:32:56.033Z",
+      "content": {
+        "summary": "Trend analysis shows increasing vulnerability patterns with 689 anomalous cases detected.",
+        "typeBreakdown": {
+          "Software": 209826,
+          "Hardware": 158040
+        },
+        "anomalies": {
+          "extreme_vulnerability_counts": 689,
+          "zero_potential_but_high_total": 2873,
+          "inconsistent_totals": 0
+        },
+        "fieldNoticePattern": {
+          "FN70489": 4030,
+          "FN63942": 4013,
+          "FN70416": 3992,
+          "FN70577": 3988,
+          "FN70326": 3987,
+          "FN70359": 3987,
+          "FN64153": 3986,
+          "FN64191": 3982,
+          "FN64190": 3982,
+          "FN70110": 3982
+        },
+        "recommendations": [
+          "Monitor trending field notices for pattern identification",
+          "Investigate anomalous vulnerability count spikes",
+          "Establish baseline metrics for future trend comparison"
+        ]
+      }
+    }
+  ],
+  "rawStats": {
+    "last_updated": "2025-11-24T22:59:37.704054",
+    "total_records": 367866,
+    "data_quality": {
+      "complete_records": 367866,
+      "incomplete_records": 0,
+      "data_completeness_rate": 100
+    },
+    "vulnerability_summary": {
+      "total_vulnerabilities": 6175462,
+      "potential_vulnerabilities": 27651340,
+      "not_vulnerable": 193428958,
+      "confirmed_vulnerabilities": 19149,
+      "confirmed_potential_vulnerabilities": 146510,
+      "confirmed_not_vulnerable": 294587
+    },
+    "field_notices": {
+      "unique_notices": 420,
+      "top_notices": {
+        "FN70489": 4030,
+        "FN63942": 4013,
+        "FN70416": 3992,
+        "FN70577": 3988,
+        "FN70326": 3987,
+        "FN70359": 3987,
+        "FN64153": 3986,
+        "FN64191": 3982,
+        "FN64190": 3982,
+        "FN70110": 3982
+      }
+    },
+    "vulnerability_types": {
+      "Software": 209826,
+      "Hardware": 158040
+    },
+    "customer_analysis": {
+      "unique_customers": 861,
+      "top_customers_by_vulnerability_count": {
+        "WELLS FARGO MASTER ACCOUNT": 776519,
+        "HCA HEALTHCARE": 563722,
+        "MORGAN STANLEY - GLOBAL": 424983,
+        "NAVY FEDERAL CREDIT UNION": 262877,
+        "GEISINGER HEALTH SYSTEM FOUNDATION": 191027,
+        "PIEDMONT HOSPITAL INC": 164838,
+        "VERIZON ITNUC": 161264,
+        "COSTCO WHOLESALE": 156856,
+        "NYC HEALTH AND HOSPITALS CORPORATION": 152544,
+        "MICHIGAN MEDICINE": 138680
+      },
+      "customers_with_highest_exposure": {
+        "WELLS FARGO MASTER ACCOUNT": {
+          "TOT_VULN": 776519,
+          "POT_VULN": 958785,
+          "NOT_VULN": 3761236
+        },
+        "HCA HEALTHCARE": {
+          "TOT_VULN": 563722,
+          "POT_VULN": 560463,
+          "NOT_VULN": 3114782
+        },
+        "MORGAN STANLEY - GLOBAL": {
+          "TOT_VULN": 424983,
+          "POT_VULN": 367754,
+          "NOT_VULN": 1414622
+        },
+        "NAVY FEDERAL CREDIT UNION": {
+          "TOT_VULN": 262877,
+          "POT_VULN": 176072,
+          "NOT_VULN": 226078
+        },
+        "GEISINGER HEALTH SYSTEM FOUNDATION": {
+          "TOT_VULN": 191027,
+          "POT_VULN": 150685,
+          "NOT_VULN": 186495
+        },
+        "PIEDMONT HOSPITAL INC": {
+          "TOT_VULN": 164838,
+          "POT_VULN": 165408,
+          "NOT_VULN": 297800
+        },
+        "VERIZON ITNUC": {
+          "TOT_VULN": 161264,
+          "POT_VULN": 268575,
+          "NOT_VULN": 1010295
+        },
+        "COSTCO WHOLESALE": {
+          "TOT_VULN": 156856,
+          "POT_VULN": 197420,
+          "NOT_VULN": 849946
+        },
+        "NYC HEALTH AND HOSPITALS CORPORATION": {
+          "TOT_VULN": 152544,
+          "POT_VULN": 164292,
+          "NOT_VULN": 225476
+        },
+        "MICHIGAN MEDICINE": {
+          "TOT_VULN": 138680,
+          "POT_VULN": 100701,
+          "NOT_VULN": 160347
+        }
+      }
+    },
+    "temporal_analysis": {
+      "date_range": {
+        "earliest_publication": "1/10/19 0:00",
+        "latest_publication": "9/8/21 0:00",
+        "import_dates": {
+          "2025-06": 73979,
+          "2025-07": 73794,
+          "2025-08": 73637,
+          "2025-05": 73306,
+          "2025-04": 73150
+        }
+      }
+    },
+    "risk_metrics": {
+      "high_risk_customers": 351,
+      "critical_vulnerabilities": 2288,
+      "average_vulnerability_per_customer": 7172.43,
+      "vulnerability_distribution": {
+        "zero_vulnerabilities": 348717,
+        "low_risk_1_10": 11921,
+        "medium_risk_11_50": 3980,
+        "high_risk_51_100": 960,
+        "critical_risk_100_plus": 2288
+      }
+    },
+    "anomalies_detected": {
+      "extreme_vulnerability_counts": 689,
+      "zero_potential_but_high_total": 2873,
+      "inconsistent_totals": 0
+    }
+  }
+}

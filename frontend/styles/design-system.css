@@ -1,0 +1,1205 @@
+/**
+ * Comprehensive Design System
+ * All typography, spacing, colors, and component standards
+ * OPTIMIZED: For performance, accessibility, and responsive design
+ */
+
+html {
+  /* Set consistent base font size across all devices — 16px standard */
+  font-size: 16px;
+  -webkit-text-size-adjust: 100%;
+  -moz-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  /* Prevent browser zoom from affecting rem calculations */
+  overflow-x: hidden;
+  /* Performance: Enable GPU acceleration */
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
+body {
+  font-family: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
+  /* Prevent text resizing on orientation change (mobile) */
+  -webkit-text-size-adjust: 100%;
+  -moz-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  /* Font rendering optimization */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  /* Performance: Reduce paint operations */
+  contain: layout style paint;
+}
+
+:root {
+  /* TYPOGRAPHY - IBM Plex Sans + IBM Plex Mono */
+  --font-primary: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-secondary: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-display: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-mono: 'IBM Plex Mono', 'Menlo', 'Consolas', monospace;
+  
+  --font-weight-light: 300;
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+  --font-weight-extrabold: 800;
+  
+  /* =========================================================
+     TYPOGRAPHY SCALE — Single Source of Truth
+     All component sizes reference these tokens.
+     Tailwind utilities (text-xs … text-2xl) are intentionally
+     left at their defaults so inline classes remain predictable.
+     ========================================================= */
+
+  /* Raw scale tokens (do NOT clash with Tailwind class names) */
+  /* NOTE: Base font-size is 16px, so 1rem = 16px */
+  --ds-text-micro:  0.6875rem;  /* 11px — minimum readable: badges/meta only */
+  --ds-text-mini:   0.75rem;    /* 12px — dense data labels */
+  --ds-text-xs:     0.8125rem;  /* 13px — field labels, table headers */
+  --ds-text-sm:     0.875rem;   /* 14px — body small, tab labels */
+  --ds-text-base:   1rem;       /* 16px — default body */
+  --ds-text-lg:     1.25rem;    /* 20px — card titles, sub-headings */
+  --ds-text-xl:     1.5rem;     /* 24px — page titles (h1 in headers) */
+  --ds-text-2xl:    2rem;       /* 32px — hero headings */
+  --ds-text-3xl:    2.25rem;    /* 36px — display headings */
+  --ds-text-4xl:    2.5rem;     /* 40px — large metric numbers */
+  --ds-text-5xl:    3rem;       /* 48px — oversized hero metrics */
+
+  /* Legacy aliases (used by existing .card-value, .metric-primary etc.) */
+  /* NOTE: All rem values auto-scale with 16px base */
+  --text-xs: 0.75rem;       /* 12px */
+  --text-sm: 0.875rem;      /* 14px */
+  --text-base: 1rem;        /* 16px */
+  --text-lg: 1.25rem;       /* 20px */
+  --text-xl: 1.5rem;        /* 24px */
+  --text-2xl: 2rem;         /* 32px */
+  --text-3xl: 2.25rem;      /* 36px */
+  --text-4xl: 2.5rem;       /* 40px */
+  --text-5xl: 3rem;         /* 48px — for critical metrics */
+  
+  /* LINE HEIGHTS - ENHANCED FOR CLARITY */
+  --line-height-tight: 1.3;
+  --line-height-snug: 1.4;
+  --line-height-normal: 1.6;
+  --line-height-relaxed: 1.8;
+  --line-height-loose: 2.1;
+  
+  /* LETTER SPACING — IBM Plex Sans has generous built-in spacing */
+  --letter-spacing-tighter: -0.01em;   /* -0.16px — tight headings */
+  --letter-spacing-tight: 0em;         /* 0px — body default */
+  --letter-spacing-normal: 0.01em;     /* 0.16px — standard */
+  --letter-spacing-wide: 0.04em;       /* 0.64px — labels */
+  --letter-spacing-wider: 0.08em;      /* 1.28px — uppercase labels */
+  --letter-spacing-widest: 0.12em;     /* 1.92px — all-caps headers */
+  
+  /* SPACING (4px base) - ABSOLUTE */
+  --space-1: 0.25rem;       /* 4px */
+  --space-2: 0.5rem;        /* 8px */
+  --space-3: 0.75rem;       /* 12px */
+  --space-4: 1rem;          /* 16px */
+  --space-5: 1.25rem;       /* 20px */
+  --space-6: 1.5rem;        /* 24px */
+  --space-7: 1.75rem;       /* 28px */
+  --space-8: 2rem;          /* 32px */
+  --space-10: 2.5rem;       /* 40px */
+  --space-12: 3rem;         /* 48px */
+  --space-16: 4rem;         /* 64px */
+  
+  /* COLORS - TEXT (WCAG AAA COMPLIANT) */
+  --text-primary: rgb(248, 250, 252);      /* 98% brightness, 7.8:1 contrast */
+  --text-secondary: rgb(226, 232, 240);    /* 95% brightness, 7.0:1 contrast */
+  --text-tertiary: rgb(203, 213, 225);     /* 85% brightness, 6.2:1 contrast */
+  --text-muted: rgb(148, 163, 184);        /* 65% brightness, 4.8:1 contrast */
+  
+  /* COLORS - TEXT EMPHASIS (CRITICAL) */
+  --text-critical: rgb(255, 255, 255);     /* Pure white for critical metrics */
+  --text-warning: rgb(255, 242, 226);      /* High contrast warning text */
+  --text-success: rgb(230, 255, 240);      /* High contrast success text */
+  
+  /* COLORS - SURFACE */
+  --surface-primary: rgb(30, 41, 59);
+  --surface-secondary: rgb(15, 23, 42);
+  --surface-tertiary: rgb(51, 65, 85);
+  
+  /* COLORS - ACCENT */
+  --accent-cyan: rgb(6, 182, 212);
+  --accent-indigo: rgb(99, 102, 241);
+  --accent-emerald: rgb(16, 185, 129);
+  --accent-amber: rgb(245, 158, 11);
+  --accent-rose: rgb(244, 63, 94);
+  
+  /* RADIUS */
+  --radius-sm: 0.375rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 0.75rem;
+  --radius-xl: 1rem;
+  --radius-2xl: 1.5rem;
+  --radius-full: 9999px;
+  
+  /* SHADOWS */
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+  --shadow-2xl: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  
+  /* TRANSITIONS */
+  --transition-fast: 150ms ease-in-out;
+  --transition-base: 300ms ease-in-out;
+  --transition-slow: 500ms ease-in-out;
+  
+  /* Z-INDEX */
+  --z-hide: -1;
+  --z-base: 0;
+  --z-dropdown: 100;
+  --z-sticky: 200;
+  --z-fixed: 300;
+  --z-modal: 400;
+  --z-popover: 500;
+  --z-tooltip: 600;
+}
+
+/* ========================================
+   COMPONENT UTILITY CLASSES
+   ======================================== */
+
+/* HEADERS */
+.header-title {
+  font-size: var(--text-lg);
+  font-weight: var(--font-weight-bold);
+  letter-spacing: var(--letter-spacing-normal);
+  text-transform: uppercase;
+  color: var(--text-primary);
+}
+
+.header-subtitle {
+  font-size: var(--text-xs);
+  font-weight: var(--font-weight-medium);
+  letter-spacing: var(--letter-spacing-widest);
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  margin-top: var(--space-2);
+}
+
+/* CARDS */
+.card-container {
+  background: var(--surface-primary);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(71, 85, 105, 0.3);
+  border-radius: var(--radius-lg);
+  padding: var(--space-6);
+  transition: all var(--transition-base);
+}
+
+.card-title {
+  font-size: var(--text-lg);
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: var(--letter-spacing-wide);
+  color: var(--text-primary);
+  margin-bottom: var(--space-4);
+}
+
+.card-label {
+  font-size: var(--text-xs);
+  font-weight: var(--font-weight-medium);
+  letter-spacing: var(--letter-spacing-wide);
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+}
+
+.card-value {
+  font-size: var(--text-3xl);
+  font-weight: var(--font-weight-bold);
+  letter-spacing: var(--letter-spacing-normal);
+  color: var(--text-critical);
+  font-family: var(--font-secondary);
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  line-height: var(--line-height-tight);
+}
+
+.card-meta {
+  font-size: var(--text-xs);
+  font-weight: var(--font-weight-normal);
+  color: var(--text-tertiary);
+  font-family: var(--font-secondary);
+}
+
+/* BUTTONS */
+.btn-base {
+  font-size: var(--text-sm);
+  font-weight: var(--font-weight-bold);
+  letter-spacing: var(--letter-spacing-normal);
+  text-transform: uppercase;
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-md);
+  transition: all var(--transition-base);
+  cursor: pointer;
+  border: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+}
+
+.btn-primary {
+  background: var(--accent-indigo);
+  color: var(--text-primary);
+}
+
+.btn-primary:hover {
+  background: rgba(99, 102, 241, 0.9);
+  transform: translateY(-2px);
+}
+
+/* TABS */
+.tab-base {
+  font-size: var(--text-sm);
+  font-weight: var(--font-weight-bold);
+  letter-spacing: var(--letter-spacing-normal);
+  text-transform: uppercase;
+  padding: var(--space-2) var(--space-4);
+  border-radius: var(--radius-md);
+  transition: all var(--transition-base);
+  cursor: pointer;
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+}
+
+/* ========================================
+   STANDARDIZED COMPONENT CLASSES
+   Use these in React components for consistency
+   ======================================== */
+
+/* PAGE HEADER — Sticky top bar shared by every view */
+.ds-page-header {
+  background: rgba(30, 41, 59, 0.6);      /* bg-slate-800/60 */
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border-bottom: 1px solid rgba(51, 65, 85, 0.8); /* border-slate-700/80 */
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
+              0 4px  6px -4px rgba(0, 0, 0, 0.1); /* shadow-lg */
+}
+
+.ds-page-header-inner {
+  padding: var(--space-4) var(--space-6);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* PAGE TITLE — h1 inside the sticky header */
+.ds-page-title {
+  font-size: var(--ds-text-xl);            /* 20px — unified across all pages */
+  font-weight: var(--font-weight-bold);
+  color: var(--text-primary);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;                   /* tracking-widest */
+  line-height: var(--line-height-tight);
+}
+
+/* PAGE SUBTITLE — description line below the title */
+.ds-page-subtitle {
+  font-size: var(--ds-text-sm);            /* ~17px — legible subtitle */
+  font-weight: var(--font-weight-normal);
+  color: rgb(148, 163, 184);              /* text-slate-400 */
+  margin-top: 2px;
+  letter-spacing: 0.025em;
+}
+
+/* BACK BUTTON — icon-only, consistent across all pages */
+.ds-back-btn {
+  padding: var(--space-2);
+  border-radius: var(--radius-lg);
+  color: rgb(148, 163, 184);              /* text-slate-400 */
+  transition: all var(--transition-fast);
+  cursor: pointer;
+  background: transparent;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ds-back-btn:hover {
+  background: rgba(51, 65, 85, 0.5);      /* bg-slate-700/50 */
+  color: rgb(6, 182, 212);                /* text-cyan-400 */
+}
+
+/* NAV TABS — Primary tabs in page header (Overview, Patterns, ...) */
+.ds-nav-tab {
+  font-size: var(--ds-text-sm);            /* ~17px — clearly readable nav labels */
+  font-weight: var(--font-weight-bold);
+  letter-spacing: 0.05em;                  /* tracking-wider */
+  text-transform: uppercase;
+  padding: var(--space-2) var(--space-4);   /* px-4 py-2 */
+  border-radius: var(--radius-md);
+  transition: all var(--transition-fast);
+  cursor: pointer;
+  white-space: nowrap;
+  color: rgb(203, 213, 225);              /* text-slate-300 */
+  background: transparent;
+  border: none;
+}
+
+.ds-nav-tab:hover {
+  color: var(--text-primary);
+  background: rgba(51, 65, 85, 0.5);      /* bg-slate-700/50 */
+}
+
+.ds-nav-tab-active {
+  background: rgb(8, 145, 178);           /* bg-cyan-600 */
+  color: var(--text-primary);
+  box-shadow: var(--shadow-lg);
+}
+
+/* SUB-TABS — Smaller tabs inside content area (used by CIRCUIT MCP etc.) */
+.ds-sub-tab {
+  font-size: var(--ds-text-sm);            /* ~17px — matches nav-tab readability */
+  font-weight: var(--font-weight-bold);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  padding: 6px 14px;                       /* slightly more horizontal padding */
+  border-radius: var(--radius-sm);
+  transition: all var(--transition-fast);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: rgb(148, 163, 184);              /* text-slate-400 */
+  background: transparent;
+  border: none;
+}
+
+.ds-sub-tab:hover {
+  color: var(--text-primary);
+  background: rgba(51, 65, 85, 0.5);
+}
+
+.ds-sub-tab-active {
+  background: rgba(8, 145, 178, 0.8);     /* bg-cyan-600/80 */
+  color: var(--text-primary);
+  box-shadow: 0 4px 10px rgba(6, 182, 212, 0.2);
+}
+
+/* SECTION TITLE — h2 inside content areas */
+.ds-section-title {
+  font-size: var(--ds-text-sm);            /* 14px */
+  font-weight: var(--font-weight-bold);
+  color: rgb(148, 163, 184);              /* text-slate-400 */
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+/* CARD HEADING — h3 inside cards/panels */
+.ds-card-heading {
+  font-size: var(--ds-text-sm);            /* ~17px — legible card/panel labels */
+  font-weight: var(--font-weight-bold);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: rgb(148, 163, 184);
+}
+
+/* DENSE DATA TEXT — body-level data rows */
+.ds-text-data {
+  font-size: var(--ds-text-xs);            /* ~14.6px — data row text */
+  color: rgb(203, 213, 225);              /* text-slate-300 */
+  line-height: var(--line-height-snug);
+}
+
+/* DENSE DATA LABEL — muted label above data values */
+.ds-text-data-label {
+  font-size: var(--ds-text-xs);            /* ~14.6px — labeled data */
+  color: rgb(148, 163, 184);              /* text-slate-400/500 */
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+/* MICRO TEXT — for badges, tags, timestamps */
+.ds-text-micro {
+  font-size: var(--ds-text-mini);          /* ~13.5px */
+  color: rgb(100, 116, 139);              /* text-slate-500 */
+  letter-spacing: 0.02em;
+}
+
+/* BADGE — small status/tag pill */
+.ds-badge {
+  font-size: var(--ds-text-mini);          /* ~13.5px */
+  font-weight: var(--font-weight-bold);
+  text-transform: uppercase;
+  padding: 2px 6px;
+  border-radius: var(--radius-sm);
+  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+}
+
+/* HEADER ACTION BUTTON — small buttons in page headers */
+.ds-header-action {
+  font-size: var(--ds-text-sm);            /* ~17px — readable action labels */
+  font-weight: var(--font-weight-bold);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 6px 12px;
+  border-radius: var(--radius-md);
+  border: 1px solid rgba(51, 65, 85, 0.7);
+  color: rgb(148, 163, 184);
+  background: rgba(30, 41, 59, 0.8);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.ds-header-action:hover {
+  color: var(--text-primary);
+  background: rgba(51, 65, 85, 0.6);
+  border-color: rgba(71, 85, 105, 0.8);
+}
+
+/* ========================================
+   INTERACTIVE CARDS — Consistent hover/focus feedback
+   ======================================== */
+
+/* Default card panel — subtle lift on hover */
+.ds-card {
+  background: linear-gradient(135deg, rgba(30, 41, 59, 0.6), rgba(15, 23, 42, 0.6));
+  border: 1px solid rgba(51, 65, 85, 0.5);
+  border-radius: var(--radius-lg);
+  padding: var(--space-4);
+  transition: border-color var(--transition-fast),
+              box-shadow var(--transition-fast),
+              transform var(--transition-fast);
+}
+
+.ds-card:hover {
+  border-color: rgba(6, 182, 212, 0.35);           /* cyan-500/35 */
+  box-shadow: 0 4px 20px rgba(6, 182, 212, 0.08),
+              0 0 0 1px rgba(6, 182, 212, 0.06);
+  transform: translateY(-1px);
+}
+
+/* Clickable card variant — stronger lift */
+.ds-card-interactive {
+  cursor: pointer;
+}
+
+.ds-card-interactive:hover {
+  border-color: rgba(6, 182, 212, 0.5);
+  box-shadow: 0 8px 25px rgba(6, 182, 212, 0.12),
+              0 0 0 1px rgba(6, 182, 212, 0.1);
+  transform: translateY(-2px);
+}
+
+.ds-card-interactive:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 10px rgba(6, 182, 212, 0.08);
+}
+
+/* ========================================
+   STATUS COLORS — Unified palette for all severity/status indicators
+   ======================================== */
+.ds-status-critical { color: rgb(248, 113, 113); }               /* red-400 */
+.ds-status-critical-bg { background: rgba(239, 68, 68, 0.15); }
+.ds-status-high { color: rgb(251, 191, 36); }                    /* amber-400 */
+.ds-status-high-bg { background: rgba(245, 158, 11, 0.15); }
+.ds-status-medium { color: rgb(251, 146, 60); }                  /* orange-400 */
+.ds-status-medium-bg { background: rgba(249, 115, 22, 0.15); }
+.ds-status-low { color: rgb(52, 211, 153); }                     /* emerald-400 */
+.ds-status-low-bg { background: rgba(16, 185, 129, 0.15); }
+.ds-status-info { color: rgb(56, 189, 248); }                    /* sky-400 */
+.ds-status-info-bg { background: rgba(14, 165, 233, 0.15); }
+
+/* ========================================
+   SECTION LAYOUT — Consistent vertical spacing
+   ======================================== */
+.ds-section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);                     /* 16px between sections */
+}
+
+.ds-section-dense {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);                     /* 8px for dense data areas */
+}
+
+.ds-grid-cards {
+  display: grid;
+  gap: var(--space-4);
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+}
+
+/* ========================================
+   BUTTON VARIANTS — Consistent interactive controls
+   ======================================== */
+.ds-btn-icon {
+  padding: var(--space-2);
+  border-radius: var(--radius-lg);
+  color: rgb(148, 163, 184);              /* slate-400 */
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ds-btn-icon:hover {
+  background: rgba(51, 65, 85, 0.5);
+  color: var(--text-primary);
+}
+
+.ds-btn-ghost {
+  font-size: var(--ds-text-sm);
+  font-weight: var(--font-weight-bold);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 6px 12px;
+  border-radius: var(--radius-md);
+  border: 1px solid transparent;
+  color: rgb(148, 163, 184);
+  background: transparent;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.ds-btn-ghost:hover {
+  color: var(--text-primary);
+  background: rgba(51, 65, 85, 0.4);
+  border-color: rgba(51, 65, 85, 0.6);
+}
+
+/* ========================================
+   TABLE ROW HOVER — Consistent interactive table rows
+   ======================================== */
+.ds-table-row {
+  transition: background-color var(--transition-fast);
+}
+
+.ds-table-row:hover {
+  background: rgba(51, 65, 85, 0.3);      /* bg-slate-700/30 */
+}
+
+.ds-table-header {
+  font-size: var(--ds-text-mini);          /* 11px */
+  font-weight: var(--font-weight-bold);
+  color: rgb(100, 116, 139);              /* slate-500 */
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: var(--space-2) var(--space-3);
+}
+
+.ds-table-cell {
+  font-size: var(--ds-text-mini);          /* 11px */
+  color: rgb(203, 213, 225);              /* slate-300 */
+  padding: var(--space-2) var(--space-3);
+}
+
+/* ========================================
+   SCROLLBAR — Consistent across all scrollable areas
+   ======================================== */
+.ds-scrollbar::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+.ds-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.ds-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(51, 65, 85, 0.5);
+  border-radius: var(--radius-full);
+}
+
+.ds-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: rgba(71, 85, 105, 0.7);
+}
+
+/* ========================================
+   RESPONSIVE — Scale down design-system classes on mobile
+   ======================================== */
+@media (max-width: 640px) {
+  .ds-page-title {
+    font-size: var(--ds-text-lg);          /* 18px on mobile */
+  }
+  .ds-nav-tab {
+    font-size: var(--ds-text-micro);       /* 10px on mobile */
+    padding: 6px 10px;
+  }
+  .ds-sub-tab {
+    font-size: var(--ds-text-micro);
+    padding: 4px 8px;
+  }
+  .ds-page-header-inner {
+    padding: var(--space-3) var(--space-4);
+  }
+  .ds-card {
+    padding: var(--space-3);
+  }
+  .ds-grid-cards {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Medium screens — slight adjustments */
+@media (min-width: 641px) and (max-width: 1024px) {
+  .ds-grid-cards {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* TABLES */
+.table-header {
+  font-size: var(--text-xs);
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: var(--letter-spacing-normal);
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  padding: var(--space-3) var(--space-4);
+}
+
+.table-cell {
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+  font-family: var(--font-secondary);
+  padding: var(--space-3) var(--space-4);
+}
+
+/* CHARTS */
+.chart-title {
+  font-size: var(--text-lg);
+  font-weight: var(--font-weight-bold);
+  letter-spacing: var(--letter-spacing-wide);
+  color: var(--text-primary);
+}
+
+.chart-label {
+  font-size: var(--text-xs);
+  color: var(--text-tertiary);
+  font-family: var(--font-secondary);
+}
+
+.chart-value {
+  font-size: var(--text-base);
+  font-weight: var(--font-weight-semibold);
+  color: var(--accent-cyan);
+  font-family: var(--font-secondary);
+}
+
+/* INPUTS */
+.input-base {
+  font-size: var(--text-sm);
+  font-weight: var(--font-weight-normal);
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-md);
+  border: 1px solid rgba(71, 85, 105, 0.5);
+  background: var(--surface-tertiary);
+  color: var(--text-primary);
+  transition: all var(--transition-base);
+}
+
+.input-base:focus {
+  outline: none;
+  border-color: var(--accent-cyan);
+  box-shadow: 0 0 10px rgba(6, 182, 212, 0.3);
+}
+
+/* TOOLTIPS */
+.tooltip-text {
+  font-size: var(--text-xs);
+  font-weight: var(--font-weight-medium);
+  letter-spacing: var(--letter-spacing-tight);
+  color: var(--text-primary);
+  background: var(--surface-primary);
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-md);
+}
+
+/* ========================================
+   TYPOGRAPHY UTILITIES
+   ======================================== */
+
+h1 {
+  font-size: var(--text-3xl);
+  font-weight: var(--font-weight-bold);
+  line-height: var(--line-height-tight);
+  color: var(--text-primary);
+}
+
+h2 {
+  font-size: var(--text-2xl);
+  font-weight: var(--font-weight-bold);
+  line-height: var(--line-height-tight);
+  color: var(--text-primary);
+}
+
+h3 {
+  font-size: var(--text-xl);
+  font-weight: var(--font-weight-semibold);
+  line-height: var(--line-height-snug);
+  color: var(--text-primary);
+}
+
+p {
+  font-size: var(--text-sm);
+  line-height: var(--line-height-normal);
+  color: var(--text-secondary);
+}
+
+small {
+  font-size: var(--text-xs);
+  line-height: var(--line-height-tight);
+  color: var(--text-tertiary);
+}
+
+/* ========================================
+   ENHANCED TYPOGRAPHY UTILITIES
+   Comprehensive text sizing, contrast, and readability improvements
+   ======================================== */
+
+/* METRIC DISPLAYS - Primary numbers with maximum contrast */
+.metric-primary {
+  font-size: var(--text-5xl);
+  font-weight: var(--font-weight-bold);
+  letter-spacing: var(--letter-spacing-normal);
+  color: var(--text-critical);
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+  line-height: var(--line-height-tight);
+  font-family: var(--font-mono);
+}
+
+.metric-secondary {
+  font-size: var(--text-3xl);
+  font-weight: var(--font-weight-bold);
+  letter-spacing: var(--letter-spacing-normal);
+  color: var(--text-secondary);
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  line-height: var(--line-height-snug);
+  font-family: var(--font-mono);
+}
+
+.metric-tertiary {
+  font-size: var(--text-2xl);
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: var(--letter-spacing-normal);
+  color: var(--text-primary);
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+  line-height: var(--line-height-snug);
+  font-family: var(--font-secondary);
+}
+
+/* LABEL DISPLAYS - Status and category labels */
+.label-display {
+  font-size: var(--text-sm);
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: var(--letter-spacing-wide);
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  line-height: var(--line-height-tight);
+}
+
+.label-critical {
+  color: rgb(255, 220, 220);
+  font-weight: var(--font-weight-bold);
+  letter-spacing: var(--letter-spacing-wider);
+}
+
+.label-success {
+  color: rgb(220, 255, 220);
+  font-weight: var(--font-weight-bold);
+}
+
+.label-warning {
+  color: rgb(255, 240, 220);
+  font-weight: var(--font-weight-bold);
+}
+
+/* DESCRIPTIVE TEXT - Body and secondary text */
+.text-description {
+  font-size: var(--text-sm);
+  font-weight: var(--font-weight-normal);
+  letter-spacing: var(--letter-spacing-normal);
+  line-height: var(--line-height-normal);
+  color: var(--text-secondary);
+}
+
+.text-caption {
+  font-size: var(--text-xs);
+  font-weight: var(--font-weight-normal);
+  letter-spacing: var(--letter-spacing-wide);
+  line-height: var(--line-height-snug);
+  color: var(--text-tertiary);
+}
+
+.text-footnote {
+  font-size: 0.75rem;
+  font-weight: var(--font-weight-normal);
+  letter-spacing: var(--letter-spacing-wide);
+  line-height: var(--line-height-tight);
+  color: var(--text-muted);
+}
+
+/* Number formatting uses IBM Plex Mono for tabular numerals */
+.number-formatted {
+  font-family: 'IBM Plex Mono', 'Menlo', 'Consolas', monospace;
+  font-weight: var(--font-weight-semibold);
+  font-size: var(--text-lg);
+  letter-spacing: 0.02em;
+  font-variant-numeric: tabular-nums;
+}
+
+.number-decimal {
+  font-family: 'IBM Plex Mono', 'Menlo', 'Consolas', monospace;
+  font-size: var(--text-lg);
+  font-weight: var(--font-weight-semibold);
+  font-variant-numeric: tabular-nums;
+}
+
+/* TEXT SHADOW ENHANCEMENT - Improve readability on colored backgrounds */
+.text-shadow-sm {
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
+}
+
+.text-shadow-md {
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.text-shadow-lg {
+  text-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+}
+
+/* CONTRAST BACKGROUNDS - Support text on any background */
+.text-on-dark {
+  color: var(--text-critical);
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.text-on-gradient {
+  color: var(--text-critical);
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.4), 0 -1px 2px rgba(255, 255, 255, 0.1);
+}
+
+/* HIGH CONTRAST MODE - For enhanced readability requirement */
+.text-high-contrast {
+  color: rgb(255, 255, 255) !important;
+  font-weight: var(--font-weight-bold);
+  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.5);
+}
+
+/* RESPONSIVE TEXT SCALING - Maintain readability across devices */
+.text-responsive {
+  font-size: clamp(1rem, 2.5vw, 1.5rem);
+  line-height: var(--line-height-normal);
+}
+
+.text-responsive-lg {
+  font-size: clamp(1.5rem, 4vw, 2.5rem);
+  line-height: var(--line-height-snug);
+}
+
+.text-responsive-xl {
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  line-height: var(--line-height-tight);
+}
+
+/* HOVER STATES WITH TOOLTIP SUPPORT */
+.text-interactive {
+  cursor: pointer;
+  position: relative;
+  transition: all var(--transition-fast);
+  text-decoration: underline dotted transparent;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 4px;
+}
+
+.text-interactive:hover {
+  color: var(--accent-cyan);
+  text-decoration-color: var(--accent-cyan);
+}
+
+/* ABBREVIATION SUPPORT - Consistent styling for <abbr> elements */
+abbr[title] {
+  text-decoration: underline dotted;
+  cursor: help;
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: 0.05em;
+}
+
+/* ========================================
+   RESPONSIVE TYPOGRAPHY
+   Mobile-only adjustments, desktop remains fixed
+   ======================================== */
+
+@media (max-width: 640px) {
+  /* Only adjust on small screens, larger screens use fixed sizes */
+  h1 {
+    font-size: var(--text-2xl);
+  }
+
+  h2 {
+    font-size: var(--text-xl);
+  }
+
+  h3 {
+    font-size: var(--text-lg);
+  }
+
+  .header-title {
+    font-size: var(--text-lg);
+  }
+
+  .card-value {
+    font-size: var(--text-xl);
+  }
+
+  .card-title {
+    font-size: var(--text-base);
+  }
+
+  .tab-base {
+    font-size: var(--text-xs);
+    padding: var(--space-2) var(--space-3);
+  }
+
+  .btn-base {
+    font-size: var(--text-xs);
+    padding: var(--space-2) var(--space-3);
+  }
+
+  .chart-title {
+    font-size: var(--text-base);
+  }
+
+  .chart-value {
+    font-size: var(--text-sm);
+  }
+
+  .table-cell {
+    font-size: var(--text-xs);
+  }
+}
+
+/* Desktop sizes remain fixed at larger screens */
+@media (min-width: 1024px) {
+  html {
+    /* Lock font size for desktop */
+    font-size: 16px !important;
+  }
+
+  body {
+    font-size: 16px !important;
+  }
+}
+
+/* ========================================
+   ACCESSIBILITY ENHANCEMENTS
+   WCAG AA Compliance (4.5:1 contrast minimum)
+   ======================================== */
+
+/* Focus indicators for keyboard navigation */
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline: 2px solid var(--accent-cyan);
+  outline-offset: 2px;
+}
+
+/* Skip to main content link */
+.skip-to-main {
+  position: absolute;
+  top: -40px;
+  left: 0;
+  background: var(--accent-indigo);
+  color: var(--text-primary);
+  padding: var(--space-2) var(--space-4);
+  text-decoration: none;
+  z-index: var(--z-tooltip);
+}
+
+.skip-to-main:focus {
+  top: 0;
+  outline: 2px solid var(--accent-cyan);
+  outline-offset: 2px;
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: more) {
+  :root {
+    --text-primary: rgb(255, 255, 255);
+    --text-secondary: rgb(200, 200, 200);
+    --surface-primary: rgb(20, 20, 30);
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ========================================
+   RESPONSIVE DESIGN OPTIMIZATION
+   Mobile-first, progressive enhancement
+   ======================================== */
+
+/* Small devices (375px - 640px) */
+@media (max-width: 640px) {
+  :root {
+    --space-1: 0.25rem;
+    --space-2: 0.5rem;
+    --space-3: 0.75rem;
+    --space-4: 1rem;
+    --space-6: 1.5rem;
+  }
+
+  .container {
+    width: 100%;
+    max-width: 100%;
+    padding: 0 var(--space-4);
+  }
+
+  .grid-responsive {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-4);
+  }
+
+  h1 { font-size: var(--text-2xl); }
+  h2 { font-size: var(--text-xl); }
+  h3 { font-size: var(--text-lg); }
+}
+
+/* Tablets (641px - 1024px) */
+@media (min-width: 641px) and (max-width: 1024px) {
+  .grid-responsive {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-6);
+  }
+}
+
+/* Large devices (1025px+) */
+@media (min-width: 1025px) {
+  .grid-responsive {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--space-6);
+  }
+}
+
+/* Ultra-wide displays (2560px+) */
+@media (min-width: 2560px) {
+  html {
+    font-size: 18px;
+  }
+
+  .container {
+    max-width: 2400px;
+  }
+}
+
+/* ========================================
+   PERFORMANCE OPTIMIZATIONS
+   ======================================== */
+
+/* Lazy-loaded component fade-in */
+.fade-in {
+  animation: fadeIn 300ms ease-in-out forwards;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Optimize repaints and reflows */
+.will-change-transform {
+  will-change: transform;
+}
+
+.will-change-opacity {
+  will-change: opacity;
+}
+
+/* Image lazy loading optimization */
+img[loading="lazy"] {
+  background: var(--surface-tertiary);
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+/* Content visibility for off-screen elements */
+.off-screen {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 500px;
+}
+
+/* ========================================
+   DARK MODE
+   ======================================== */
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --text-primary: rgb(248, 250, 252);
+    --text-secondary: rgb(203, 213, 225);
+    --text-tertiary: rgb(148, 163, 184);
+    --surface-primary: rgb(30, 41, 59);
+  }
+}
+
+/* ============================================================
+   GLOBAL TAILWIND TEXT-SIZE OVERRIDES
+   Remaps Tailwind utility classes to the enhanced 18px type scale.
+   text-xs  → 14px  (was 15.75px) — labels, captions, meta
+   text-sm  → 16px  (was 18px)     — body text, values, descriptions
+   text-base→ 16px  (natural 1rem at 16px base)
+   Preserves full hierarchy: xs < sm < base < lg < xl < 2xl …
+   ============================================================ */
+.text-xs {
+  font-size: 0.75rem !important;     /* 12px — clear labels */
+  line-height: 1.5;
+}
+
+.text-sm {
+  font-size: 0.875rem !important;    /* 14px — comfortable body */
+  line-height: 1.6;
+}
+
+/* Dummy rule to close block above cleanly */
+.ds-typography-anchor { display: none; }

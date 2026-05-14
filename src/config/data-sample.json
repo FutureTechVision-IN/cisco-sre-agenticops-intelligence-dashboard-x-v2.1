@@ -1,0 +1,19 @@
+{
+  "data_sources": {
+    "vulnerability_data": "data/samples/vulnerability_data_sample.csv",
+    "processed_data": "data/samples/vulnerability_data_cleaned_sample.csv",
+    "bcs_data": "data/samples/filtered_bcs_sample.csv"
+  },
+  "sample_mode": true,
+  "data_refresh_interval": "1h",
+  "max_records_display": 1000,
+  "enable_real_time": false,
+  "cache_enabled": true,
+  "sample_data_info": {
+    "vulnerability_records": 10,
+    "bcs_records": 10,
+    "processed_records": 10,
+    "data_range": "2024-11-01 to 2025-04-01",
+    "last_updated": "2025-11-25"
+  }
+}

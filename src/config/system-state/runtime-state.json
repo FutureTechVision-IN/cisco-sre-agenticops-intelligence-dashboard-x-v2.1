@@ -1,0 +1,10 @@
+{
+  "startup_time": "2025-11-24T16:30:27Z",
+  "started_by": "bipbabu",
+  "hostname": "BIPBABU-M-X9V3",
+  "environment": "production",
+  "port": "8000",
+  "status": "running",
+  "version": "1.0.0",
+  "ready_time": "2025-11-24T16:30:35Z"
+}

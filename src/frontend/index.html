@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SRE AgenticOps Intelligence Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Font Loading Strategy: Preload + font-display: swap for optimal performance -->
+    <!-- Primary Font: Orbitron (Futuristic, tech-focused display font) -->
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    
+    <!-- Fallback for no-JS environments -->
+    <noscript>
+      <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&display=swap" rel="stylesheet">
+    </noscript>
+    
+    <style>
+      /* Font face definitions with system font fallbacks for better load performance */
+      @font-face {
+        font-family: 'Orbitron Fallback';
+        src: local('system-ui'), local('-apple-system'), local('BlinkMacSystemFont');
+        ascent-override: 92%;
+        descent-override: 24%;
+        line-gap-override: 0%;
+      }
+
+      /* Root typography settings */
+      :root {
+        /* Font families with optimized fallbacks - Orbitron for all text */
+        --font-primary: 'Orbitron', 'Orbitron Fallback', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        --font-display: 'Orbitron', 'Orbitron Fallback', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        --font-mono: 'Orbitron', 'Orbitron Fallback', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      }
+
+      html {
+        font-family: var(--font-primary);
+        font-size: 16px;
+        -webkit-text-size-adjust: 100%;
+        -moz-text-size-adjust: 100%;
+        text-size-adjust: 100%;
+        overflow-x: hidden;
+      }
+
+      body {
+        font-family: var(--font-primary);
+        background-color: #0f172a; /* slate-900 */
+        color: #fff;
+        font-size: 16px;
+        line-height: 1.5;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        -webkit-text-size-adjust: 100%;
+        -moz-text-size-adjust: 100%;
+        text-size-adjust: 100%;
+      }
+
+      /* Display font for headings and important UI - using Orbitron globally */
+      h1, h2, h3, h4, h5, h6,
+      [class*="title"],
+      [class*="heading"],
+      .header-title,
+      .card-title,
+      .chart-title,
+      button, input, textarea, select,
+      .btn, .button,
+      nav, .menu,
+      label {
+        font-family: var(--font-display);
+        font-weight: 500;
+        letter-spacing: 0.05em;
+        -webkit-font-smoothing: antialiased;
+      }
+
+      /* Data and code also use Orbitron for consistency */
+      code, pre,
+      .font-mono,
+      [class*="value"],
+      [class*="data"],
+      .chart-value,
+      .card-value {
+        font-family: var(--font-mono);
+        -webkit-font-smoothing: antialiased;
+      }
+      /* Custom Scrollbar for tables */
+      .custom-scrollbar::-webkit-scrollbar {
+        width: 6px;
+        height: 6px;
+      }
+      .custom-scrollbar::-webkit-scrollbar-track {
+        background: #1e293b; /* slate-800 */
+      }
+      .custom-scrollbar::-webkit-scrollbar-thumb {
+        background: #334155; /* slate-700 */
+        border-radius: 3px;
+      }
+      .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+        background: #475569; /* slate-600 */
+      }
+
+      /* Custom Animations */
+      @keyframes float {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(-4px); }
+      }
+      .animate-float {
+        animation: float 4s ease-in-out infinite;
+      }
+
+      @keyframes pulse-glow {
+        0%, 100% { filter: drop-shadow(0 0 2px currentColor); opacity: 1; transform: scale(1); }
+        50% { filter: drop-shadow(0 0 10px currentColor); opacity: 0.9; transform: scale(1.05); }
+      }
+      .animate-pulse-glow {
+        animation: pulse-glow 3s ease-in-out infinite;
+      }
+
+      @keyframes shine {
+        100% { transform: translateX(100%); }
+      }
+      .animate-shine {
+        animation: shine 1s;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root"></div>
+  <script type="module" src="/index.tsx"></script>
+</body>
+</html>

@@ -1,0 +1,41 @@
+<svg viewBox="0 0 256 256" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="boltGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#06b6d4;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#2563eb;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#a855f7;stop-opacity:1" />
+    </linearGradient>
+    <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+  
+  <!-- Lightning bolt - BOLD and STRIKING (centered) -->
+  <g transform="translate(65, 40)" filter="url(#glow)">
+    <!-- Outer lightning bolt - thick and bold with gradient -->
+    <polygon points="40,0 20,48 45,48 8,110 35,55 12,55" 
+             fill="url(#boltGradient)" stroke="#7c3aed" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>
+    
+    <!-- Inner highlight - bright yellow/white glow for punch -->
+    <polygon points="40,4 22,45 43,45 12,106 33,58 15,58" 
+             fill="#fbbf24" opacity="0.7"/>
+    
+    <!-- Center spark for extra striking effect -->
+    <polygon points="38,12 28,30 38,27 20,42" fill="#fef08a" opacity="0.9"/>
+  </g>
+  
+  <!-- Power pulse around lightning (showing energy/power) -->
+  <circle cx="128" cy="128" r="8" fill="none" stroke="url(#boltGradient)" stroke-width="2" opacity="0.5">
+    <animate attributeName="r" values="8;25;8" dur="1.8s" repeatCount="indefinite"/>
+    <animate attributeName="opacity" values="0.8;0;0.8" dur="1.8s" repeatCount="indefinite"/>
+  </circle>
+  
+  <!-- Pulsing spark effect -->
+  <circle cx="128" cy="128" r="3" fill="#fbbf24">
+    <animate attributeName="opacity" values="0.3;1;0.3" dur="1.5s" repeatCount="indefinite"/>
+  </circle>
+</svg>

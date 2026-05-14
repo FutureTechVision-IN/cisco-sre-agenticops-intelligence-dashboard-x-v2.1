@@ -1,0 +1,196 @@
+# Dependencies
+node_modules/
+node_modules
+
+# Build outputs
+dist/
+build/
+out/
+
+# Logs
+logs/
+*.log
+nohup.out
+
+# Runtime data
+.startup_pids
+.pids/
+*.pid
+
+# OS files
+__MACOSX/
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Temporary files
+*.tmp
+*.temp
+.temp/
+
+# Test results
+test-results/
+qa-artifacts/
+coverage/
+*.coverage
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.env
+venv/
+env/
+
+# Generated documentation (generated reports)
+*_REPORT.md
+*_AUDIT.md
+*_SUMMARY.md
+*_ANALYSIS.md
+*_STATUS.md
+*_COMPLETE.md
+*_CHECKLIST.md
+*_INDEX.md
+*_REFERENCE.md
+*_GUIDE.md
+*_ROADMAP.md
+# Exception: Keep this evaluation report
+!DATA_DASHBOARD_EVALUATION_REPORT.md
+AUGUST_2025_QUICK_REFERENCE.txt
+FINAL_SESSION_SUMMARY.txt
+EXECUTIVE_SUMMARY_FN_ANALYSIS.html
+ACTION_SUMMARY_VODAFONE_FIX.md
+ADVANCED_ANALYTICS_SYSTEM.md
+AI_ML_ENHANCEMENTS.md
+CHATBOT_ZERO_DATA_FIX.md
+DESIGN_SYSTEM.md
+EXECUTIVE_PRESENTATION.md
+FEATURE_IMPLEMENTATION_LOG.md
+FIELD_NOTICE_ANALYTICS_IMPLEMENTATION.md
+FILTER_FIX_IMPLEMENTATION.md
+FLEXIBLE_YAXIS_IMPLEMENTATION.md
+KPI_FILTER_FIX_FINAL.md
+VISUAL_CONSISTENCY_IMPLEMENTATION.md
+VOICE_SYNTHESIS_ENHANCEMENT.md
+
+# Generated data files
+data/validation-reports/
+data/generated-data/
+**/static-data/filtered/
+**/validation-reports/
+
+# Generated documentation
+docs/generated/
+**/docs/generated/
+
+# Scripts (generated/helper)
+scripts/
+src/scripts/
+frontend/scripts/
+
+# Test outputs
+tests/output/
+src/tests/output/
+**/tests/output/
+
+# Service worker and build artifacts
+frontend/service-worker.js
+**/service-worker.js
+frontend/precache-manifest*.js
+**/precache-manifest*.js
+
+# Specific generated files
+statistics-screenshot-webkit.png
+data-validation-fix.js
+fix-trends.js
+check_data.py
+backend/data-validation-tests.ts
+backend/ml-data-validation-pipeline.ts
+src/backend/data-validation-tests.ts
+
+# Windows batch files (generated/helper scripts)
+*.bat
+serve-dist.cjs
+offline-server.*
+_realstart.ps1
+
+# Attached assets (temporary/pasted content)
+attached_assets/
+
+# Robot 3D assets
+Robot 3D animated AI/
+
+# Docker compose variations (keep only main one)
+docker-compose.desktop.yml
+docker-compose.enhanced.yml
+docker-compose.hybrid.yml
+docker-compose.production.yml
+
+# Frontend build artifacts
+frontend/components/RoboticAvatar/
+# frontend/index.html is intentionally tracked – it is the Vite SPA entry point
+
+# PostgreSQL data (should not be in repo)
+data/postgres/
+data/pgdata/
+**/pgdata/
+**/postgres/
+
+# Archive
+archive/
+backup/
+old/
+
+# Vendor
+vendor/
+
+# Generated docs
+docs_new/
+pyproject.toml
+uv.lock
+deploy-gh-pages-fix.sh
+docker-deploy.sh
+
+# Specific generated markdown files
+ALERT_NOTIFICATION_FRAMEWORK.md
+FIELD_NOTICE_QUICK_START.md
+FILTER_VISIBILITY_TEST_SUITE.md
+FIXES_APPLIED.md
+FONT_SIZE_REDUCTION.md
+FONT_SIZE_STANDARDIZATION.md
+FORCE_PUSH_DIAGNOSIS.md
+PHASE_3_ADMIN_PANEL_COMPLETION.md
+PROJECT_STRUCTURE.md
+STASH_DOCUMENTATION.md
+STRUCTURE_IMPROVEMENT_PLAN.md
+
+# Additional generated documentation
+ACTION_SUMMARY_VODAFONE_FIX.md
+ADVANCED_ANALYTICS_SYSTEM.md
+AGGREGATED_STATISTICS_AUDIT_REPORT.md
+AI_ML_ARCHITECTURE_AUDIT.md
+AI_ML_ENHANCEMENTS.md
+ALERT_NOTIFICATION_FRAMEWORK.md
+API_KEY_STATUS.md
+AUGUST_2025_QUICK_REFERENCE.txt
+BRANCH_SYNCHRONIZATION_REPORT.md
+CHATBOT_IMPLEMENTATION_SUMMARY.md
+CHATBOT_QUICK_REFERENCE.md
+CHATBOT_ZERO_DATA_FIX.md
+CIRCUIT_MCP_VALIDATION_REPORT.md
+COMMENTS_PUSH_CHECKLIST.md
+COMMENTS_REVIEW_EXECUTIVE_SUMMARY.md
+COMMENTS_REVIEW_INDEX.md
+COMMENTS_VALIDATION_REPORT.md
+COMPLETION_CHECKLIST.md
+COMPREHENSIVE_AI_ML_AUDIT.md
+COMPREHENSIVE_DATA_AUDIT_REPORT.md
+LOGIN_ISSUE_RCA.md
+PLAN_OF_ACTION.md

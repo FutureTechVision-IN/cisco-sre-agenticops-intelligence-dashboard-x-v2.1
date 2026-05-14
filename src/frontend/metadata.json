@@ -1,0 +1,7 @@
+{
+  "name": "Cisco SRE AgenticOps Intelligence Dashboard v2.0",
+  "description": "Enterprise-grade security vulnerability management platform providing real-time visibility into asset security posture.",
+  "requestFramePermissions": [
+    "microphone"
+  ]
+}
