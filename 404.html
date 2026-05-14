@@ -2,154 +2,32 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <!-- Force IE/Edge out of compatibility view — must be first after charset -->
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>SRE AgenticOps Intelligence Dashboard</title>
-    <!-- Tailwind is processed by @tailwindcss/vite – no CDN script needed in production -->
-    
-    <!-- Font Loading Strategy: Preload + font-display: swap for optimal performance -->
-    <!-- Primary Font: IBM Plex Sans (Professional, humanist sans-serif) -->
-    <!-- Mono Font: IBM Plex Mono (Tabular numerals for data clarity) -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1" />
+
+    <meta property="og:title" content="SRE AgenticOps Intelligence Dashboard" />
+    <meta property="og:description" content="Cisco Systems, Inc. - Security Intelligence Dashboard" />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="https://www.cisco.com/c/dam/en_us/about/brand/cisco-brand-assets-logos-images/cisco-logo-blue.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:site" content="@Cisco" />
+    <meta name="twitter:title" content="SRE AgenticOps Intelligence Dashboard" />
+    <meta name="twitter:description" content="Cisco Systems, Inc. - Security Intelligence Dashboard" />
+    <meta name="twitter:image" content="https://www.cisco.com/c/dam/en_us/about/brand/cisco-brand-assets-logos-images/cisco-logo-blue.png" />
+
+    <title>SRE AgenticOps Intelligence Dashboard - Cisco Systems, Inc.</title>
+
+    <!-- Optimized Google Fonts with Plus Jakarta Sans as primary display font -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="preload" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400;1,500&family=IBM+Plex+Mono:wght@400;500;600&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
-    
-    <!-- Fallback for no-JS environments -->
-    <noscript>
-      <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400;1,500&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-    </noscript>
-    
-    <style>
-      /* Font face definitions with system font fallbacks for better load performance */
-      @font-face {
-        font-family: 'IBM Plex Sans Fallback';
-        src: local('system-ui'), local('-apple-system'), local('BlinkMacSystemFont'), local('Segoe UI');
-        ascent-override: 100%;
-        descent-override: 27%;
-        line-gap-override: 0%;
-      }
-
-      /* Root typography settings */
-      :root {
-        /* Font families with optimized fallbacks — IBM Plex Sans for all text */
-        --font-primary: 'IBM Plex Sans', 'IBM Plex Sans Fallback', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-        --font-display: 'IBM Plex Sans', 'IBM Plex Sans Fallback', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-        --font-mono: 'IBM Plex Mono', 'Menlo', 'Consolas', monospace;
-      }
-
-      html {
-        font-family: var(--font-primary);
-        font-size: 16px;
-        -webkit-text-size-adjust: 100%;
-        -moz-text-size-adjust: 100%;
-        text-size-adjust: 100%;
-        overflow-x: hidden;
-      }
-
-      body {
-        font-family: var(--font-primary);
-        background-color: #0f172a; /* slate-900 */
-        color: #fff;
-        font-size: 16px;
-        line-height: 1.5;
-        -webkit-font-smoothing: antialiased;
-        -moz-osx-font-smoothing: grayscale;
-        -webkit-text-size-adjust: 100%;
-        -moz-text-size-adjust: 100%;
-        text-size-adjust: 100%;
-      }
-
-      /* Display font for headings and important UI — IBM Plex Sans globally */
-      h1, h2, h3, h4, h5, h6,
-      [class*="title"],
-      [class*="heading"],
-      .header-title,
-      .card-title,
-      .chart-title,
-      button, input, textarea, select,
-      .btn, .button,
-      nav, .menu,
-      label {
-        font-family: var(--font-display);
-        font-weight: 600;
-        letter-spacing: 0.02em;
-        -webkit-font-smoothing: antialiased;
-      }
-
-      /* Data values and code use IBM Plex Mono for tabular alignment */
-      code, pre,
-      .font-mono,
-      [class*="value"],
-      [class*="data"],
-      .chart-value,
-      .card-value {
-        font-family: var(--font-mono);
-        -webkit-font-smoothing: antialiased;
-      }
-      /* Custom Scrollbar for tables */
-      /* Standard CSS (Firefox 64+, Chrome 121+, Edge 121+) */
-      .custom-scrollbar {
-        scrollbar-width: thin;
-        scrollbar-color: #334155 #1e293b; /* thumb track */
-      }
-      /* WebKit / Blink legacy (Chrome <121, Safari, older Edge) */
-      .custom-scrollbar::-webkit-scrollbar {
-        width: 6px;
-        height: 6px;
-      }
-      .custom-scrollbar::-webkit-scrollbar-track {
-        background: #1e293b; /* slate-800 */
-      }
-      .custom-scrollbar::-webkit-scrollbar-thumb {
-        background: #334155; /* slate-700 */
-        border-radius: 3px;
-      }
-      .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-        background: #475569; /* slate-600 */
-      }
-      /* IE/Edge Legacy (no custom scrollbar support — use default) */
-      /* scrollbar-face-color and scrollbar-track-color were IE-only and are now
-         ignored by modern browsers; we intentionally omit them here */
-
-      /* Custom Animations */
-      @keyframes float {
-        0%, 100% { transform: translateY(0); }
-        50% { transform: translateY(-4px); }
-      }
-      .animate-float {
-        animation: float 4s ease-in-out infinite;
-      }
-
-      @keyframes pulse-glow {
-        0%, 100% { filter: drop-shadow(0 0 2px currentColor); opacity: 1; transform: scale(1); }
-        50% { filter: drop-shadow(0 0 10px currentColor); opacity: 0.9; transform: scale(1.05); }
-      }
-      .animate-pulse-glow {
-        animation: pulse-glow 3s ease-in-out infinite;
-      }
-
-      @keyframes shine {
-        100% { transform: translateX(100%); }
-      }
-      .animate-shine {
-        animation: shine 1s;
-      }
-    </style>
-    <script type="module" crossorigin src="/pages/bipbabu/cisco-sre-agenticops-intelligence-dashboard-x-v2.1/assets/index-uW71ov4W.js"></script>
-    <link rel="modulepreload" crossorigin href="/pages/bipbabu/cisco-sre-agenticops-intelligence-dashboard-x-v2.1/assets/vendor-BwB2dm8X.js">
-    <link rel="modulepreload" crossorigin href="/pages/bipbabu/cisco-sre-agenticops-intelligence-dashboard-x-v2.1/assets/charts-DbbFvG3O.js">
-    <link rel="modulepreload" crossorigin href="/pages/bipbabu/cisco-sre-agenticops-intelligence-dashboard-x-v2.1/assets/stats-YKjTYKj_.js">
-    <link rel="stylesheet" crossorigin href="/pages/bipbabu/cisco-sre-agenticops-intelligence-dashboard-x-v2.1/assets/index-rOEhs5dR.css">
+    <!-- Plus Jakarta Sans: Modern, highly readable display font with excellent cross-platform rendering -->
+    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;1,200;1,300;1,400;1,500;1,600;1,700;1,800&display=swap">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;1,200;1,300;1,400;1,500;1,600;1,700;1,800&display=swap" rel="stylesheet">
+    <!-- Futuristic & Premium Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Audiowide&family=Orbitron:wght@400;700;900&family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&family=Architects+Daughter&family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Fira+Code:wght@300..700&family=Geist+Mono:wght@100..900&family=Geist:wght@100..900&family=IBM+Plex+Mono:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&family=IBM+Plex+Sans:ital,wght@0,100..700;1,100..700&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Lora:ital,wght@0,400..700;1,400..700&family=Merriweather:ital,opsz,wght@0,18..144,300..900;1,18..144,300..900&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Outfit:wght@100..900&family=Oxanium:wght@200..800&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto+Mono:ital,wght@0,100..700;1,100..700&family=Roboto:ital,wght@0,100..900;1,100..900&family=Source+Code+Pro:ital,wght@0,200..900;1,200..900&family=Source+Serif+4:ital,opsz,wght@0,8..60,200..900;1,8..60,200..900&family=Space+Grotesk:wght@300..700&display=swap" rel="stylesheet">
+    <script type="module" crossorigin src="/pages/bipbabu/cisco-sre-agenticops-intelligence-dashboard-x/assets/index-CjS_BV4_.js"></script>
+    <link rel="stylesheet" crossorigin href="/pages/bipbabu/cisco-sre-agenticops-intelligence-dashboard-x/assets/index-C2wnJHGX.css">
   </head>
   <body>
-    <!-- IE11 incompatibility notice: shown only in IE 10/11 via conditional comments
-         and the CSS hack below. React 19 requires Edge, Chrome, Firefox, or Safari. -->
-    <!--[if lte IE 11]>
-    <div style="position:fixed;top:0;left:0;right:0;z-index:9999;background:#c00;color:#fff;padding:12px 16px;font-family:Arial,sans-serif;font-size:14px;text-align:center;">
-      Internet Explorer is not supported. Please use Microsoft Edge, Google Chrome, or Mozilla Firefox.
-    </div>
-    <![endif]-->
     <div id="root"></div>
-</body>
+  </body>
 </html>
