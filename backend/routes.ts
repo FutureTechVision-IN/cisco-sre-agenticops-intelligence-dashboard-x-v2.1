@@ -5703,8 +5703,156 @@ export async function registerRoutes(app: Express): Promise<Server> {
           break;
         }
 
-        default:
-          return res.status(400).json({ error: `Unknown cardId: ${cardId}` });
+        default: {
+          // Generic AI Intelligence card analysis — handles anomaly, risk-hotspot, early-warning, segment, recommendation cards
+          if (cardId.startsWith('anomaly-') || cardId.startsWith('risk-hotspot-') || cardId.startsWith('early-warning-') || cardId.startsWith('segment-') || cardId.startsWith('recommendation-')) {
+            const customerName = cardLabel || cardSubtext || '';
+            const customerData = customerStats.find(c => c.customer === customerName);
+
+            // Find related customers for context
+            const findSimilar = (target: { customer: string; latest: number; reduction: number }) => {
+              return customerStats
+                .filter(c => c.customer !== target.customer && Math.abs(c.latest - target.latest) < target.latest * 0.5)
+                .sort((a, b) => Math.abs(a.reduction - target.reduction) - Math.abs(b.reduction - target.reduction))
+                .slice(0, 5);
+            };
+
+            if (cardId.startsWith('anomaly-')) {
+              const severity = cardValue.includes('critical') ? 'critical' : cardValue.includes('high') ? 'warning' : 'neutral';
+              const similar = customerData ? findSimilar(customerData) : [];
+              analysis = {
+                title: `Anomaly Analysis: ${customerName}`,
+                type: "anomaly-deep-dive",
+                insights: [
+                  { label: "Anomaly Type", value: cardValue.split('·')[0]?.trim() || 'Detected', severity },
+                  { label: "Current Volume", value: customerData ? customerData.latest.toLocaleString() : cardSubtext, severity: severity },
+                  { label: "Change Rate", value: customerData ? `${customerData.reduction > 0 ? '+' : ''}${customerData.reduction.toFixed(1)}%` : 'N/A', severity: (customerData?.reduction || 0) > 50 ? 'critical' : 'neutral' },
+                  { label: "Similar Customers", value: String(similar.length), severity: "neutral" },
+                ],
+                chart: {
+                  type: "line",
+                  data: customerData ? customerData.monthlyTrend.map((v, i) => ({ label: months[i] || `M${i}`, value: v })) : [],
+                },
+                recommendations: [
+                  `Investigate root cause of anomalous pattern for ${customerName}.`,
+                  customerData && customerData.reduction > 100 ? `URGENT: ${customerName} shows ${customerData.reduction.toFixed(0)}% increase — requires immediate attention.` : `Monitor ${customerName} for continued deviation.`,
+                  similar.length > 0 ? `Similar pattern observed in: ${similar.slice(0, 3).map(s => s.customer).join(', ')}.` : 'No similar patterns found — this is an isolated anomaly.',
+                ],
+                stats: { customer: customerName, trend: customerData?.monthlyTrend, similar: similar.map(s => ({ customer: s.customer, latest: s.latest, reduction: s.reduction })) },
+              };
+            } else if (cardId.startsWith('risk-hotspot-')) {
+              const riskScore = parseInt(cardValue) || 0;
+              const projected = customerData ? Math.round(customerData.latest * (1 + (customerData.reduction / 100) * 6)) : 0;
+              analysis = {
+                title: `Risk Assessment: ${customerName}`,
+                type: "risk-projection",
+                insights: [
+                  { label: "Risk Score", value: String(riskScore), severity: riskScore >= 60 ? 'critical' : riskScore >= 40 ? 'warning' : 'neutral' },
+                  { label: "Current Volume", value: customerData ? formatNum(customerData.latest) : 'N/A', severity: (customerData?.latest || 0) > 10000 ? 'critical' : 'neutral' },
+                  { label: "6M Projection", value: formatNum(projected), severity: projected > (customerData?.latest || 0) ? 'critical' : 'good' },
+                  { label: "Trend Direction", value: (customerData?.reduction || 0) > 0 ? 'Worsening' : 'Improving', severity: (customerData?.reduction || 0) > 0 ? 'critical' : 'good' },
+                ],
+                chart: {
+                  type: "line",
+                  data: customerData ? [
+                    ...customerData.monthlyTrend.map((v, i) => ({ label: months[i] || `M${i}`, value: v })),
+                    ...Array.from({ length: 3 }, (_, i) => ({ label: `+${i + 1}m`, value: Math.max(0, Math.round(customerData.latest * (1 + (customerData.reduction / 600) * (i + 1)))) })),
+                  ] : [],
+                },
+                recommendations: [
+                  riskScore >= 60 ? `HIGH RISK: ${customerName} requires immediate remediation intervention.` : `Monitor ${customerName} — risk is elevated but manageable.`,
+                  `Current trajectory projects ${formatNum(projected)} vulnerabilities in 6 months.`,
+                  'Recommend: Dedicated remediation sprint with customer success team involvement.',
+                ],
+                stats: { customer: customerName, riskScore, current: customerData?.latest, projected, trend: customerData?.monthlyTrend },
+              };
+            } else if (cardId.startsWith('early-warning-')) {
+              const isImmediate = cardValue.includes('immediate');
+              analysis = {
+                title: `Early Warning: ${customerName}`,
+                type: "trend-alert",
+                insights: [
+                  { label: "Urgency", value: isImmediate ? 'Immediate' : 'Watch', severity: isImmediate ? 'critical' : 'warning' },
+                  { label: "Signal Type", value: cardValue.split('·')[0]?.trim() || 'Alert', severity: isImmediate ? 'critical' : 'warning' },
+                  { label: "Current Volume", value: customerData ? formatNum(customerData.latest) : 'N/A', severity: (customerData?.latest || 0) > 10000 ? 'critical' : 'neutral' },
+                  { label: "Trajectory", value: (customerData?.reduction || 0) > 0 ? 'Growing' : 'Declining', severity: (customerData?.reduction || 0) > 0 ? 'warning' : 'good' },
+                ],
+                chart: {
+                  type: "line",
+                  data: customerData ? customerData.monthlyTrend.map((v, i) => ({ label: months[i] || `M${i}`, value: v })) : [],
+                },
+                recommendations: [
+                  isImmediate ? `IMMEDIATE ACTION: ${customerName} requires intervention — trend reversal or stagnation detected.` : `WATCH: Monitor ${customerName} closely for continued deterioration.`,
+                  customerData ? `Historical pattern: ${customerData.first.toLocaleString()} → ${customerData.latest.toLocaleString()} (${customerData.reduction > 0 ? '+' : ''}${customerData.reduction.toFixed(1)}%)` : 'Insufficient historical data for deep analysis.',
+                  'Recommend: Schedule customer check-in within 2 weeks to assess remediation blockers.',
+                ],
+                stats: { customer: customerName, urgency: isImmediate ? 'immediate' : 'watch', current: customerData?.latest, trend: customerData?.monthlyTrend },
+              };
+            } else if (cardId.startsWith('segment-')) {
+              const segmentName = cardLabel || 'Unknown Segment';
+              const segmentCustomers = customerStats.filter(c => {
+                if (segmentName.includes('Champions')) return c.reduction < -50;
+                if (segmentName.includes('Improving')) return c.reduction >= -50 && c.reduction < -10;
+                if (segmentName.includes('Stagnant')) return Math.abs(c.reduction) <= 10;
+                if (segmentName.includes('Deteriorating')) return c.reduction > 10 && c.reduction <= 100;
+                if (segmentName.includes('Critical')) return c.reduction > 100;
+                return false;
+              });
+              const avgVuln = mean(segmentCustomers.map(c => c.latest));
+              const avgRed = mean(segmentCustomers.map(c => c.reduction));
+
+              analysis = {
+                title: `Segment Analysis: ${segmentName}`,
+                type: "segment-breakdown",
+                insights: [
+                  { label: "Customers in Segment", value: String(segmentCustomers.length), severity: "neutral" },
+                  { label: "Avg Vulnerabilities", value: formatNum(Math.round(avgVuln)), severity: avgVuln > 5000 ? 'critical' : avgVuln > 1000 ? 'warning' : 'good' },
+                  { label: "Avg Reduction", value: `${avgRed > 0 ? '+' : ''}${avgRed.toFixed(1)}%`, severity: avgRed < -10 ? 'good' : avgRed > 10 ? 'critical' : 'neutral' },
+                  { label: "Total Exposure", value: formatNum(segmentCustomers.reduce((s, c) => s + c.latest, 0)), severity: "neutral" },
+                ],
+                chart: {
+                  type: "bar",
+                  data: segmentCustomers.sort((a, b) => b.latest - a.latest).slice(0, 8).map(c => ({ label: c.customer.substring(0, 15), value: c.latest, color: c.reduction < -10 ? '#10b981' : c.reduction > 10 ? '#ef4444' : '#f59e0b' })),
+                },
+                recommendations: [
+                  `${segmentName} segment contains ${segmentCustomers.length} customers with avg ${formatNum(Math.round(avgVuln))} vulnerabilities each.`,
+                  segmentName.includes('Stagnant') ? 'PRIORITY: Re-engage stagnant customers with targeted outreach — investigate potential blockers.' : segmentName.includes('Critical') ? 'URGENT: Executive escalation needed for critical segment customers.' : `Continue current engagement strategy for ${segmentName.toLowerCase()} segment.`,
+                  `Top customers: ${segmentCustomers.sort((a, b) => b.latest - a.latest).slice(0, 3).map(c => c.customer).join(', ')}.`,
+                ],
+                stats: { segment: segmentName, count: segmentCustomers.length, avgVuln, avgReduction: avgRed, topCustomers: segmentCustomers.sort((a, b) => b.latest - a.latest).slice(0, 10).map(c => ({ customer: c.customer, latest: c.latest, reduction: c.reduction })) },
+              };
+            } else {
+              // recommendation card
+              analysis = {
+                title: `Strategic Recommendation: ${cardLabel}`,
+                type: "action-plan",
+                insights: [
+                  { label: "Priority", value: cardValue || 'Medium', severity: cardValue === 'high' || cardValue === 'critical' ? 'critical' : cardValue === 'medium' ? 'warning' : 'good' },
+                  { label: "Effort Level", value: cardSubtext || 'Medium', severity: "neutral" },
+                  { label: "Affected Customers", value: String(customerStats.length), severity: "neutral" },
+                  { label: "Portfolio Coverage", value: `${((stillVuln.length / customerStats.length) * 100).toFixed(0)}% vulnerable`, severity: "warning" },
+                ],
+                chart: {
+                  type: "bar",
+                  data: [
+                    { label: "Improved", value: improved.length, color: "#10b981" },
+                    { label: "Worsened", value: worsened.length, color: "#ef4444" },
+                    { label: "Stagnant", value: unchanged.length + customerStats.filter(c => Math.abs(c.reduction) < 5 && c.latest !== c.first).length, color: "#f59e0b" },
+                  ],
+                },
+                recommendations: [
+                  `This recommendation targets ${cardLabel || 'portfolio optimization'}.`,
+                  `Current state: ${improved.length} improving, ${worsened.length} worsening, ${unchanged.length} unchanged.`,
+                  'Implement recommendation within next sprint cycle for maximum impact.',
+                ],
+                stats: { improved: improved.length, worsened: worsened.length, unchanged: unchanged.length, totalCustomers: customerStats.length },
+              };
+            }
+          } else {
+            return res.status(400).json({ error: `Unknown cardId: ${cardId}` });
+          }
+          break;
+        }
       }
 
       const computeTime = Date.now() - startTime;
