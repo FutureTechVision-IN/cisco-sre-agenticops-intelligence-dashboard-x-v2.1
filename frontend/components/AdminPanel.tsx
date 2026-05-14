@@ -11,6 +11,7 @@ import {
 } from 'lucide-react';
 import { getAdminSettingsService, AdminSettings, AuditLogEntry } from '../services/adminSettingsService';
 import { useAuth } from '../contexts/AuthContext';
+import { ApiSessionTracker } from './ApiSessionTracker';
 
 interface AdminPanelProps {
   isOpen: boolean;
@@ -21,7 +22,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ isOpen, onClose }) => {
   const { user } = useAuth();
   const settingsService = getAdminSettingsService();
 
-  const [activeTab, setActiveTab] = useState<'settings' | 'audit' | 'security'>('settings');
+  const [activeTab, setActiveTab] = useState<'settings' | 'audit' | 'security' | 'api-tracker'>('settings');
   const [settings, setSettings] = useState<AdminSettings>(settingsService.getSettings());
   const [auditLog, setAuditLog] = useState<AuditLogEntry[]>([]);
   const [auditFilter, setAuditFilter] = useState<'all' | 'settings' | 'security' | 'system'>('all');
@@ -127,7 +128,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ isOpen, onClose }) => {
 
         {/* Tabs */}
         <div className="flex gap-0 border-b border-slate-700">
-          {(['settings', 'audit', 'security'] as const).map(tab => (
+          {(['settings', 'audit', 'security', 'api-tracker'] as const).map(tab => (
             <button
               key={tab}
               onClick={() => setActiveTab(tab)}
@@ -140,6 +141,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ isOpen, onClose }) => {
               {tab === 'settings' && 'Settings'}
               {tab === 'audit' && 'Audit Log'}
               {tab === 'security' && 'Security'}
+              {tab === 'api-tracker' && 'API Tracker'}
             </button>
           ))}
         </div>
@@ -485,6 +487,11 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ isOpen, onClose }) => {
                 </div>
               </div>
             </div>
+          )}
+
+          {/* API Session Tracker Tab */}
+          {activeTab === 'api-tracker' && (
+            <ApiSessionTracker />
           )}
         </div>
       </div>

@@ -6450,6 +6450,15 @@ export async function registerRoutes(app: Express): Promise<Server> {
     console.warn("[ROUTES] Secrets/AI routes not available:", error);
   }
 
+  // Register API Session Tracker routes
+  try {
+    const sessionTrackerRoutes = (await import("./api-session-tracker-routes")).default;
+    app.use("/api/admin/session-tracker", sessionTrackerRoutes);
+    console.log("[ROUTES] API Session Tracker routes registered");
+  } catch (error) {
+    console.warn("[ROUTES] API Session Tracker routes not available:", error);
+  }
+
   // Register ChatBot routes for ChatGPT-style voice chatbot with Cisco CIRCUIT API
   try {
     const chatbotRoutes = (await import("./chatbot-routes")).default;
