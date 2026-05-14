@@ -1286,6 +1286,9 @@ export const ComprehensiveStatsDashboard: React.FC<ComprehensiveStatsDashboardPr
     return () => clearInterval(interval);
   }, [isAutoRefresh, refreshInterval]);
 
+  // Chart theme (used for PerformanceGauge colors in the overview tab)
+  const chartTheme = useChartTheme();
+
   // Health metrics
   const healthScore = useMemo(() => {
     const vulnRatio = dashboard.metrics.vulnerable.value / dashboard.metrics.totalAssessed.value;
