@@ -194,3 +194,6 @@ COMPREHENSIVE_AI_ML_AUDIT.md
 COMPREHENSIVE_DATA_AUDIT_REPORT.md
 LOGIN_ISSUE_RCA.md
 PLAN_OF_ACTION.md
+
+# Large data files - too large for GitHub (>100MB); keep locally only
+data/fn_aug25-feb26.csv

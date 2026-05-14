@@ -46,4 +46,4 @@
 *.tar.gz    binary
 *.tgz       binary
 *.lock      text eol=lf
-data/fn_aug25-feb26.csv filter=lfs diff=lfs merge=lfs -text
+
