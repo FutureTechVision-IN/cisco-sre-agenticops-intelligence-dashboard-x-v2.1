@@ -5414,6 +5414,13 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return res.status(400).json({ error: "cardId is required" });
       }
 
+      // Helper for number formatting
+      function formatNum(n: number): string {
+        if (n >= 1_000_000) return `${(n / 1_000_000).toFixed(1)}M`;
+        if (n >= 1_000) return `${(n / 1_000).toFixed(1)}K`;
+        return n.toLocaleString();
+      }
+
       const cache = await loadCSVData();
       const records = cache.records;
       const months = Array.from(cache.aggregations.availableMonths).sort();
