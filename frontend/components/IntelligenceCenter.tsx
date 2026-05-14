@@ -780,7 +780,7 @@ export const IntelligenceCenter: React.FC<Props> = ({ onBack }) => {
                             contentStyle={chartTheme.tooltipStyle}
                             itemStyle={{...chartTheme.tooltipItemStyle, fontSize: '12px'}}
                           />
-                          <Bar dataKey="value" fill="#6366f1" radius={[4, 4, 0, 0]} barSize={60} />
+                          <Bar dataKey="value" fill={chartTheme.accent} radius={[4, 4, 0, 0]} barSize={60} />
                        </BarChart>
                     </ResponsiveContainer>
                  </div>

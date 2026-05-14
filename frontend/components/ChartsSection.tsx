@@ -335,15 +335,15 @@ const RiskConcentrationCard: React.FC<{
               <Radar 
                 name="Vulnerability" 
                 dataKey="vulnerability" 
-                stroke="#ef4444" 
-                fill="#ef4444" 
+                stroke={chartTheme.danger} 
+                fill={chartTheme.danger} 
                 fillOpacity={0.3} 
               />
               <Radar 
                 name="Exposure" 
                 dataKey="exposure" 
-                stroke="#f59e0b" 
-                fill="#f59e0b" 
+                stroke={chartTheme.warning} 
+                fill={chartTheme.warning} 
                 fillOpacity={0.2} 
               />
               <Tooltip 

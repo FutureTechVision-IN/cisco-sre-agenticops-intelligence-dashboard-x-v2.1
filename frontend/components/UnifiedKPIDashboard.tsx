@@ -548,7 +548,7 @@ const KPIDetailModal: React.FC<KPIDetailModalProps> = ({ kpi, onClose, mlAnalysi
                       stroke={chartColor}
                       strokeWidth={2}
                     />
-                    <ReferenceLine y={kpi.target} stroke="#f59e0b" strokeDasharray="5 5" label="Target" />
+                    <ReferenceLine y={kpi.target} stroke={chartTheme.warning} strokeDasharray="5 5" label="Target" />
                   </ComposedChart>
                 </ResponsiveContainer>
               </div>
@@ -1472,7 +1472,7 @@ export const UnifiedKPIDashboard: React.FC<UnifiedKPIDashboardProps> = ({ onBack
                     <Cell key={kpi.id} fill={colorMapChart[kpi.color] || '#06b6d4'} />
                   ))}
                 </Bar>
-                <ReferenceLine y={100} stroke="#f59e0b" strokeDasharray="5 5" label={{ value: 'Target 100%', fill: '#f59e0b', fontSize: 11 }} />
+                <ReferenceLine y={100} stroke={chartTheme.warning} strokeDasharray="5 5" label={{ value: 'Target 100%', fill: chartTheme.warning, fontSize: 11 }} />
               </BarChart>
             </ResponsiveContainer>
             <p className="text-center text-xs text-slate-600 mt-2 flex items-center justify-center gap-1">

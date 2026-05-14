@@ -380,7 +380,7 @@ export const StreamingChart: React.FC<StreamingChartProps> = ({
                   key={i}
                   x1={point.timestamp}
                   x2={point.timestamp}
-                  fill="#ef4444"
+                  fill={chartTheme.danger}
                   fillOpacity={0.1}
                 />
               ))}
@@ -757,7 +757,7 @@ export const ComparisonChart: React.FC<ComparisonChartProps> = ({
             <Bar 
               dataKey="previous" 
               name="Previous" 
-              fill="#64748b" 
+              fill={chartTheme.neutral} 
               radius={[4, 4, 0, 0]}
               isAnimationActive={true}
               animationDuration={800}
@@ -765,7 +765,7 @@ export const ComparisonChart: React.FC<ComparisonChartProps> = ({
             <Bar 
               dataKey="current" 
               name="Current" 
-              fill="#06b6d4" 
+              fill={chartTheme.info} 
               radius={[4, 4, 0, 0]}
               isAnimationActive={true}
               animationDuration={800}

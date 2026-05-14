@@ -1095,7 +1095,7 @@ export const KPICardInteractive: React.FC<KPICardInteractiveProps> = ({
               labelStyle={chartTheme.tooltipLabelStyle}
             />
             <Legend wrapperStyle={{ fontSize: '12px' }} />
-            <Bar dataKey="ratio" fill="#06b6d4" animationDuration={1000} name="KAR Ratio" />
+            <Bar dataKey="ratio" fill={chartTheme.info} animationDuration={1000} name="KAR Ratio" />
           </BarChart>
         </ResponsiveContainer>
       );
@@ -1141,8 +1141,8 @@ export const KPICardInteractive: React.FC<KPICardInteractiveProps> = ({
         <AreaChart data={karData} margin={chartProps.margin}>
           <defs>
             <linearGradient id="colorRatio" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="5%" stopColor="#06b6d4" stopOpacity={0.8} />
-              <stop offset="95%" stopColor="#06b6d4" stopOpacity={0} />
+              <stop offset="5%" stopColor={chartTheme.info} stopOpacity={0.8} />
+              <stop offset="95%" stopColor={chartTheme.info} stopOpacity={0} />
             </linearGradient>
           </defs>
           <CartesianGrid strokeDasharray="3 3" stroke={chartTheme.gridStroke} opacity={0.3} />
@@ -1160,7 +1160,7 @@ export const KPICardInteractive: React.FC<KPICardInteractiveProps> = ({
           <Area
             type="monotone"
             dataKey="ratio"
-            stroke="#06b6d4"
+            stroke={chartTheme.info}
             fillOpacity={1}
             fill="url(#colorRatio)"
             animationDuration={1000}
@@ -1383,7 +1383,7 @@ export const KPICardInteractive: React.FC<KPICardInteractiveProps> = ({
                       <Scatter
                         name="Risk Distribution"
                         data={karData}
-                        fill="#f59e0b"
+                        fill={chartTheme.warning}
                         fillOpacity={0.7}
                         isAnimationActive={true}
                         animationDuration={1000}
@@ -2227,8 +2227,8 @@ export const KPICardInteractive: React.FC<KPICardInteractiveProps> = ({
                                   }}
                                 />
                                 <Legend wrapperStyle={{ fontSize: '11px' }} />
-                                <Bar dataKey="count" fill="#06B6D4" name="Total Accounts" radius={[0, 4, 4, 0]} />
-                                <Bar dataKey="criticalCount" fill="#EF4444" name="Critical Risk" radius={[0, 4, 4, 0]} />
+                                <Bar dataKey="count" fill={chartTheme.info} name="Total Accounts" radius={[0, 4, 4, 0]} />
+                                <Bar dataKey="criticalCount" fill={chartTheme.danger} name="Critical Risk" radius={[0, 4, 4, 0]} />
                               </BarChart>
                             </ResponsiveContainer>
                           </div>
@@ -2282,8 +2282,8 @@ export const KPICardInteractive: React.FC<KPICardInteractiveProps> = ({
                                     );
                                   }}
                                 />
-                                <ReferenceLine y={65} stroke="#F97316" strokeDasharray="5 5" label={{ value: 'High Risk', fill: '#F97316', fontSize: 10 }} />
-                                <ReferenceLine y={80} stroke="#EF4444" strokeDasharray="5 5" label={{ value: 'Critical', fill: '#EF4444', fontSize: 10 }} />
+                                <ReferenceLine y={65} stroke={chartTheme.warning} strokeDasharray="5 5" label={{ value: 'High Risk', fill: chartTheme.warning, fontSize: 10 }} />
+                                <ReferenceLine y={80} stroke={chartTheme.danger} strokeDasharray="5 5" label={{ value: 'Critical', fill: chartTheme.danger, fontSize: 10 }} />
                                 {industrySummary.map((ind) => (
                                   <Scatter
                                     key={ind.industry}
