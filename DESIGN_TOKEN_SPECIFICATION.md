@@ -323,3 +323,51 @@ This document delivers all 8 requested deliverables:
 6. **Professional Documentation Style** - Technical specification with tables, code examples, and structured sections
 7. **Organized Specification Format** - 8 numbered sections with subsections, tables, and code blocks
 8. **Specific Starter Tokens** (Section 1.7) - All 7 canonical tokens included verbatim as requested
+
+---
+
+## 9. Small Label Readability Enhancement
+
+### 9.1 Problem Statement
+
+Dashboard small labels (`text-xs`, 12px) using `text-slate-400` had insufficient contrast in dark mode (only 4.6:1 on `#0f172a` background) and lacked crispness at small sizes.
+
+### 9.2 Solution Strategy
+
+Without increasing font size:
+- **Dark mode**: Lighten color from `#94a3b8` (slate-400) → `#e2e8f0` (slate-200)
+- **Light mode**: Darken color from `#94a3b8` → `#334155` (slate-700)
+- **Weight boost**: Apply `font-weight: 500` (medium) to regular-weight labels only; preserve existing `font-bold` / `font-semibold` classes
+- **Uppercase labels**: Boost to `#cbd5e1` (slate-300) in dark, `#475569` (slate-600) in light
+- **Chart axis ticks**: Set `fill: #cbd5e1` in dark, `#334155` in light with weight 500
+
+### 9.3 CSS Selectors Used
+
+```css
+/* Dark mode — color lift */
+[data-theme="dark"] .text-xs.text-slate-400,
+[data-theme="dark"] .text-xs.text-slate-500 {
+  color: #e2e8f0 !important;
+}
+
+/* Weight boost (only regular-weight labels) */
+[data-theme="dark"] .text-xs.text-slate-400:not(.font-bold):not(.font-semibold):not(.font-extrabold):not(.font-medium) {
+  font-weight: 500;
+}
+
+/* Light mode — contrast darken */
+[data-theme="light"] .text-xs.text-slate-400,
+[data-theme="light"] .text-xs.text-slate-500 {
+  color: #334155 !important;
+}
+```
+
+### 9.4 Verified Contrast Ratios
+
+| Element | Dark Mode | Light Mode | WCAG |
+|---------|-----------|------------|------|
+| `text-xs.text-slate-400` | 14.48:1 | 10.35:1 | AAA both |
+| `text-xs.font-bold.uppercase` | 12.02:1 | 7.58:1 | AAA both |
+| Chart axis ticks | 12.02:1 | 9.1:1 | AAA both |
+
+All small labels now exceed WCAG AAA (7:1) requirements in both themes without any font-size increase.
