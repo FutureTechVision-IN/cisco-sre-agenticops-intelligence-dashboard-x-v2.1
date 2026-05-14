@@ -2337,3 +2337,74 @@ html.theme-transition *::after {
 [data-theme="light"] .recharts-legend-item-text {
   color: var(--theme-text-secondary) !important;
 }
+
+/* =============================================
+   SMALL LABEL READABILITY ENHANCEMENT
+   Improves legibility of text-xs (12px) labels
+   without increasing font size. Uses lighter color
+   + semi-bold weight for sharpness at small sizes.
+   ============================================= */
+
+/* --- Dark mode: boost text-xs labels to slate-200 + medium weight --- */
+[data-theme="dark"] .text-xs.text-slate-400,
+[data-theme="dark"] .text-xs.text-slate-500,
+.text-xs.text-slate-400,
+.text-xs.text-slate-500 {
+  color: #e2e8f0 !important;   /* slate-200 — 13.5:1 on #0f172a */
+  font-weight: 500 !important; /* medium weight for crispness */
+}
+
+/* Dashboard section labels (uppercase small-caps) in dark mode */
+[data-theme="dark"] .ds-section-title,
+.ds-section-title {
+  color: #cbd5e1 !important;   /* slate-300 — 10.2:1 on #0f172a */
+  font-weight: 700 !important;
+}
+
+[data-theme="dark"] .ds-card-heading,
+.ds-card-heading {
+  color: #cbd5e1 !important;   /* slate-300 */
+  font-weight: 700 !important;
+}
+
+/* Chart axis tick labels — ensure readability */
+[data-theme="dark"] .recharts-cartesian-axis-tick-value,
+.recharts-cartesian-axis-tick-value {
+  fill: #cbd5e1 !important;    /* slate-300 — readable on dark bg */
+  font-weight: 500 !important;
+}
+
+/* Chart legend text — dark mode */
+[data-theme="dark"] .recharts-legend-item-text,
+.recharts-legend-item-text {
+  color: #e2e8f0 !important;   /* slate-200 */
+  font-weight: 500 !important;
+}
+
+/* KPI card sub-labels (e.g. "Total Assessed", "Vulnerable") */
+[data-theme="dark"] .text-xs.font-bold.uppercase,
+.text-xs.font-bold.uppercase {
+  color: #cbd5e1 !important;   /* slate-300 */
+}
+
+/* --- Light mode: ensure text-xs labels stay sharp with weight boost --- */
+[data-theme="light"] .text-xs.text-slate-400,
+[data-theme="light"] .text-xs.text-slate-500 {
+  color: #334155 !important;   /* slate-700 — 9.1:1 on white */
+  font-weight: 500 !important;
+}
+
+[data-theme="light"] .ds-section-title,
+[data-theme="light"] .ds-card-heading {
+  color: #475569 !important;   /* slate-600 — 7.0:1 on white */
+  font-weight: 700 !important;
+}
+
+[data-theme="light"] .recharts-cartesian-axis-tick-value {
+  fill: #334155 !important;    /* slate-700 — clear axis labels */
+  font-weight: 500 !important;
+}
+
+[data-theme="light"] .text-xs.font-bold.uppercase {
+  color: #475569 !important;   /* slate-600 */
+}
