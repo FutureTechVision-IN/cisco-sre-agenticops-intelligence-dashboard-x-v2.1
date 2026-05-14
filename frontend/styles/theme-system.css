@@ -127,7 +127,16 @@ html.theme-transition *::after {
   --theme-shadow-xl:        0 20px 25px -5px rgba(0, 0, 0, 0.5);
   --theme-shadow-glow-cyan: 0 0 15px rgba(6, 182, 212, 0.4);
 
-  /* ---- Charts / Data Viz ---- */
+  /* ---- Canonical design tokens (starter palette) ---- */
+  --color-background-light: #FFFFFF;
+  --color-background-dark:  #121212;
+  --color-text-primary-light: #000000;
+  --color-text-primary-dark:  #FFFFFF;
+  --color-accent:           #007BFF;
+  --color-warning:          #FFC107;
+  --color-error:            #DC3545;
+
+  /* ---- Charts / Data Viz — ordinal palette ---- */
   --theme-chart-grid:       rgba(51, 65, 85, 0.5);
   --theme-chart-axis:       #94a3b8;
   --theme-chart-1:          #06b6d4;   /* cyan */
@@ -136,9 +145,29 @@ html.theme-transition *::after {
   --theme-chart-4:          #f59e0b;   /* amber */
   --theme-chart-5:          #ef4444;   /* red */
   --theme-chart-6:          #8b5cf6;   /* violet */
+  --theme-chart-7:          #ec4899;   /* pink */
+  --theme-chart-8:          #14b8a6;   /* teal */
   --theme-chart-tooltip-bg: rgba(15, 23, 42, 0.95);
   --theme-chart-tooltip-text: #f8fafc;
   --theme-chart-tooltip-border: rgba(51, 65, 85, 0.8);
+
+  /* ---- Charts / Data Viz — semantic colours ---- */
+  --theme-chart-info:       #06b6d4;   /* cyan-500  — informational series */
+  --theme-chart-success:    #10b981;   /* emerald-500 — positive / secure */
+  --theme-chart-warning:    #f59e0b;   /* amber-500 — caution / moderate */
+  --theme-chart-danger:     #ef4444;   /* red-500 — critical / vulnerable */
+  --theme-chart-accent:     #6366f1;   /* indigo-500 — secondary highlight */
+  --theme-chart-muted:      #8b5cf6;   /* violet-500 — tertiary / projected */
+  --theme-chart-highlight:  #ec4899;   /* pink-500 — emphasis / anomaly */
+  --theme-chart-neutral:    #94a3b8;   /* slate-400 — reference lines */
+
+  /* ---- Charts / Data Viz — alpha variants for area fills ---- */
+  --theme-chart-success-area: rgba(16, 185, 129, 0.25);
+  --theme-chart-warning-area: rgba(245, 158, 11, 0.25);
+  --theme-chart-danger-area:  rgba(239, 68, 68, 0.15);
+  --theme-chart-info-area:    rgba(6, 182, 212, 0.20);
+  --theme-chart-accent-area:  rgba(99, 102, 241, 0.20);
+  --theme-chart-muted-area:   rgba(139, 92, 246, 0.15);
 
   /* ---- Scrollbar ---- */
   --theme-scrollbar-track:  #1e293b;
@@ -254,7 +283,7 @@ html.theme-transition *::after {
   --theme-shadow-xl:        0 20px 32px -5px rgba(0, 0, 0, 0.10), 0 8px 12px -6px rgba(0, 0, 0, 0.05);
   --theme-shadow-glow-cyan: 0 0 12px rgba(6, 182, 212, 0.30); /* ↑ 0.2→0.30 — visible glow */
 
-  /* ---- Charts / Data Viz ---- */
+  /* ---- Charts / Data Viz — ordinal palette (600-shade for contrast) ---- */
   --theme-chart-grid:       rgba(203, 213, 225, 0.6);
   --theme-chart-axis:       #64748b;
   --theme-chart-1:          #0891b2;   /* cyan-600 */
@@ -263,9 +292,29 @@ html.theme-transition *::after {
   --theme-chart-4:          #d97706;   /* amber-600 */
   --theme-chart-5:          #dc2626;   /* red-600 */
   --theme-chart-6:          #7c3aed;   /* violet-600 */
+  --theme-chart-7:          #db2777;   /* pink-600 */
+  --theme-chart-8:          #0d9488;   /* teal-600 */
   --theme-chart-tooltip-bg: rgba(255, 255, 255, 0.97);
   --theme-chart-tooltip-text: #0f172a;
   --theme-chart-tooltip-border: rgba(203, 213, 225, 0.8);
+
+  /* ---- Charts / Data Viz — semantic colours (darker for light bg) ---- */
+  --theme-chart-info:       #0891b2;   /* cyan-600 */
+  --theme-chart-success:    #059669;   /* emerald-600 */
+  --theme-chart-warning:    #d97706;   /* amber-600 */
+  --theme-chart-danger:     #dc2626;   /* red-600 */
+  --theme-chart-accent:     #4f46e5;   /* indigo-600 */
+  --theme-chart-muted:      #7c3aed;   /* violet-600 */
+  --theme-chart-highlight:  #db2777;   /* pink-600 */
+  --theme-chart-neutral:    #64748b;   /* slate-500 */
+
+  /* ---- Charts / Data Viz — alpha variants for area fills ---- */
+  --theme-chart-success-area: rgba(5, 150, 105, 0.18);
+  --theme-chart-warning-area: rgba(217, 119, 6, 0.18);
+  --theme-chart-danger-area:  rgba(220, 38, 38, 0.12);
+  --theme-chart-info-area:    rgba(8, 145, 178, 0.15);
+  --theme-chart-accent-area:  rgba(79, 70, 229, 0.15);
+  --theme-chart-muted-area:   rgba(124, 58, 237, 0.12);
 
   /* ---- Scrollbar ---- */
   --theme-scrollbar-track:  #f1f5f9;

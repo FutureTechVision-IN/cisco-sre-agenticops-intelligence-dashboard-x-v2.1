@@ -477,9 +477,9 @@ const PatternVisualizer: React.FC<PatternVisualizerProps> = ({ patterns, trends,
                   <Line 
                     type="monotone" 
                     dataKey="y" 
-                    stroke="#06b6d4" 
+                    stroke={chartTheme.info} 
                     strokeWidth={2}
-                    dot={{ fill: '#06b6d4', r: 3 }}
+                    dot={{ fill: chartTheme.info, r: 3 }}
                   />
                 </LineChart>
               </ResponsiveContainer>
@@ -495,16 +495,16 @@ const PatternVisualizer: React.FC<PatternVisualizerProps> = ({ patterns, trends,
             <AreaChart data={trends}>
               <defs>
                 <linearGradient id="gradVuln" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor="#ef4444" stopOpacity={0.3}/>
-                  <stop offset="95%" stopColor="#ef4444" stopOpacity={0}/>
+                  <stop offset="5%" stopColor={chartTheme.danger} stopOpacity={0.3}/>
+                  <stop offset="95%" stopColor={chartTheme.danger} stopOpacity={0}/>
                 </linearGradient>
                 <linearGradient id="gradPot" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor="#f59e0b" stopOpacity={0.3}/>
-                  <stop offset="95%" stopColor="#f59e0b" stopOpacity={0}/>
+                  <stop offset="5%" stopColor={chartTheme.warning} stopOpacity={0.3}/>
+                  <stop offset="95%" stopColor={chartTheme.warning} stopOpacity={0}/>
                 </linearGradient>
                 <linearGradient id="gradSec" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor="#10b981" stopOpacity={0.3}/>
-                  <stop offset="95%" stopColor="#10b981" stopOpacity={0}/>
+                  <stop offset="5%" stopColor={chartTheme.success} stopOpacity={0.3}/>
+                  <stop offset="95%" stopColor={chartTheme.success} stopOpacity={0}/>
                 </linearGradient>
               </defs>
               <CartesianGrid strokeDasharray="3 3" stroke={chartTheme.gridStroke} opacity={0.3} />
@@ -513,9 +513,9 @@ const PatternVisualizer: React.FC<PatternVisualizerProps> = ({ patterns, trends,
               <Tooltip 
                 contentStyle={chartTheme.tooltipStyle}
               />
-              <Area type="monotone" dataKey="secure" stackId="1" stroke="#10b981" fill="url(#gradSec)" />
-              <Area type="monotone" dataKey="potential" stackId="1" stroke="#f59e0b" fill="url(#gradPot)" />
-              <Area type="monotone" dataKey="vulnerable" stackId="1" stroke="#ef4444" fill="url(#gradVuln)" />
+              <Area type="monotone" dataKey="secure" stackId="1" stroke={chartTheme.success} fill="url(#gradSec)" />
+              <Area type="monotone" dataKey="potential" stackId="1" stroke={chartTheme.warning} fill="url(#gradPot)" />
+              <Area type="monotone" dataKey="vulnerable" stackId="1" stroke={chartTheme.danger} fill="url(#gradVuln)" />
             </AreaChart>
           </ResponsiveContainer>
         </div>
@@ -1545,10 +1545,10 @@ export const ComprehensiveStatsDashboard: React.FC<ComprehensiveStatsDashboardPr
                   <Gauge className="text-cyan-400" size={16} /> System Health
                 </h3>
                 <div className="grid grid-cols-2 gap-6">
-                  <PerformanceGauge value={healthScore.security}   max={100} label="Security"   color="#10b981" />
-                  <PerformanceGauge value={healthScore.efficiency} max={100} label="Efficiency" color="#3b82f6" />
-                  <PerformanceGauge value={healthScore.compliance} max={100} label="Compliance" color="#8b5cf6" />
-                  <PerformanceGauge value={healthScore.performance} max={100} label="Performance" color="#06b6d4" />
+                  <PerformanceGauge value={healthScore.security}   max={100} label="Security"   color={chartTheme.success} />
+                  <PerformanceGauge value={healthScore.efficiency} max={100} label="Efficiency" color={chartTheme.accent} />
+                  <PerformanceGauge value={healthScore.compliance} max={100} label="Compliance" color={chartTheme.muted} />
+                  <PerformanceGauge value={healthScore.performance} max={100} label="Performance" color={chartTheme.info} />
                 </div>
               </Card>
               <Card className="p-6 lg:col-span-2">

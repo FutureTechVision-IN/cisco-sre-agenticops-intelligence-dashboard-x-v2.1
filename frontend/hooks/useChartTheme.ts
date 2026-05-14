@@ -54,6 +54,35 @@ export interface ChartThemeColors {
   referenceLineStroke: string;
   /** Legend text style */
   legendStyle: { fontSize: string; color: string; fontFamily?: string };
+
+  /* ── Semantic data-viz colours ────────────────────────── */
+  /** Informational / primary data series (cyan) */
+  info: string;
+  /** Positive / success / secure (emerald) */
+  success: string;
+  /** Caution / moderate risk (amber) */
+  warning: string;
+  /** Critical / danger / vulnerable (red) */
+  danger: string;
+  /** Secondary highlight (indigo) */
+  accent: string;
+  /** Tertiary / projected (violet) */
+  muted: string;
+  /** Emphasis / anomaly (pink) */
+  highlight: string;
+  /** Reference / neutral (slate) */
+  neutral: string;
+
+  /* ── Semi-transparent area-fill variants ──────────────── */
+  infoArea: string;
+  successArea: string;
+  warningArea: string;
+  dangerArea: string;
+  accentArea: string;
+  mutedArea: string;
+
+  /* ── Ordinal palette (8-stop, indexed) ───────────────── */
+  palette: readonly string[];
 }
 
 /**
@@ -93,6 +122,24 @@ const DARK_CHART: ChartThemeColors = {
   dotOutlineStroke: '#ffffff',
   referenceLineStroke: '#475569',
   legendStyle: { fontSize: '12px', color: '#94a3b8', fontFamily: "'IBM Plex Sans', sans-serif" },
+  // Semantic data-viz colours (dark: 500-shade)
+  info:      '#06b6d4',
+  success:   '#10b981',
+  warning:   '#f59e0b',
+  danger:    '#ef4444',
+  accent:    '#6366f1',
+  muted:     '#8b5cf6',
+  highlight: '#ec4899',
+  neutral:   '#94a3b8',
+  // Area fills
+  infoArea:    'rgba(6, 182, 212, 0.20)',
+  successArea: 'rgba(16, 185, 129, 0.25)',
+  warningArea: 'rgba(245, 158, 11, 0.25)',
+  dangerArea:  'rgba(239, 68, 68, 0.15)',
+  accentArea:  'rgba(99, 102, 241, 0.20)',
+  mutedArea:   'rgba(139, 92, 246, 0.15)',
+  // Ordinal palette (8-stop)
+  palette: CHART_ACCENT_COLORS,
 };
 
 const LIGHT_CHART: ChartThemeColors = {
@@ -117,6 +164,24 @@ const LIGHT_CHART: ChartThemeColors = {
   dotOutlineStroke: '#1e293b',
   referenceLineStroke: '#94a3b8',
   legendStyle: { fontSize: '12px', color: '#475569', fontFamily: "'IBM Plex Sans', sans-serif" },
+  // Semantic data-viz colours (light: 600-shade for contrast)
+  info:      '#0891b2',
+  success:   '#059669',
+  warning:   '#d97706',
+  danger:    '#dc2626',
+  accent:    '#4f46e5',
+  muted:     '#7c3aed',
+  highlight: '#db2777',
+  neutral:   '#64748b',
+  // Area fills (lighter on white bg)
+  infoArea:    'rgba(8, 145, 178, 0.15)',
+  successArea: 'rgba(5, 150, 105, 0.18)',
+  warningArea: 'rgba(217, 119, 6, 0.18)',
+  dangerArea:  'rgba(220, 38, 38, 0.12)',
+  accentArea:  'rgba(79, 70, 229, 0.15)',
+  mutedArea:   'rgba(124, 58, 237, 0.12)',
+  // Ordinal palette (8-stop, 600-shade for light mode)
+  palette: ['#0891b2', '#d97706', '#dc2626', '#059669', '#7c3aed', '#4f46e5', '#db2777', '#0d9488'],
 };
 
 /**

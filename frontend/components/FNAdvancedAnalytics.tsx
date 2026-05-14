@@ -434,8 +434,8 @@ function OverviewTab({ analytics, chart, accent, onCardClick, onInfoClick, onSel
             <PieChart>
               <Pie data={analytics.vulnByTypeSeries} cx="50%" cy="50%" innerRadius={55} outerRadius={95}
                 dataKey="value" nameKey="period" stroke="none" label={({ period, value }) => `${period}: ${formatLargeNumber(value)}`}>
-                <Cell fill="#f97316" />
-                <Cell fill="#22d3ee" />
+                <Cell fill={chart.warning} />
+                <Cell fill={chart.info} />
               </Pie>
               <Tooltip contentStyle={chart.tooltipStyle} formatter={(v: number) => formatLargeNumber(v)} />
               <Legend wrapperStyle={chart.legendStyle} />
@@ -479,7 +479,7 @@ function OverviewTab({ analytics, chart, accent, onCardClick, onInfoClick, onSel
               <YAxis stroke={chart.axisStroke} tick={{ fill: chart.tickFill, fontSize: 10 }} allowDecimals={false} />
               <Tooltip contentStyle={chart.tooltipStyle} labelStyle={chart.tooltipLabelStyle}
                 formatter={(v: number) => [`${v} FNs`, 'Published']} />
-              <Bar dataKey="value" fill="#4ade80" radius={[4, 4, 0, 0]} />
+              <Bar dataKey="value" fill={chart.success} radius={[4, 4, 0, 0]} />
             </BarChart>
           </ResponsiveContainer>
         </InteractiveChartCard>
@@ -916,8 +916,8 @@ function AnomaliesTab({ analytics, chart, accent, onCardClick, onInfoClick, onSe
             <XAxis dataKey="id" stroke={chart.axisStroke} tick={{ fill: chart.tickFillMuted, fontSize: 8 }} interval={0} angle={-45} textAnchor="end" height={60} />
             <YAxis stroke={chart.axisStroke} tick={{ fill: chart.tickFill, fontSize: 10 }} />
             <Tooltip contentStyle={chart.tooltipStyle} labelStyle={chart.tooltipLabelStyle} />
-            <ReferenceLine y={2} stroke="#ef4444" strokeDasharray="5 5" label={{ value: 'Anomaly Threshold (2σ)', fill: '#ef4444', fontSize: 10 }} />
-            <ReferenceLine y={-2} stroke="#ef4444" strokeDasharray="5 5" />
+            <ReferenceLine y={2} stroke={chart.danger} strokeDasharray="5 5" label={{ value: 'Anomaly Threshold (2σ)', fill: chart.danger, fontSize: 10 }} />
+            <ReferenceLine y={-2} stroke={chart.danger} strokeDasharray="5 5" />
             <Bar dataKey="zScore" name="Z-Score" radius={[2, 2, 0, 0]}>
               {analytics.profiles.map((p, i) => (
                 <Cell key={i} fill={p.isAnomaly ? '#ef4444' : accent[0]} />
@@ -1048,12 +1048,12 @@ function ForecastTab({ analytics, chart, accent, onCardClick, onInfoClick }: {
             <YAxis stroke={chart.axisStroke} tick={{ fill: chart.tickFill, fontSize: 10 }} tickFormatter={v => formatLargeNumber(v)} />
             <Tooltip contentStyle={chart.tooltipStyle} labelStyle={chart.tooltipLabelStyle}
               formatter={(v: any) => v !== null && v !== undefined ? [formatLargeNumber(Number(v))] : ['—']} />
-            <Area type="monotone" dataKey="upperBound" stroke="#818cf8" strokeWidth={1} strokeDasharray="4 4" fill="#818cf8" fillOpacity={0.15} name="Upper Bound" />
-            <Area type="monotone" dataKey="lowerBound" stroke="#818cf8" strokeWidth={1} strokeDasharray="4 4" fill="#818cf8" fillOpacity={0.15} name="Lower Bound" />
-            <Line type="monotone" dataKey="actual" stroke="#22d3ee" strokeWidth={2.5} dot={{ r: 4, fill: "#22d3ee", strokeWidth: 0 }} name="Actual"
+            <Area type="monotone" dataKey="upperBound" stroke={chart.accent} strokeWidth={1} strokeDasharray="4 4" fill={chart.accent} fillOpacity={0.15} name="Upper Bound" />
+            <Area type="monotone" dataKey="lowerBound" stroke={chart.accent} strokeWidth={1} strokeDasharray="4 4" fill={chart.accent} fillOpacity={0.15} name="Lower Bound" />
+            <Line type="monotone" dataKey="actual" stroke={chart.info} strokeWidth={2.5} dot={{ r: 4, fill: chart.info, strokeWidth: 0 }} name="Actual"
               connectNulls={false} />
-            <Line type="monotone" dataKey="predicted" stroke="#fb923c" strokeWidth={2.5} strokeDasharray="8 4"
-              dot={{ r: 4, fill: "#fb923c", strokeWidth: 0 }} name="Predicted" />
+            <Line type="monotone" dataKey="predicted" stroke={chart.warning} strokeWidth={2.5} strokeDasharray="8 4"
+              dot={{ r: 4, fill: chart.warning, strokeWidth: 0 }} name="Predicted" />
           </AreaChart>
         </ResponsiveContainer>
       </InteractiveChartCard>
@@ -1258,7 +1258,7 @@ function AIDeepInsightsTab({ analytics, chart, accent, onCardClick, onInfoClick 
               <YAxis stroke={chart.axisStroke} tick={{ fill: chart.tickFill, fontSize: 10 }}
                 label={{ value: 'Probability %', angle: -90, position: 'insideLeft', fill: chart.tickFillMuted, fontSize: 10 }} />
               <Tooltip contentStyle={chart.tooltipStyle} formatter={(v: number) => [`${v}%`, 'Probability']} />
-              <Area type="monotone" dataKey="probability" stroke="#8b5cf6" fill="#8b5cf6" fillOpacity={0.3} strokeWidth={2} />
+              <Area type="monotone" dataKey="probability" stroke={chart.muted} fill={chart.muted} fillOpacity={0.3} strokeWidth={2} />
             </AreaChart>
           </ResponsiveContainer>
           <div className="grid grid-cols-4 gap-2 mt-3 text-center">
@@ -1298,9 +1298,9 @@ function AIDeepInsightsTab({ analytics, chart, accent, onCardClick, onInfoClick 
                 domain={[0, 100]} />
               <Tooltip contentStyle={chart.tooltipStyle}
                 formatter={(v: number, name: string) => [name === 'survival' ? `${v}%` : v, name === 'survival' ? 'Unpatched %' : 'At Risk']} />
-              <Area type="stepAfter" dataKey="survival" stroke="#f97316" fill="#f97316" fillOpacity={0.15} strokeWidth={2.5} name="survival" />
-              <ReferenceLine y={50} stroke="#ef4444" strokeDasharray="5 5"
-                label={{ value: 'Median Survival', fill: '#ef4444', fontSize: 10, position: 'right' }} />
+              <Area type="stepAfter" dataKey="survival" stroke={chart.warning} fill={chart.warning} fillOpacity={0.15} strokeWidth={2.5} name="survival" />
+              <ReferenceLine y={50} stroke={chart.danger} strokeDasharray="5 5"
+                label={{ value: 'Median Survival', fill: chart.danger, fontSize: 10, position: 'right' }} />
             </AreaChart>
           </ResponsiveContainer>
           <div className="grid grid-cols-3 gap-2 mt-3 text-center">
@@ -1748,9 +1748,9 @@ function CustomerImpactTab({ analytics, chart, accent, onCardClick, onInfoClick 
               <Pie data={segmentData} cx="50%" cy="50%" innerRadius={55} outerRadius={95}
                 dataKey="count" nameKey="segment" stroke="none"
                 label={({ segment, count }: { segment: string; count: number }) => `${segment}: ${count}`}>
-                <Cell fill="#06b6d4" />
-                <Cell fill="#f59e0b" />
-                <Cell fill="#8b5cf6" />
+                <Cell fill={chart.info} />
+                <Cell fill={chart.warning} />
+                <Cell fill={chart.muted} />
               </Pie>
               <Tooltip contentStyle={chart.tooltipStyle} />
               <Legend wrapperStyle={chart.legendStyle} />
@@ -1964,7 +1964,7 @@ function PatternsTab({ analytics, chart, accent, onCardClick, onInfoClick }: {
               <YAxis type="category" dataKey="word" stroke={chart.axisStroke} tick={{ fill: chart.tickFillMuted, fontSize: 9 }} width={100} />
               <Tooltip contentStyle={chart.tooltipStyle}
                 formatter={(v: number, _: string, entry: any) => [`TF-IDF: ${v}, Frequency: ${entry.payload.frequency}`, entry.payload.word]} />
-              <Bar dataKey="tfidf" name="TF-IDF" fill="#06b6d4" radius={[0, 4, 4, 0]} />
+              <Bar dataKey="tfidf" name="TF-IDF" fill={chart.info} radius={[0, 4, 4, 0]} />
             </BarChart>
           </ResponsiveContainer>
         </InteractiveChartCard>
@@ -2165,7 +2165,7 @@ function DataQualityTab({ analytics, chart, accent, onCardClick, onInfoClick }: 
               <PolarGrid stroke={chart.gridStroke} />
               <PolarAngleAxis dataKey="dimension" tick={{ fill: chart.tickFill, fontSize: 10 }} />
               <PolarRadiusAxis tick={{ fill: chart.tickFillMuted, fontSize: 9 }} domain={[0, 100]} />
-              <Radar name="Quality Score" dataKey="score" stroke="#06b6d4" fill="#06b6d4" fillOpacity={0.3} strokeWidth={2} />
+              <Radar name="Quality Score" dataKey="score" stroke={chart.info} fill={chart.info} fillOpacity={0.3} strokeWidth={2} />
               <Tooltip contentStyle={chart.tooltipStyle} formatter={(v: number) => [`${v}%`, 'Score']} />
             </RadarChart>
           </ResponsiveContainer>
