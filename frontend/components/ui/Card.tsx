@@ -44,12 +44,15 @@ export const ProgressBar: React.FC<{ value: number; color: 'rose' | 'amber' | 'e
     green: 'bg-emerald-400 shadow-[0_0_10px_rgba(52,211,153,0.6)]',
     blue: 'bg-cyan-400 shadow-[0_0_10px_rgba(34,211,238,0.6)]'
   };
+
+  // Ensure a minimum visible width (4%) so small percentages remain perceptible
+  const displayWidth = value > 0 ? Math.min(100, Math.max(4, value)) : 0;
   
   return (
     <div className="w-full bg-slate-700/50 rounded-full h-1.5 mt-3 overflow-hidden">
       <div 
         className={`${bgClasses[color]} h-1.5 rounded-full transition-all duration-500 ease-out`} 
-        style={{ width: `${Math.min(100, Math.max(0, value))}%` }}
+        style={{ width: `${displayWidth}%` }}
       />
     </div>
   );

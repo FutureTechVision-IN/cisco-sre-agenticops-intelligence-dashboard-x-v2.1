@@ -1,0 +1,437 @@
+backend/__tests__/field-notice-validator.test.ts(24,8): error TS2307: Cannot find module '../shared-types/field-notice-validator' or its corresponding type declarations.
+backend/admin-routes.ts(38,26): error TS2339: Property 'user' does not exist on type 'Request<{}, any, any, ParsedQs, Record<string, any>>'.
+backend/admin-routes.ts(59,26): error TS2339: Property 'user' does not exist on type 'Request<{}, any, any, ParsedQs, Record<string, any>>'.
+backend/admin-routes.ts(90,26): error TS2339: Property 'user' does not exist on type 'Request<{ id: string; }, any, any, ParsedQs, Record<string, any>>'.
+backend/admin-routes.ts(97,36): error TS2554: Expected 2 arguments, but got 1.
+backend/admin-routes.ts(150,26): error TS2339: Property 'user' does not exist on type 'Request<{ id: string; }, any, any, ParsedQs, Record<string, any>>'.
+backend/admin-routes.ts(168,26): error TS2339: Property 'user' does not exist on type 'Request<{}, any, any, ParsedQs, Record<string, any>>'.
+backend/admin-routes.ts(211,26): error TS2339: Property 'user' does not exist on type 'Request<{}, any, any, ParsedQs, Record<string, any>>'.
+backend/advanced-ml-analytics.ts(84,34): error TS7053: Element implicitly has an 'any' type because expression of type '"Vulnerability Count"' can't be used to index type 'Promise<{ month: string; vulnerable: number; potentiallyVulnerable: number; notVulnerable: number; total: number; }[]>'.
+  Property 'Vulnerability Count' does not exist on type 'Promise<{ month: string; vulnerable: number; potentiallyVulnerable: number; notVulnerable: number; total: number; }[]>'.
+backend/advanced-ml-analytics.ts(135,11): error TS7053: Element implicitly has an 'any' type because expression of type '"Vulnerability Count"' can't be used to index type 'Promise<{ month: string; vulnerable: number; potentiallyVulnerable: number; notVulnerable: number; total: number; }[]>'.
+  Property 'Vulnerability Count' does not exist on type 'Promise<{ month: string; vulnerable: number; potentiallyVulnerable: number; notVulnerable: number; total: number; }[]>'.
+backend/advanced-ml-analytics.ts(137,11): error TS7053: Element implicitly has an 'any' type because expression of type '"Vulnerability Count"' can't be used to index type 'Promise<{ month: string; vulnerable: number; potentiallyVulnerable: number; notVulnerable: number; total: number; }[]>'.
+  Property 'Vulnerability Count' does not exist on type 'Promise<{ month: string; vulnerable: number; potentiallyVulnerable: number; notVulnerable: number; total: number; }[]>'.
+backend/advanced-ml-analytics.ts(145,19): error TS2339: Property 'criticalCount' does not exist on type 'Promise<ValidatedMetrics>'.
+backend/advanced-ml-analytics.ts(145,43): error TS2339: Property 'totalAssessed' does not exist on type 'Promise<ValidatedMetrics>'.
+backend/advanced-ml-analytics.ts(148,26): error TS2339: Property 'criticalCount' does not exist on type 'Promise<ValidatedMetrics>'.
+backend/advanced-ml-analytics.ts(151,78): error TS2339: Property 'criticalCount' does not exist on type 'Promise<ValidatedMetrics>'.
+backend/advanced-ml-analytics.ts(151,105): error TS2339: Property 'criticalCount' does not exist on type 'Promise<ValidatedMetrics>'.
+backend/advanced-ml-analytics.ts(151,127): error TS2339: Property 'totalAssessed' does not exist on type 'Promise<ValidatedMetrics>'.
+backend/advanced-ml-analytics.ts(156,19): error TS2339: Property 'averageRemediationDays' does not exist on type 'Promise<ValidatedMetrics>'.
+backend/advanced-ml-analytics.ts(159,26): error TS2339: Property 'averageRemediationDays' does not exist on type 'Promise<ValidatedMetrics>'.
+backend/advanced-ml-analytics.ts(162,66): error TS2339: Property 'averageRemediationDays' does not exist on type 'Promise<ValidatedMetrics>'.
+backend/advanced-ml-analytics.ts(167,19): error TS2339: Property 'compliantPercentage' does not exist on type 'Promise<ValidatedMetrics>'.
+backend/advanced-ml-analytics.ts(170,26): error TS2339: Property 'compliantPercentage' does not exist on type 'Promise<ValidatedMetrics>'.
+backend/advanced-ml-analytics.ts(173,73): error TS2339: Property 'compliantPercentage' does not exist on type 'Promise<ValidatedMetrics>'.
+backend/advanced-ml-analytics.ts(195,19): error TS2339: Property 'map' does not exist on type 'Promise<{ customerName: string; totVuln: number; potVuln: number; notVuln: number; affectedFNCount: number; }[]>'.
+backend/advanced-ml-analytics.ts(195,23): error TS7006: Parameter 'c' implicitly has an 'any' type.
+backend/advanced-ml-analytics.ts(205,36): error TS2339: Property 'criticalCount' does not exist on type 'Promise<ValidatedMetrics>'.
+backend/advanced-ml-analytics.ts(205,72): error TS2339: Property 'totalAssessed' does not exist on type 'Promise<ValidatedMetrics>'.
+backend/advanced-ml-analytics.ts(214,36): error TS2339: Property 'unremediatedCount' does not exist on type 'Promise<ValidatedMetrics>'.
+backend/advanced-ml-analytics.ts(214,76): error TS2339: Property 'totalAssessed' does not exist on type 'Promise<ValidatedMetrics>'.
+backend/advanced-ml-analytics.ts(223,42): error TS2339: Property 'length' does not exist on type 'Promise<{ customerName: string; totVuln: number; potVuln: number; notVuln: number; affectedFNCount: number; }[]>'.
+backend/advanced-ml-analytics.ts(232,47): error TS2339: Property 'compliantPercentage' does not exist on type 'Promise<ValidatedMetrics>'.
+backend/advanced-ml-analytics.ts(254,25): error TS7053: Element implicitly has an 'any' type because expression of type '"Vulnerability Count"' can't be used to index type 'Promise<{ month: string; vulnerable: number; potentiallyVulnerable: number; notVulnerable: number; total: number; }[]>'.
+  Property 'Vulnerability Count' does not exist on type 'Promise<{ month: string; vulnerable: number; potentiallyVulnerable: number; notVulnerable: number; total: number; }[]>'.
+backend/ai-insights-routes.ts(537,56): error TS2365: Operator '>=' cannot be applied to types 'string | number' and 'number'.
+backend/ai-insights-routes.ts(537,81): error TS2365: Operator '>=' cannot be applied to types 'string | number' and 'number'.
+backend/ai-insights-routes.ts(545,9): error TS2365: Operator '<' cannot be applied to types 'string | number' and 'number'.
+backend/ai-insights-routes.ts(575,63): error TS2365: Operator '>=' cannot be applied to types 'string | number' and 'number'.
+backend/ai-insights-routes.ts(575,91): error TS2365: Operator '>=' cannot be applied to types 'string | number' and 'number'.
+backend/ai-insights-routes.ts(583,9): error TS2365: Operator '<' cannot be applied to types 'string | number' and 'number'.
+backend/ai-ml-key-integration.ts(309,24): error TS2353: Object literal may only specify known properties, and 'limit' does not exist in type '{ globalLimit: number; remainingTokens: number; perMinute: number; resetTime: string; }'.
+backend/ai-ml-key-integration.ts(365,7): error TS2322: Type '"invalid" | "expired" | "active" | "inactive" | "unauthorized"' is not assignable to type '"invalid" | "expired" | "active" | "inactive"'.
+  Type '"unauthorized"' is not assignable to type '"invalid" | "expired" | "active" | "inactive"'.
+backend/ai-ml-key-integration.ts(506,35): error TS2345: Argument of type '"invalid" | "expired" | "active" | "inactive" | "unauthorized"' is not assignable to parameter of type '"invalid" | "expired" | "active" | "inactive"'.
+  Type '"unauthorized"' is not assignable to type '"invalid" | "expired" | "active" | "inactive"'.
+backend/ai-orchestrator.ts(680,39): error TS2802: Type 'Map<AIProvider, ProviderMetrics>' can only be iterated through when using the '--downlevelIteration' flag or with a '--target' of 'es2015' or higher.
+backend/alert-routes.ts(13,27): error TS18047: 'db' is possibly 'null'.
+backend/alert-routes.ts(36,26): error TS18047: 'db' is possibly 'null'.
+backend/alert-routes.ts(65,11): error TS18047: 'db' is possibly 'null'.
+backend/alert-service.ts(41,24): error TS18047: 'db' is possibly 'null'.
+backend/alert-service.ts(54,11): error TS18047: 'db' is possibly 'null'.
+backend/alert-service.ts(71,9): error TS18047: 'db' is possibly 'null'.
+backend/alert-service.ts(136,9): error TS18047: 'db' is possibly 'null'.
+backend/alert-service.ts(159,9): error TS18047: 'db' is possibly 'null'.
+backend/alert-service.ts(171,16): error TS18047: 'db' is possibly 'null'.
+backend/api-optimizer.ts(240,25): error TS2345: Argument of type '{ data: any; timestamp: number; ttl: number; hits: number; }' is not assignable to parameter of type 'CacheEntry'.
+  Type '{ data: any; timestamp: number; ttl: number; hits: number; }' is missing the following properties from type 'CacheEntry': accessCount, lastAccess
+backend/api-rate-limiter.ts(563,11): error TS2741: Property 'retryCount' is missing in type '{ id: string; userId: string; endpoint: string; method: string; startTime: Date; endTime: Date; duration: number; status: "timeout" | "success" | "failed" | "pending" | "rate_limited" | "circuit_open"; errorMessage: string | undefined; }' but required in type 'APICallLog'.
+backend/bulk-import.ts(96,32): error TS18047: 'db' is possibly 'null'.
+backend/bulk-import.ts(141,28): error TS18047: 'db' is possibly 'null'.
+backend/chatbot-service.ts(549,36): error TS2802: Type 'Map<string, { patterns: RegExp[]; priority: number; }>' can only be iterated through when using the '--downlevelIteration' flag or with a '--target' of 'es2015' or higher.
+backend/chatbot-service.ts(1023,223): error TS1501: This regular expression flag is only available when targeting 'es6' or later.
+backend/circuit-mcp-routes.ts(35,32): error TS2802: Type 'Set<string>' can only be iterated through when using the '--downlevelIteration' flag or with a '--target' of 'es2015' or higher.
+backend/circuit-mcp-service.ts(681,14): error TS1252: Function declarations are not allowed inside blocks in strict mode when targeting 'ES5'. Modules are automatically in strict mode.
+backend/csv-data-service.ts(732,24): error TS2802: Type 'MapIterator<NormalizedRecord>' can only be iterated through when using the '--downlevelIteration' flag or with a '--target' of 'es2015' or higher.
+backend/csv-data-service.ts(1318,24): error TS2802: Type 'MapIterator<NormalizedRecord>' can only be iterated through when using the '--downlevelIteration' flag or with a '--target' of 'es2015' or higher.
+backend/csv-data-service.ts(1404,31): error TS2802: Type 'Set<string>' can only be iterated through when using the '--downlevelIteration' flag or with a '--target' of 'es2015' or higher.
+backend/data-reconciliation.ts(59,25): error TS18047: 'db' is possibly 'null'.
+backend/data-validation-tests.ts(82,25): error TS2352: Conversion of type 'NormalizedRecord' to type 'Record<string, unknown>' may be a mistake because neither type sufficiently overlaps with the other. If this was intentional, convert the expression to 'unknown' first.
+  Index signature for type 'string' is missing in type 'NormalizedRecord'.
+backend/data-validation-tests.ts(109,7): error TS2345: Argument of type '(r: Record<string, unknown>) => string | undefined' is not assignable to parameter of type '(value: NormalizedRecord, index: number, array: NormalizedRecord[]) => string | undefined'.
+  Types of parameters 'r' and 'value' are incompatible.
+    Type 'NormalizedRecord' is not assignable to type 'Record<string, unknown>'.
+      Index signature for type 'string' is missing in type 'NormalizedRecord'.
+backend/dataset-pipeline.ts(154,23): error TS2802: Type 'RegExpStringIterator<RegExpExecArray>' can only be iterated through when using the '--downlevelIteration' flag or with a '--target' of 'es2015' or higher.
+backend/dataset-pipeline.ts(439,25): error TS2802: Type 'MapIterator<Timeout>' can only be iterated through when using the '--downlevelIteration' flag or with a '--target' of 'es2015' or higher.
+backend/dataset-pipeline.ts(572,34): error TS2802: Type 'Map<string, PipelineValidationResult>' can only be iterated through when using the '--downlevelIteration' flag or with a '--target' of 'es2015' or higher.
+backend/direct-load.ts(50,17): error TS18047: 'db' is possibly 'null'.
+backend/direct-load.ts(65,13): error TS18047: 'db' is possibly 'null'.
+backend/direct-load.ts(73,24): error TS18047: 'db' is possibly 'null'.
+backend/duplicate-audit.ts(171,5): error TS2322: Type 'string | null' is not assignable to type 'string'.
+  Type 'null' is not assignable to type 'string'.
+backend/email-service.ts(50,7): error TS2740: Type 'Promise<TestAccount>' is missing the following properties from type 'Mail<any, TransportOptions>': options, meta, dkim, transporter, and 27 more.
+backend/enhanced-dashboard-routes.ts(173,54): error TS2769: No overload matches this call.
+  The last overload gave the following error.
+    Argument of type 'Function' is not assignable to parameter of type 'RequestHandlerParams<ParamsDictionary, any, any, ParsedQs, Record<string, any>>'.
+      Type 'Function' is missing the following properties from type '(ErrorRequestHandler<ParamsDictionary, any, any, ParsedQs, Record<string, any>> | RequestHandler<ParamsDictionary, any, any, ParsedQs, Record<...>>)[]': pop, push, concat, join, and 34 more.
+backend/enhanced-kpi-controller.ts(140,22): error TS2339: Property 'performance' does not exist on type 'EnhancedKPIMetrics'.
+backend/enhanced-kpi-controller.ts(372,34): error TS2339: Property 'loadavg' does not exist on type 'Process'.
+backend/enhanced-kpi-controller.ts(716,20): error TS2367: This comparison appears to be unintentional because the types '"low" | "medium" | "high"' and '"critical"' have no overlap.
+backend/finish-import.ts(10,26): error TS18047: 'db' is possibly 'null'.
+backend/finish-import.ts(66,17): error TS18047: 'db' is possibly 'null'.
+backend/finish-import.ts(84,13): error TS18047: 'db' is possibly 'null'.
+backend/finish-import.ts(91,28): error TS18047: 'db' is possibly 'null'.
+backend/force-complete-import.ts(45,32): error TS18047: 'db' is possibly 'null'.
+backend/force-complete-import.ts(64,13): error TS18047: 'db' is possibly 'null'.
+backend/force-complete-import.ts(72,28): error TS18047: 'db' is possibly 'null'.
+backend/force-complete-import.ts(73,25): error TS18047: 'db' is possibly 'null'.
+backend/import-cli.ts(2,36): error TS2307: Cannot find module '../shared/schema' or its corresponding type declarations.
+backend/import-cli.ts(11,27): error TS18047: 'db' is possibly 'null'.
+backend/import-cli.ts(86,13): error TS18047: 'db' is possibly 'null'.
+backend/import-cli.ts(92,30): error TS18047: 'db' is possibly 'null'.
+backend/import-csv.ts(65,30): error TS18047: 'db' is possibly 'null'.
+backend/import-csv.ts(83,15): error TS18047: 'db' is possibly 'null'.
+backend/import-csv.ts(100,11): error TS18047: 'db' is possibly 'null'.
+backend/integrate-api-key.ts(301,41): error TS2339: Property 'limit' does not exist on type '{ globalLimit: number; remainingTokens: number; perMinute: number; resetTime: string; }'.
+backend/integrate-api-key.ts(302,45): error TS2339: Property 'remaining' does not exist on type '{ globalLimit: number; remainingTokens: number; perMinute: number; resetTime: string; }'.
+backend/integrate-api-key.ts(305,19): error TS2339: Property 'limit' does not exist on type '{ globalLimit: number; remainingTokens: number; perMinute: number; resetTime: string; }'.
+backend/kpi-ml-engine.ts(292,5): error TS2740: Type '{ detected: boolean; severity: "critical" | "low" | "medium" | "high"; type: string; value: number; expectedRange: [number, number]; deviation: number; confidence: number; rootCause: string; recommendation: string; }' is missing the following properties from type 'KPIAnomaly': anomalyScore, detectionMethod, historicalContext, impactAssessment, and 3 more.
+backend/kpi-ml-engine.ts(442,7): error TS2740: Type '{ accuracy: number; precision: number; recall: number; f1Score: number; mape: number; }' is missing the following properties from type 'KPIModelMetrics': auc, rmse, mae, confidenceScore, and 2 more.
+backend/kpi-ml-engine.ts(466,5): error TS2740: Type '{ accuracy: number; precision: number; recall: number; f1Score: number; mape: number; }' is missing the following properties from type 'KPIModelMetrics': auc, rmse, mae, confidenceScore, and 2 more.
+backend/kpi-ml-engine.ts(506,7): error TS2740: Type '{ nextMonth: number; nextQuarter: number; nextYear: number; confidence: number; confidenceInterval: { lower: number; upper: number; }; trend: "increasing" | "stable" | "decreasing"; trendStrength: number; seasonality: boolean; seasonalityFactor: number; }' is missing the following properties from type 'KPIPrediction': probabilityDistribution, riskLevel, forecastHorizon, modelType, and 2 more.
+backend/kpi-ml-engine.ts(672,7): error TS2322: Type '"Ensemble"' is not assignable to type '"IsolationForest" | "DBSCAN" | "OneClassSVM" | "Statistical"'.
+backend/kpi-ml-engine.ts(897,52): error TS2339: Property 'stdDev' does not exist on type '{ mean: number; median: number; q1: number; q3: number; }'.
+backend/kpi-ml-engine.ts(919,61): error TS2339: Property 'stdDev' does not exist on type '{ mean: number; median: number; q1: number; q3: number; }'.
+backend/kpi-ml-engine.ts(925,61): error TS2339: Property 'stdDev' does not exist on type '{ mean: number; median: number; q1: number; q3: number; }'.
+backend/kpi-ml-engine.ts(949,26): error TS2339: Property 'stdDev' does not exist on type '{ mean: number; median: number; q1: number; q3: number; }'.
+backend/kpi-ml-engine.ts(1102,32): error TS7053: Element implicitly has an 'any' type because expression of type 'any' can't be used to index type '{ low: number; medium: number; high: number; critical: number; }'.
+backend/lib/csv-processor.ts(140,22): error TS18046: 'row' is of type 'unknown'.
+backend/lib/csv-processor.ts(140,48): error TS18046: 'row' is of type 'unknown'.
+backend/lib/csv-processor.ts(140,61): error TS18046: 'row' is of type 'unknown'.
+backend/lib/csv-processor.ts(142,11): error TS18046: 'row' is of type 'unknown'.
+backend/lib/csv-processor.ts(142,35): error TS18046: 'row' is of type 'unknown'.
+backend/lib/csv-processor.ts(142,54): error TS18046: 'row' is of type 'unknown'.
+backend/lib/csv-processor.ts(143,24): error TS18046: 'row' is of type 'unknown'.
+backend/lib/csv-processor.ts(143,42): error TS18046: 'row' is of type 'unknown'.
+backend/lib/csv-processor.ts(143,56): error TS18046: 'row' is of type 'unknown'.
+backend/lib/csv-processor.ts(144,34): error TS18046: 'row' is of type 'unknown'.
+backend/lib/csv-processor.ts(144,55): error TS18046: 'row' is of type 'unknown'.
+backend/lib/csv-processor.ts(146,11): error TS18046: 'row' is of type 'unknown'.
+backend/lib/csv-processor.ts(146,44): error TS18046: 'row' is of type 'unknown'.
+backend/lib/csv-processor.ts(149,34): error TS18046: 'row' is of type 'unknown'.
+backend/lib/csv-processor.ts(149,59): error TS18046: 'row' is of type 'unknown'.
+backend/lib/csv-processor.ts(150,24): error TS18046: 'row' is of type 'unknown'.
+backend/lib/csv-processor.ts(150,39): error TS18046: 'row' is of type 'unknown'.
+backend/migrate-normalize-data.ts(36,31): error TS18047: 'db' is possibly 'null'.
+backend/migrate-normalize-data.ts(42,40): error TS18047: 'db' is possibly 'null'.
+backend/migrate-normalize-data.ts(53,32): error TS18047: 'db' is possibly 'null'.
+backend/migrate-normalize-data.ts(65,34): error TS18047: 'db' is possibly 'null'.
+backend/migrate-normalize-data.ts(79,7): error TS18047: 'db' is possibly 'null'.
+backend/migrate-normalize-data.ts(80,7): error TS18047: 'db' is possibly 'null'.
+backend/migrate-normalize-data.ts(81,7): error TS18047: 'db' is possibly 'null'.
+backend/migrate-normalize-data.ts(82,7): error TS18047: 'db' is possibly 'null'.
+backend/ml-hyperparameter-optimizer.ts(451,33): error TS2802: Type 'Map<string, number[]>' can only be iterated through when using the '--downlevelIteration' flag or with a '--target' of 'es2015' or higher.
+backend/ml-hyperparameter-optimizer.ts(498,35): error TS2802: Type 'Map<string, number[]>' can only be iterated through when using the '--downlevelIteration' flag or with a '--target' of 'es2015' or higher.
+backend/ml-hyperparameter-optimizer.ts(725,50): error TS2802: Type 'Set<number>' can only be iterated through when using the '--downlevelIteration' flag or with a '--target' of 'es2015' or higher.
+backend/ml-hyperparameter-optimizer.ts(788,32): error TS2802: Type 'Map<string, number>' can only be iterated through when using the '--downlevelIteration' flag or with a '--target' of 'es2015' or higher.
+backend/ml-hyperparameter-optimizer.ts(817,36): error TS2802: Type 'Map<string, number[]>' can only be iterated through when using the '--downlevelIteration' flag or with a '--target' of 'es2015' or higher.
+backend/ml-hyperparameter-optimizer.ts(863,33): error TS2802: Type 'Map<string, number[]>' can only be iterated through when using the '--downlevelIteration' flag or with a '--target' of 'es2015' or higher.
+backend/ml-optimization-orchestrator.ts(17,64): error TS2307: Cannot find module './ml-data-validation-pipeline' or its corresponding type declarations.
+backend/ml-optimization-orchestrator.ts(18,43): error TS2305: Module '"./ml-advanced-feature-engineering"' has no exported member 'AdvancedFeatureSet'.
+backend/ml-optimization-orchestrator.ts(146,49): error TS2554: Expected 1 arguments, but got 3.
+backend/ml-optimization-orchestrator.ts(193,31): error TS2339: Property 'timestamps' does not exist on type 'TimeSeries'.
+backend/ml-optimization-orchestrator.ts(221,51): error TS2554: Expected 2-3 arguments, but got 1.
+backend/ml-optimization-orchestrator.ts(222,31): error TS2551: Property 'featureNames' does not exist on type 'FeatureSet'. Did you mean 'features'?
+backend/ml-optimization-orchestrator.ts(225,18): error TS2339: Property 'featureMatrix' does not exist on type 'FeatureSet'.
+backend/ml-optimization-orchestrator.ts(226,18): error TS2551: Property 'featureNames' does not exist on type 'FeatureSet'. Did you mean 'features'?
+backend/ml-optimization-orchestrator.ts(227,11): error TS2561: Object literal may only specify known properties, but 'method' does not exist in type 'Partial<FeatureSelectionConfig>'. Did you mean to write 'methods'?
+backend/ml-optimization-orchestrator.ts(229,39): error TS2339: Property 'selectedNames' does not exist on type 'FeatureSet'.
+backend/ml-optimization-orchestrator.ts(230,30): error TS2339: Property 'selectedNames' does not exist on type 'FeatureSet'.
+backend/ml-optimization-orchestrator.ts(236,24): error TS2554: Expected 2-3 arguments, but got 1.
+backend/ml-optimization-orchestrator.ts(237,13): error TS2339: Property 'improvementPercent' does not exist on type '{ baselineMAPE: number; enhancedMAPE: number; improvementPct: number; }'.
+backend/ml-optimization-orchestrator.ts(237,36): error TS2554: Expected 2-3 arguments, but got 1.
+backend/ml-optimization-orchestrator.ts(239,56): error TS2339: Property 'mape' does not exist on type '{ predictions: EnsemblePrediction[]; accuracy: ModelAccuracyTracker[]; latencyMs: number; r2: number; }'.
+backend/ml-optimization-orchestrator.ts(240,67): error TS2339: Property 'mape' does not exist on type '{ predictions: EnsemblePrediction[]; accuracy: ModelAccuracyTracker[]; latencyMs: number; r2: number; }'.
+backend/ml-optimization-orchestrator.ts(241,91): error TS2339: Property 'mape' does not exist on type '{ predictions: EnsemblePrediction[]; accuracy: ModelAccuracyTracker[]; latencyMs: number; r2: number; }'.
+backend/ml-optimization-orchestrator.ts(253,29): error TS2554: Expected 6-8 arguments, but got 5.
+backend/ml-optimization-orchestrator.ts(256,20): error TS2339: Property 'predicted' does not exist on type '{ predictions: EnsemblePrediction[]; accuracy: ModelAccuracyTracker[]; latencyMs: number; r2: number; }'.
+backend/ml-optimization-orchestrator.ts(257,10): error TS7006: Parameter 'features' implicitly has an 'any' type.
+backend/ml-optimization-orchestrator.ts(259,18): error TS2571: Object is of type 'unknown'.
+backend/ml-optimization-orchestrator.ts(259,40): error TS18046: 'a' is of type 'unknown'.
+backend/ml-optimization-orchestrator.ts(259,44): error TS18046: 'b' is of type 'unknown'.
+backend/ml-optimization-orchestrator.ts(285,44): error TS2339: Property 'mape' does not exist on type '{ predictions: EnsemblePrediction[]; accuracy: ModelAccuracyTracker[]; latencyMs: number; r2: number; }'.
+backend/ml-optimization-orchestrator.ts(285,101): error TS2339: Property 'mape' does not exist on type '{ predictions: EnsemblePrediction[]; accuracy: ModelAccuracyTracker[]; latencyMs: number; r2: number; }'.
+backend/ml-optimization-orchestrator.ts(287,34): error TS2339: Property 'modelWeights' does not exist on type '{ predictions: EnsemblePrediction[]; accuracy: ModelAccuracyTracker[]; latencyMs: number; r2: number; }'.
+backend/ml-optimization-orchestrator.ts(296,41): error TS2339: Property 'confidence' does not exist on type '{ predictions: EnsemblePrediction[]; accuracy: ModelAccuracyTracker[]; latencyMs: number; r2: number; }'.
+backend/ml-optimization-orchestrator.ts(307,7): error TS2740: Type '{ predictions: EnsemblePrediction[]; accuracy: ModelAccuracyTracker[]; latencyMs: number; r2: number; }' is missing the following properties from type 'EnsemblePrediction': period, value, confidence, interval, and 2 more.
+backend/ml-optimization-orchestrator.ts(331,31): error TS2554: Expected 4-5 arguments, but got 1.
+backend/ml-optimization-orchestrator.ts(364,22): error TS2554: Expected 2-3 arguments, but got 1.
+backend/ml-optimization-orchestrator.ts(365,28): error TS2339: Property 'mape' does not exist on type '{ predictions: EnsemblePrediction[]; accuracy: ModelAccuracyTracker[]; latencyMs: number; r2: number; }'.
+backend/ml-optimization-orchestrator.ts(370,57): error TS2345: Argument of type '(params: Record<string, number>) => number' is not assignable to parameter of type '(params: Record<string, number>) => TrialMetrics'.
+  Type 'number' is not assignable to type 'TrialMetrics'.
+backend/ml-optimization-orchestrator.ts(372,56): error TS2345: Argument of type '(params: Record<string, number>) => number' is not assignable to parameter of type '(params: Record<string, number>) => TrialMetrics'.
+  Type 'number' is not assignable to type 'TrialMetrics'.
+backend/ml-optimization-orchestrator.ts(374,40): error TS2554: Expected 2-4 arguments, but got 1.
+backend/ml-optimization-orchestrator.ts(388,41): error TS2339: Property 'getActiveTests' does not exist on type 'ABTestingFramework'.
+backend/pdf-optimizer.ts(36,16): error TS2749: 'PDFDocument' refers to a value, but is being used as a type here. Did you mean 'typeof PDFDocument'?
+backend/pdf-optimizer.ts(483,18): error TS2749: 'PDFDocument' refers to a value, but is being used as a type here. Did you mean 'typeof PDFDocument'?
+backend/report-routes.ts(12,30): error TS18047: 'db' is possibly 'null'.
+backend/report-routes.ts(34,30): error TS18047: 'db' is possibly 'null'.
+backend/report-routes.ts(61,26): error TS18047: 'db' is possibly 'null'.
+backend/report-routes.ts(115,29): error TS18047: 'db' is possibly 'null'.
+backend/report-service.ts(31,25): error TS18047: 'db' is possibly 'null'.
+backend/report-service.ts(34,23): error TS18047: 'db' is possibly 'null'.
+backend/report-service.ts(134,26): error TS18047: 'db' is possibly 'null'.
+backend/report-service.ts(145,29): error TS18047: 'db' is possibly 'null'.
+backend/report-service.ts(168,11): error TS18047: 'db' is possibly 'null'.
+backend/report-service.ts(178,11): error TS18047: 'db' is possibly 'null'.
+backend/report-service.ts(194,24): error TS18047: 'db' is possibly 'null'.
+backend/report-service.ts(200,11): error TS18047: 'db' is possibly 'null'.
+backend/report-service.ts(210,16): error TS18047: 'db' is possibly 'null'.
+backend/routes.ts(1606,36): error TS2802: Type 'Set<string>' can only be iterated through when using the '--downlevelIteration' flag or with a '--target' of 'es2015' or higher.
+backend/routes.ts(1956,31): error TS2551: Property 'customer' does not exist on type 'AnomalyResult'. Did you mean 'customerId'?
+backend/routes.ts(1957,35): error TS2339: Property 'severity' does not exist on type 'AnomalyResult'.
+backend/routes.ts(1958,34): error TS2339: Property 'severity' does not exist on type 'AnomalyResult'.
+backend/routes.ts(1960,23): error TS2339: Property 'type' does not exist on type 'AnomalyResult'.
+backend/routes.ts(1961,27): error TS2339: Property 'severity' does not exist on type 'AnomalyResult'.
+backend/routes.ts(1962,30): error TS2339: Property 'description' does not exist on type 'AnomalyResult'.
+backend/routes.ts(1963,25): error TS2339: Property 'impact' does not exist on type 'AnomalyResult'.
+backend/routes.ts(1964,33): error TS2339: Property 'recommendation' does not exist on type 'AnomalyResult'.
+backend/routes.ts(1970,36): error TS2339: Property 'direction' does not exist on type 'TrendPrediction'.
+backend/routes.ts(1970,72): error TS2339: Property 'direction' does not exist on type 'TrendPrediction'.
+backend/routes.ts(1972,20): error TS2339: Property 'type' does not exist on type 'TrendPrediction'.
+backend/routes.ts(1974,26): error TS2339: Property 'prediction' does not exist on type 'TrendPrediction'.
+backend/routes.ts(1975,23): error TS2339: Property 'factors' does not exist on type 'TrendPrediction'.
+backend/routes.ts(1982,35): error TS2339: Property 'recommendation' does not exist on type 'Recommendation'.
+backend/routes.ts(1982,57): error TS2339: Property 'description' does not exist on type 'Recommendation'.
+backend/routes.ts(3010,38): error TS2802: Type 'Set<string>' can only be iterated through when using the '--downlevelIteration' flag or with a '--target' of 'es2015' or higher.
+backend/routes.ts(3011,35): error TS2802: Type 'Set<string>' can only be iterated through when using the '--downlevelIteration' flag or with a '--target' of 'es2015' or higher.
+backend/routes.ts(3012,33): error TS2802: Type 'Set<string>' can only be iterated through when using the '--downlevelIteration' flag or with a '--target' of 'es2015' or higher.
+backend/routes.ts(3357,36): error TS2339: Property 'confidence' does not exist on type '{ forecasts: number[]; intervals: { lower: number; upper: number; }[]; modelWeights: { [key: string]: number; }; ensembleAccuracy: number; naturalLanguageExplanation: string; }'.
+backend/routes.ts(3365,35): error TS2339: Property 'confidence' does not exist on type '{ forecasts: number[]; intervals: { lower: number; upper: number; }[]; modelWeights: { [key: string]: number; }; ensembleAccuracy: number; naturalLanguageExplanation: string; }'.
+backend/routes.ts(3373,38): error TS2339: Property 'confidence' does not exist on type '{ forecasts: number[]; intervals: { lower: number; upper: number; }[]; modelWeights: { [key: string]: number; }; ensembleAccuracy: number; naturalLanguageExplanation: string; }'.
+backend/routes.ts(3680,63): error TS2339: Property 'auc' does not exist on type '{ modelType: string; accuracy: number; precision: number; recall: number; mape: number; trainedAt: Date; }'.
+backend/routes.ts(3681,64): error TS2339: Property 'rmse' does not exist on type '{ modelType: string; accuracy: number; precision: number; recall: number; mape: number; trainedAt: Date; }'.
+backend/routes.ts(3684,49): error TS2554: Expected 3 arguments, but got 2.
+backend/routes.ts(3693,45): error TS2339: Property 'overallScore' does not exist on type '{ accuracy: number; drift: boolean; recommendedAction: string; performanceMetrics: any; }'.
+backend/routes.ts(3709,50): error TS2339: Property 'overallScore' does not exist on type '{ accuracy: number; drift: boolean; recommendedAction: string; performanceMetrics: any; }'.
+backend/routes.ts(4587,20): error TS7053: Element implicitly has an 'any' type because expression of type 'any' can't be used to index type '{ "sre-admin": { id: string; password: string; role: string; email: string; }; "sre-user": { id: string; password: string; role: string; email: string; }; "sre-manager": { id: string; password: string; role: string; email: string; }; "sre-director": { ...; }; "sre-vp": { ...; }; }'.
+backend/routes.ts(4589,30): error TS7053: Element implicitly has an 'any' type because expression of type 'any' can't be used to index type '{ "sre-admin": { id: string; password: string; role: string; email: string; }; "sre-user": { id: string; password: string; role: string; email: string; }; "sre-manager": { id: string; password: string; role: string; email: string; }; "sre-director": { ...; }; "sre-vp": { ...; }; }'.
+backend/routes.ts(5269,43): error TS2802: Type 'MapIterator<[string, Map<string, number>]>' can only be iterated through when using the '--downlevelIteration' flag or with a '--target' of 'es2015' or higher.
+backend/routes.ts(5302,37): error TS2802: Type 'MapIterator<[string, Map<string, number>]>' can only be iterated through when using the '--downlevelIteration' flag or with a '--target' of 'es2015' or higher.
+backend/routes.ts(5345,39): error TS2802: Type 'MapIterator<[string, Map<string, { vuln: number; title: string; published: string; type: string; }>]>' can only be iterated through when using the '--downlevelIteration' flag or with a '--target' of 'es2015' or higher.
+backend/routes.ts(5418,16): error TS1252: Function declarations are not allowed inside blocks in strict mode when targeting 'ES5'. Modules are automatically in strict mode.
+backend/routes.ts(5442,43): error TS2802: Type 'MapIterator<[string, Map<string, number>]>' can only be iterated through when using the '--downlevelIteration' flag or with a '--target' of 'es2015' or higher.
+backend/routes.ts(5906,43): error TS2802: Type 'MapIterator<[string, Map<string, number>]>' can only be iterated through when using the '--downlevelIteration' flag or with a '--target' of 'es2015' or higher.
+backend/routes.ts(6391,16): error TS1252: Function declarations are not allowed inside blocks in strict mode when targeting 'ES5'. Modules are automatically in strict mode.
+backend/routes.ts(6748,75): error TS2339: Property 'Server' does not exist on type 'typeof WebSocket'.
+backend/routes.ts(6749,30): error TS2339: Property 'OPEN' does not exist on type 'typeof import("/Users/bipbabu/Documents/cisco-sre-agenticops-intelligence-dashboard-x-v2.1/node_modules/@types/ws/index")'.
+backend/routes.ts(6814,30): error TS2339: Property 'text' does not exist on type 'ChatbotResponse'.
+backend/routes.ts(6815,42): error TS2551: Property 'suggestedActions' does not exist on type 'ChatbotResponse'. Did you mean 'suggestions'?
+backend/routes.ts(6816,34): error TS2339: Property 'metadata' does not exist on type 'ChatbotResponse'.
+backend/routes.ts(6820,26): error TS2339: Property 'text' does not exist on type 'ChatbotResponse'.
+backend/routes.ts(6825,80): error TS2339: Property 'text' does not exist on type 'ChatbotResponse'.
+backend/secrets-manager.ts(245,32): error TS2802: Type 'Map<string, SecretEntry>' can only be iterated through when using the '--downlevelIteration' flag or with a '--target' of 'es2015' or higher.
+backend/secrets-manager.ts(257,29): error TS2802: Type 'Map<string, SecretEntry>' can only be iterated through when using the '--downlevelIteration' flag or with a '--target' of 'es2015' or higher.
+backend/secrets-manager.ts(337,32): error TS2802: Type 'Map<string, SecretEntry>' can only be iterated through when using the '--downlevelIteration' flag or with a '--target' of 'es2015' or higher.
+backend/secrets-manager.ts(363,35): error TS2802: Type 'MapIterator<SecretEntry>' can only be iterated through when using the '--downlevelIteration' flag or with a '--target' of 'es2015' or higher.
+backend/secrets-manager.ts(616,32): error TS2802: Type 'Map<string, SecretEntry>' can only be iterated through when using the '--downlevelIteration' flag or with a '--target' of 'es2015' or higher.
+backend/secrets-manager.ts(718,16): error TS2802: Type 'MapIterator<SecretEntry>' can only be iterated through when using the '--downlevelIteration' flag or with a '--target' of 'es2015' or higher.
+backend/seed.ts(14,31): error TS18047: 'db' is possibly 'null'.
+backend/seed.ts(25,13): error TS18047: 'db' is possibly 'null'.
+backend/seed.ts(78,21): error TS18047: 'db' is possibly 'null'.
+backend/seed.ts(100,19): error TS18047: 'db' is possibly 'null'.
+backend/storage.ts(285,7): error TS2322: Type '{ id: any; fieldNoticeId: any; fnType: any; fnTitle: any; customerName: any; cpyKey: any; totVuln: any; potVuln: any; notVuln: any; firstPublished: any; createdAt: Date; lastModified: any; fnState: null; ... 6 more ...; pubCode: null; }[]' is not assignable to type '{ id: string; fieldNoticeId: string; firstPublished: Date | null; fnTitle: string | null; fnType: string | null; totVuln: number | null; cvul: string | null; potVuln: number | null; ... 7 more ...; createdAt: Date | null; }[]'.
+  Type '{ id: any; fieldNoticeId: any; fnType: any; fnTitle: any; customerName: any; cpyKey: any; totVuln: any; potVuln: any; notVuln: any; firstPublished: any; createdAt: Date; lastModified: any; fnState: null; ... 6 more ...; pubCode: null; }' is missing the following properties from type '{ id: string; fieldNoticeId: string; firstPublished: Date | null; fnTitle: string | null; fnType: string | null; totVuln: number | null; cvul: string | null; potVuln: number | null; ... 7 more ...; createdAt: Date | null; }': cvul, cpVuln, cNotVuln, dateImported, duplicateDetected
+backend/storage.ts(319,7): error TS2322: Type 'NormalizedRecord | undefined' is not assignable to type '{ id: string; fieldNoticeId: string; firstPublished: Date | null; fnTitle: string | null; fnType: string | null; totVuln: number | null; cvul: string | null; potVuln: number | null; ... 7 more ...; createdAt: Date | null; } | undefined'.
+  Type 'NormalizedRecord' is missing the following properties from type '{ id: string; fieldNoticeId: string; firstPublished: Date | null; fnTitle: string | null; fnType: string | null; totVuln: number | null; cvul: string | null; potVuln: number | null; ... 7 more ...; createdAt: Date | null; }': id, fieldNoticeId, cvul, cpVuln, and 3 more.
+backend/storage.ts(333,29): error TS18047: 'db' is possibly 'null'.
+backend/storage.ts(345,30): error TS18047: 'db' is possibly 'null'.
+backend/storage.ts(614,33): error TS18046: 'record' is of type 'unknown'.
+backend/storage.ts(615,28): error TS18046: 'record' is of type 'unknown'.
+backend/storage.ts(616,30): error TS18046: 'record' is of type 'unknown'.
+backend/storage.ts(617,28): error TS18046: 'record' is of type 'unknown'.
+backend/storage.ts(618,34): error TS18046: 'record' is of type 'unknown'.
+backend/storage.ts(640,42): error TS18046: 'record' is of type 'unknown'.
+backend/storage.ts(641,42): error TS18046: 'record' is of type 'unknown'.
+backend/storage.ts(642,42): error TS18046: 'record' is of type 'unknown'.
+backend/storage.ts(651,32): error TS2802: Type 'MapIterator<{ month: string; totVuln: number; potVuln: number; notVuln: number; }>' can only be iterated through when using the '--downlevelIteration' flag or with a '--target' of 'es2015' or higher.
+backend/storage.ts(685,26): error TS18047: 'db' is possibly 'null'.
+backend/storage.ts(691,28): error TS18047: 'db' is possibly 'null'.
+backend/storage.ts(711,26): error TS18047: 'db' is possibly 'null'.
+backend/storage.ts(727,9): error TS18047: 'db' is possibly 'null'.
+backend/storage.ts(731,9): error TS18047: 'db' is possibly 'null'.
+backend/storage.ts(735,9): error TS18047: 'db' is possibly 'null'.
+backend/storage.ts(739,9): error TS18047: 'db' is possibly 'null'.
+backend/storage.ts(783,33): error TS18046: 'record' is of type 'unknown'.
+backend/storage.ts(784,28): error TS18046: 'record' is of type 'unknown'.
+backend/storage.ts(785,30): error TS18046: 'record' is of type 'unknown'.
+backend/storage.ts(837,9): error TS18047: 'db' is possibly 'null'.
+backend/storage.ts(845,9): error TS18047: 'db' is possibly 'null'.
+backend/storage.ts(854,9): error TS18047: 'db' is possibly 'null'.
+backend/storage.ts(861,9): error TS18047: 'db' is possibly 'null'.
+backend/storage.ts(934,33): error TS18046: 'record' is of type 'unknown'.
+backend/storage.ts(935,28): error TS18046: 'record' is of type 'unknown'.
+backend/storage.ts(936,30): error TS18046: 'record' is of type 'unknown'.
+backend/storage.ts(937,28): error TS18046: 'record' is of type 'unknown'.
+backend/storage.ts(938,34): error TS18046: 'record' is of type 'unknown'.
+backend/storage.ts(939,38): error TS18046: 'record' is of type 'unknown'.
+backend/storage.ts(940,38): error TS18046: 'record' is of type 'unknown'.
+backend/storage.ts(941,38): error TS18046: 'record' is of type 'unknown'.
+backend/storage.ts(956,17): error TS2322: Type 'string | null' is not assignable to type 'string'.
+  Type 'null' is not assignable to type 'string'.
+backend/storage.ts(973,32): error TS2802: Type 'MapIterator<{ fieldNotice: string; fnType: string; customer: string; dateImported: string; totVuln: number; potVuln: number; notVuln: number; }>' can only be iterated through when using the '--downlevelIteration' flag or with a '--target' of 'es2015' or higher.
+backend/storage.ts(1113,11): error TS18046: 'error' is of type 'unknown'.
+backend/storage.ts(1113,37): error TS18046: 'error' is of type 'unknown'.
+backend/storage.ts(1113,67): error TS18046: 'error' is of type 'unknown'.
+backend/storage.ts(1113,102): error TS18046: 'error' is of type 'unknown'.
+backend/storage.ts(1113,147): error TS18046: 'error' is of type 'unknown'.
+backend/storage.ts(1138,39): error TS18046: 'record' is of type 'unknown'.
+backend/storage.ts(1139,34): error TS18046: 'record' is of type 'unknown'.
+backend/storage.ts(1140,36): error TS18046: 'record' is of type 'unknown'.
+backend/storage.ts(1141,34): error TS18046: 'record' is of type 'unknown'.
+backend/storage.ts(1142,33): error TS18046: 'record' is of type 'unknown'.
+backend/storage.ts(1161,40): error TS18046: 'record' is of type 'unknown'.
+backend/storage.ts(1162,40): error TS18046: 'record' is of type 'unknown'.
+backend/storage.ts(1163,40): error TS18046: 'record' is of type 'unknown'.
+backend/storage.ts(1177,32): error TS2802: Type 'MapIterator<{ totVuln: number; potVuln: number; notVuln: number; }>' can only be iterated through when using the '--downlevelIteration' flag or with a '--target' of 'es2015' or higher.
+backend/storage.ts(1233,28): error TS18047: 'db' is possibly 'null'.
+backend/storage.ts(1252,7): error TS2322: Type '{ fieldNoticeId: string | null; fnTitle: string; totVuln: number; potVuln: number; notVuln: number; fnType: string | null; firstPublished: Date | null; }[]' is not assignable to type '{ fieldNoticeId: string; fnTitle: string; totVuln: number; potVuln: number; notVuln: number; fnType: string | null; firstPublished: Date | null; }[]'.
+  Type '{ fieldNoticeId: string | null; fnTitle: string; totVuln: number; potVuln: number; notVuln: number; fnType: string | null; firstPublished: Date | null; }' is not assignable to type '{ fieldNoticeId: string; fnTitle: string; totVuln: number; potVuln: number; notVuln: number; fnType: string | null; firstPublished: Date | null; }'.
+    Types of property 'fieldNoticeId' are incompatible.
+      Type 'string | null' is not assignable to type 'string'.
+        Type 'null' is not assignable to type 'string'.
+backend/storage.ts(1289,39): error TS18046: 'record' is of type 'unknown'.
+backend/storage.ts(1290,34): error TS18046: 'record' is of type 'unknown'.
+backend/storage.ts(1291,36): error TS18046: 'record' is of type 'unknown'.
+backend/storage.ts(1292,34): error TS18046: 'record' is of type 'unknown'.
+backend/storage.ts(1293,33): error TS18046: 'record' is of type 'unknown'.
+backend/storage.ts(1294,32): error TS18046: 'record' is of type 'unknown'.
+backend/storage.ts(1318,42): error TS18046: 'record' is of type 'unknown'.
+backend/storage.ts(1319,42): error TS18046: 'record' is of type 'unknown'.
+backend/storage.ts(1320,42): error TS18046: 'record' is of type 'unknown'.
+backend/storage.ts(1333,32): error TS2802: Type 'MapIterator<{ fieldNotice: string; fnType: string; totVuln: number; potVuln: number; notVuln: number; }>' can only be iterated through when using the '--downlevelIteration' flag or with a '--target' of 'es2015' or higher.
+backend/storage.ts(1398,28): error TS18047: 'db' is possibly 'null'.
+backend/storage.ts(1447,39): error TS18046: 'record' is of type 'unknown'.
+backend/storage.ts(1448,34): error TS18046: 'record' is of type 'unknown'.
+backend/storage.ts(1449,36): error TS18046: 'record' is of type 'unknown'.
+backend/storage.ts(1450,34): error TS18046: 'record' is of type 'unknown'.
+backend/storage.ts(1451,33): error TS18046: 'record' is of type 'unknown'.
+backend/storage.ts(1452,32): error TS18046: 'record' is of type 'unknown'.
+backend/storage.ts(1476,42): error TS18046: 'record' is of type 'unknown'.
+backend/storage.ts(1477,42): error TS18046: 'record' is of type 'unknown'.
+backend/storage.ts(1478,42): error TS18046: 'record' is of type 'unknown'.
+backend/storage.ts(1490,32): error TS2802: Type 'MapIterator<{ customer: string; totVuln: number; potVuln: number; notVuln: number; }>' can only be iterated through when using the '--downlevelIteration' flag or with a '--target' of 'es2015' or higher.
+backend/storage.ts(1535,26): error TS18047: 'db' is possibly 'null'.
+backend/storage.ts(1574,28): error TS18047: 'db' is possibly 'null'.
+backend/storage.ts(1611,7): error TS2322: Type '{ fieldNoticeId: string | null; fnTitle: any; totVuln: number; potVuln: number; notVuln: number; fnType: any; firstPublished: any; }[]' is not assignable to type '{ fieldNoticeId: string; fnTitle: string; totVuln: number; potVuln: number; notVuln: number; fnType: string | null; firstPublished: Date | null; }[]'.
+  Type '{ fieldNoticeId: string | null; fnTitle: any; totVuln: number; potVuln: number; notVuln: number; fnType: any; firstPublished: any; }' is not assignable to type '{ fieldNoticeId: string; fnTitle: string; totVuln: number; potVuln: number; notVuln: number; fnType: string | null; firstPublished: Date | null; }'.
+    Types of property 'fieldNoticeId' are incompatible.
+      Type 'string | null' is not assignable to type 'string'.
+        Type 'null' is not assignable to type 'string'.
+backend/storage.ts(1645,33): error TS18046: 'record' is of type 'unknown'.
+backend/storage.ts(1646,30): error TS18046: 'record' is of type 'unknown'.
+backend/storage.ts(1647,28): error TS18046: 'record' is of type 'unknown'.
+backend/storage.ts(1648,32): error TS18046: 'record' is of type 'unknown'.
+backend/storage.ts(1658,35): error TS18046: 'record' is of type 'unknown'.
+backend/storage.ts(1670,24): error TS18046: 'record' is of type 'unknown'.
+backend/storage.ts(1671,25): error TS18046: 'record' is of type 'unknown'.
+backend/storage.ts(1672,33): error TS18046: 'record' is of type 'unknown'.
+backend/storage.ts(1672,75): error TS18046: 'record' is of type 'unknown'.
+backend/storage.ts(1674,35): error TS18046: 'record' is of type 'unknown'.
+backend/storage.ts(1675,35): error TS18046: 'record' is of type 'unknown'.
+backend/storage.ts(1682,32): error TS2802: Type 'MapIterator<{ fieldNotice: string; title: string; fnType: string; firstPublished: Date; totVuln: number; potVuln: number; notVuln: number; }>' can only be iterated through when using the '--downlevelIteration' flag or with a '--target' of 'es2015' or higher.
+backend/storage.ts(1683,18): error TS7053: Element implicitly has an 'any' type because expression of type 'any' can't be used to index type '{}'.
+backend/storage.ts(1684,15): error TS7053: Element implicitly has an 'any' type because expression of type 'any' can't be used to index type '{}'.
+backend/storage.ts(1695,13): error TS7053: Element implicitly has an 'any' type because expression of type 'any' can't be used to index type '{}'.
+backend/storage.ts(1696,13): error TS7053: Element implicitly has an 'any' type because expression of type 'any' can't be used to index type '{}'.
+backend/storage.ts(1697,13): error TS7053: Element implicitly has an 'any' type because expression of type 'any' can't be used to index type '{}'.
+backend/storage.ts(1698,13): error TS7053: Element implicitly has an 'any' type because expression of type 'any' can't be used to index type '{}'.
+backend/storage.ts(1706,24): error TS18046: 'data' is of type 'unknown'.
+backend/storage.ts(1707,23): error TS18046: 'data' is of type 'unknown'.
+backend/storage.ts(1708,31): error TS18046: 'data' is of type 'unknown'.
+backend/storage.ts(1709,24): error TS18046: 'data' is of type 'unknown'.
+backend/storage.ts(1710,24): error TS18046: 'data' is of type 'unknown'.
+backend/storage.ts(1711,24): error TS18046: 'data' is of type 'unknown'.
+backend/storage.ts(1792,28): error TS18047: 'db' is possibly 'null'.
+backend/storage.ts(1951,7): error TS2322: Type '{ fieldNoticeId: string | null; fnTitle: any; totVuln: number; potVuln: number; notVuln: number; fnType: any; firstPublished: any; }[]' is not assignable to type '{ fieldNoticeId: string; fnTitle: string; totVuln: number; potVuln: number; notVuln: number; fnType: string | null; firstPublished: Date | null; }[]'.
+  Type '{ fieldNoticeId: string | null; fnTitle: any; totVuln: number; potVuln: number; notVuln: number; fnType: any; firstPublished: any; }' is not assignable to type '{ fieldNoticeId: string; fnTitle: string; totVuln: number; potVuln: number; notVuln: number; fnType: string | null; firstPublished: Date | null; }'.
+    Types of property 'fieldNoticeId' are incompatible.
+      Type 'string | null' is not assignable to type 'string'.
+        Type 'null' is not assignable to type 'string'.
+backend/storage.ts(1997,33): error TS18046: 'record' is of type 'unknown'.
+backend/storage.ts(1998,32): error TS18046: 'record' is of type 'unknown'.
+backend/storage.ts(1999,32): error TS18046: 'record' is of type 'unknown'.
+backend/storage.ts(2000,32): error TS18046: 'record' is of type 'unknown'.
+backend/storage.ts(2035,24): error TS18046: 'record' is of type 'unknown'.
+backend/storage.ts(2036,25): error TS18046: 'record' is of type 'unknown'.
+backend/storage.ts(2037,33): error TS18046: 'record' is of type 'unknown'.
+backend/storage.ts(2037,75): error TS18046: 'record' is of type 'unknown'.
+backend/storage.ts(2281,28): error TS18047: 'db' is possibly 'null'.
+backend/storage.ts(2288,31): error TS18047: 'db' is possibly 'null'.
+backend/storage.ts(2295,29): error TS18047: 'db' is possibly 'null'.
+backend/storage.ts(2304,28): error TS18047: 'db' is possibly 'null'.
+backend/storage.ts(2312,18): error TS18047: 'db' is possibly 'null'.
+backend/storage.ts(2319,28): error TS18047: 'db' is possibly 'null'.
+backend/storage.ts(2327,11): error TS18047: 'db' is possibly 'null'.
+backend/storage.ts(2332,18): error TS18047: 'db' is possibly 'null'.
+backend/storage.ts(2336,31): error TS18047: 'db' is possibly 'null'.
+backend/storage.ts(2344,11): error TS18047: 'db' is possibly 'null'.
+backend/storage.ts(2348,11): error TS18047: 'db' is possibly 'null'.
+backend/storage.ts(2352,11): error TS18047: 'db' is possibly 'null'.
+backend/storage.ts(2360,28): error TS18047: 'db' is possibly 'null'.
+backend/storage.ts(2365,18): error TS18047: 'db' is possibly 'null'.
+backend/storage.ts(2369,29): error TS18047: 'db' is possibly 'null'.
+backend/storage.ts(2394,29): error TS18047: 'db' is possibly 'null'.
+backend/storage.ts(2455,13): error TS18047: 'db' is possibly 'null'.
+backend/user-seed.ts(19,34): error TS18047: 'db' is possibly 'null'.
+backend/user-seed.ts(25,15): error TS18047: 'db' is possibly 'null'.
+backend/validation-pipeline.ts(164,29): error TS2339: Property 'results' does not exist on type 'SyncReport'.
+backend/validation-pipeline.ts(164,44): error TS7006: Parameter 'r' implicitly has an 'any' type.
+backend/validation-pipeline.ts(165,28): error TS2339: Property 'results' does not exist on type 'SyncReport'.
+backend/validation-pipeline.ts(169,17): error TS2367: This comparison appears to be unintentional because the types '"SYNCED" | "DEGRADED" | "CRITICAL"' and '"in_sync"' have no overlap.
+backend/validation-pipeline.ts(194,24): error TS2339: Property 'overallScore' does not exist on type 'DataVerificationResult'.
+backend/validation-pipeline.ts(195,34): error TS2339: Property 'overallScore' does not exist on type 'DataVerificationResult'.
+backend/validation-pipeline.ts(197,24): error TS2339: Property 'monthlyChecks' does not exist on type 'DataVerificationResult'.
+backend/voice-ai-routes.ts(44,7): error TS2783: 'success' is specified more than once, so this usage will be overwritten.
+backend/voice-ai-service.ts(364,38): error TS2802: Type 'Map<VoiceIntent, RegExp[]>' can only be iterated through when using the '--downlevelIteration' flag or with a '--target' of 'es2015' or higher.
+backend/voice-ai-service.ts(423,27): error TS2802: Type 'RegExpStringIterator<RegExpExecArray>' can only be iterated through when using the '--downlevelIteration' flag or with a '--target' of 'es2015' or higher.
+backend/voice-orchestrator-routes.ts(93,36): error TS2339: Property 'text' does not exist on type 'ChatbotResponse'.
+backend/voice-orchestrator-routes.ts(94,48): error TS2551: Property 'suggestedActions' does not exist on type 'ChatbotResponse'. Did you mean 'suggestions'?
+backend/voice-orchestrator-routes.ts(96,40): error TS2339: Property 'metadata' does not exist on type 'ChatbotResponse'.
+backend/voice-orchestrator.ts(348,26): error TS2352: Conversion of type '{ text: string; suggestedActions: never[]; relatedInsights: never[]; }' to type 'ChatbotResponse' may be a mistake because neither type sufficiently overlaps with the other. If this was intentional, convert the expression to 'unknown' first.
+  Type '{ text: string; suggestedActions: never[]; relatedInsights: never[]; }' is missing the following properties from type 'ChatbotResponse': success, message
+backend/voice-orchestrator.ts(368,82): error TS2339: Property 'text' does not exist on type 'ChatbotResponse'.
+backend/voice-orchestrator.ts(372,85): error TS2339: Property 'text' does not exist on type 'ChatbotResponse'.
+backend/voice-orchestrator.ts(373,59): error TS2339: Property 'text' does not exist on type 'ChatbotResponse'.
+backend/voice-orchestrator.ts(376,27): error TS2339: Property 'text' does not exist on type 'ChatbotResponse'.
+backend/voice-orchestrator.ts(393,53): error TS2339: Property 'text' does not exist on type 'ChatbotResponse'.
+frontend/services/fieldNoticeStatisticsEngine.ts(805,21): error TS2802: Type 'MapIterator<number>' can only be iterated through when using the '--downlevelIteration' flag or with a '--target' of 'es2015' or higher.
+frontend/services/fieldNoticeStatisticsEngine.ts(2072,26): error TS2802: Type 'Set<number>' can only be iterated through when using the '--downlevelIteration' flag or with a '--target' of 'es2015' or higher.
+frontend/services/fieldNoticeStatisticsEngine.ts(2125,32): error TS2802: Type 'Map<number, FNStatisticalProfile[]>' can only be iterated through when using the '--downlevelIteration' flag or with a '--target' of 'es2015' or higher.
+frontend/services/fieldNoticeStatisticsEngine.ts(2126,35): error TS7006: Parameter 'm' implicitly has an 'any' type.
+frontend/services/fieldNoticeStatisticsEngine.ts(2129,28): error TS7006: Parameter 'm' implicitly has an 'any' type.
+frontend/services/fieldNoticeStatisticsEngine.ts(2131,32): error TS7006: Parameter 'm' implicitly has an 'any' type.
+frontend/services/fieldNoticeStatisticsEngine.ts(2132,31): error TS7006: Parameter 'm' implicitly has an 'any' type.
+frontend/services/fieldNoticeStatisticsEngine.ts(2185,24): error TS2802: Type 'Set<number>' can only be iterated through when using the '--downlevelIteration' flag or with a '--target' of 'es2015' or higher.
+frontend/services/fieldNoticeStatisticsEngine.ts(2245,21): error TS2802: Type 'Set<string>' can only be iterated through when using the '--downlevelIteration' flag or with a '--target' of 'es2015' or higher.
+frontend/services/fieldNoticeStatisticsEngine.ts(2254,30): error TS2802: Type 'Map<string, number>' can only be iterated through when using the '--downlevelIteration' flag or with a '--target' of 'es2015' or higher.
+frontend/services/fieldNoticeStatisticsEngine.ts(2309,32): error TS2802: Type 'Set<string>' can only be iterated through when using the '--downlevelIteration' flag or with a '--target' of 'es2015' or higher.
+frontend/services/fieldNoticeStatisticsEngine.ts(2310,33): error TS2802: Type 'Set<string>' can only be iterated through when using the '--downlevelIteration' flag or with a '--target' of 'es2015' or higher.
+frontend/services/fieldNoticeStatisticsEngine.ts(2310,42): error TS2802: Type 'Set<string>' can only be iterated through when using the '--downlevelIteration' flag or with a '--target' of 'es2015' or higher.
+tests/test-home-depot-fix.ts(6,20): error TS2307: Cannot find module './backend/db' or its corresponding type declarations.
+tests/test-home-depot-fix.ts(8,39): error TS2307: Cannot find module './backend/storage' or its corresponding type declarations.
+tests/test-home-depot-fix.ts(27,39): error TS7006: Parameter 'idx' implicitly has an 'any' type.
