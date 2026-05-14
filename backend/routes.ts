@@ -6440,6 +6440,16 @@ export async function registerRoutes(app: Express): Promise<Server> {
     console.warn("[ROUTES] Enhanced Voice AI v3 routes not available:", error);
   }
 
+  // Register Secrets Management & AI Orchestration routes
+  try {
+    const secretsRoutes = (await import("./secrets-routes")).default;
+    app.use("/api/secrets", secretsRoutes);
+    app.use("/api/ai", secretsRoutes);
+    console.log("[ROUTES] Secrets Management & AI Orchestration routes registered");
+  } catch (error) {
+    console.warn("[ROUTES] Secrets/AI routes not available:", error);
+  }
+
   // Register ChatBot routes for ChatGPT-style voice chatbot with Cisco CIRCUIT API
   try {
     const chatbotRoutes = (await import("./chatbot-routes")).default;

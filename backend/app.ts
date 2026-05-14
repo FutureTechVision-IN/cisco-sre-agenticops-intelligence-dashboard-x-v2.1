@@ -11,6 +11,7 @@ import { SyncMonitorService } from "./sync-monitor-service";
 import { storage } from "./storage";
 import { loadCSVData, getCacheStats } from "./csv-data-service";
 import { DatasetPipeline } from "./dataset-pipeline";
+import { secretsManager } from "./secrets-manager";
 
 export function log(message: string, source = "express") {
   const formattedTime = new Date().toLocaleTimeString("en-US", {
@@ -143,6 +144,26 @@ export default async function runApp(
     }
   } catch (error: any) {
     console.error("[APP] Pipeline warning (non-fatal):", error.message);
+  }
+
+  // Initialize Secrets Manager — validate all API keys at startup
+  try {
+    console.log("[APP] Initializing Secrets Manager...");
+    const health = await secretsManager.validateAll();
+    const ciscoConfigured = secretsManager.isProviderConfigured('cisco-circuit');
+    console.log(`[APP] Secrets Health: ${health.overallStatus.toUpperCase()} — ${health.valid}/${health.totalSecrets} valid, ${health.missing} missing`);
+    if (ciscoConfigured) {
+      console.log("[APP] Cisco CIRCUIT API: CONFIGURED (primary AI provider)");
+    } else {
+      console.warn("[APP] Cisco CIRCUIT API: NOT CONFIGURED — AI features degraded");
+    }
+    if (health.rotationWarnings.length > 0) {
+      console.warn(`[APP] Key rotation warnings: ${health.rotationWarnings.length} keys need attention`);
+    }
+    // Start periodic validation (default: every hour)
+    secretsManager.startPeriodicValidation();
+  } catch (error: any) {
+    console.error("[APP] Secrets Manager warning (non-fatal):", error.message);
   }
 
   const server = await registerRoutes(app);
