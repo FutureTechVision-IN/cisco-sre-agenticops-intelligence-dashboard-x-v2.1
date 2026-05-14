@@ -6,20 +6,20 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: read
-  pages: write
-  id-token: write
+  contents: write
 
 concurrency:
   group: "pages"
   cancel-in-progress: false
 
 jobs:
-  build:
+  build-and-deploy:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -33,29 +33,23 @@ jobs:
       - name: Build for GitHub Pages
         env:
           GITHUB_PAGES: 'true'
-          REPO_NAME: 'cisco-sre-agenticops-intelligence-dashboard-x-v2.1'
-        run: npx vite build
+          VITE_STATIC_MODE: 'true'
+        run: npm run build:gh-pages
 
       - name: Copy static data to dist
         run: |
-          cp -r frontend/public/static-data dist/static-data
-          cp 404.html dist/404.html
+          mkdir -p dist/static-data
+          cp -r frontend/public/static-data/* dist/static-data/ 2>/dev/null || true
+          cp 404.html dist/404.html 2>/dev/null || true
+          touch dist/.nojekyll
 
-      - name: Setup Pages
-        uses: actions/configure-pages@v5
-
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
+      - name: Deploy to gh-pages branch
+        uses: peaceiris/actions-gh-pages@v4
         with:
-          path: './dist'
-
-  deploy:
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    runs-on: ubuntu-latest
-    needs: build
-    steps:
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./dist
+          publish_branch: gh-pages
+          keep_files: true
+          force_orphan: false
+          commit_message: "Deploy: ${{ github.sha }}"
+          exclude_assets: '.github,node_modules,.env,.env.*'
