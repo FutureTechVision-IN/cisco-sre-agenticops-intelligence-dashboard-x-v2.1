@@ -5333,8 +5333,14 @@ export async function registerRoutes(app: Express): Promise<Server> {
       }
 
       // --- Top improvers and slowest responders ---
+      // Impact score balances both percentage improvement AND absolute magnitude
+      // This prevents uniform -100% entries from dominating the list
       const withVuln = customerDetails.filter(c => c.initialVuln >= 100);
-      const topImprovers = withVuln.filter(c => c.reduction < 0).sort((a, b) => a.reduction - b.reduction).slice(0, 10);
+      const topImprovers = withVuln
+        .filter(c => c.reduction < 0)
+        .map(c => ({ ...c, impactScore: (c.initialVuln - c.currentVuln) * (Math.abs(c.reduction) / 100) }))
+        .sort((a, b) => b.impactScore - a.impactScore)
+        .slice(0, 10);
       const slowResponders = withVuln.filter(c => c.reduction >= -10).sort((a, b) => b.reduction - a.reduction).slice(0, 10);
 
       // --- FN breakdown ---
@@ -5531,7 +5537,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
             else reductionBuckets.under25++;
           });
           const avgImprovedReduction = mean(improved.map(c => Math.abs(c.reduction)));
-          const topImprovers = improved.sort((a, b) => a.reduction - b.reduction).slice(0, 5);
+          const topImprovers = improved
+            .map(c => ({ ...c, impactScore: (c.initialVuln - c.currentVuln) * (Math.abs(c.reduction) / 100) }))
+            .sort((a, b) => b.impactScore - a.impactScore)
+            .slice(0, 5);
 
           analysis = {
             title: "Customer Improvement Deep-Dive",
