@@ -1,37 +1,44 @@
 #!/usr/bin/env bash
 ##############################################################################
-# Cisco SRE AgenticOps Intelligence Dashboard – macOS Start Script
-# Version: 6.0.0
+# Cisco SRE AgenticOps Intelligence Dashboard – Cross-Platform Start Script
+# Version: 7.0.0 (macOS/Linux)
 #
-# Architecture (native mode, mirrors Windows start.bat):
+# Architecture (native mode):
 #   PRODUCTION  →  single process: node build/index.js
 #                  (Express serves static dist/ on $PORT)
 #   DEV         →  single process: npx tsx backend/index-dev.ts
 #                  (Express + Vite-as-middleware on $PORT; HMR included)
 #
+# Port Management:
+#   - Default port: 5000 (overridable via --port or PORT env var)
+#   - Automatic fallback: if default port is occupied, tries 8000, then
+#     incrementally scans until a free port is found.
+#   - macOS AirPlay (ControlCenter) on *:5000 is detected and coexists
+#     because this server binds 127.0.0.1 specifically.
+#
 # Usage:
-#   ./start.sh                  # auto-detect prod vs dev, open Chrome
+#   ./start.sh                  # auto-detect prod vs dev, open browser
 #   ./start.sh --prod           # force production mode
 #   ./start.sh --dev            # force development mode (HMR)
 #   ./start.sh --docker         # Docker Compose (all services)
 #   ./start.sh --hybrid         # Docker DB + native app
 #   ./start.sh --build          # force rebuild before starting
 #   ./start.sh --no-health      # skip health check wait
-#   ./start.sh --no-open        # skip auto-opening Chrome
-#   ./start.sh --port 9000      # override port
+#   ./start.sh --no-open        # skip auto-opening browser
+#   ./start.sh --port 9000      # override port (disables auto-fallback)
 ##############################################################################
 
 set -euo pipefail
 
 # ─── Colour codes ─────────────────────────────────────────────────────────────
 RED='\033[0;31m'; GREEN='\033[0;32m'; YELLOW='\033[1;33m'
-BLUE='\033[0;34m'; CYAN='\033[0;36m'; NC='\033[0m'
+BLUE='\033[0;34m'; CYAN='\033[0;36m'; BOLD='\033[1m'; NC='\033[0m'
 
 # ─── Paths ────────────────────────────────────────────────────────────────────
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 LOG_DIR="$SCRIPT_DIR/logs"
 LOG_FILE="$LOG_DIR/startup.log"
-PID_FILE="$SCRIPT_DIR/.startup_pids"
+PID_FILE="$SCRIPT_DIR/.dashboard.pid"
 
 # ─── Defaults ─────────────────────────────────────────────────────────────────
 MODE="auto"          # auto | native | docker | hybrid
@@ -40,15 +47,17 @@ FORCE_BUILD=false
 SKIP_HEALTH=false
 OPEN_BROWSER=true
 PORT="${PORT:-5000}"
+PORT_EXPLICIT=false  # true if user passed --port; disables auto-fallback
+FALLBACK_PORTS=(8000 8080 9000 3000)
 
 mkdir -p "$LOG_DIR"
 
 # ─── Logging ──────────────────────────────────────────────────────────────────
 log()  { echo -e "[$(date '+%Y-%m-%d %H:%M:%S')] $*" | tee -a "$LOG_FILE"; }
-info() { log "${GREEN}✅ $*${NC}"; }
-warn() { log "${YELLOW}⚠️  $*${NC}"; }
-err()  { log "${RED}❌ $*${NC}"; }
-step() { log "${BLUE}▶  $*${NC}"; }
+info() { log "${GREEN}[OK]   $*${NC}"; }
+warn() { log "${YELLOW}[WARN] $*${NC}"; }
+err()  { log "${RED}[ERR]  $*${NC}"; }
+step() { log "${BLUE}[>]    $*${NC}"; }
 
 # ─── Usage ────────────────────────────────────────────────────────────────────
 show_usage() {
@@ -56,13 +65,18 @@ show_usage() {
     echo
     echo "  --prod        Production mode  (node build/index.js)"
     echo "  --dev         Development mode (tsx + Vite HMR)"
+    echo "  --native      Force native mode (skip Docker detection)"
     echo "  --docker      All services via Docker Compose"
     echo "  --hybrid      Docker DB + native app"
     echo "  --build       Force rebuild before start"
     echo "  --no-health   Skip health check"
-    echo "  --no-open     Do not open Chrome automatically"
-    echo "  --port N      Override port (default: 5000)"
+    echo "  --no-open     Do not open browser automatically"
+    echo "  --port N      Override port (default: 5000; disables auto-fallback)"
     echo "  -h, --help    Show this help"
+    echo
+    echo "Environment variables:"
+    echo "  PORT          Default port (same as --port)"
+    echo "  NODE_ENV      Force production/development"
 }
 
 # ─── Argument parsing ─────────────────────────────────────────────────────────
@@ -76,7 +90,7 @@ while [[ $# -gt 0 ]]; do
         --build)      FORCE_BUILD=true;  shift ;;
         --no-health)  SKIP_HEALTH=true;  shift ;;
         --no-open)    OPEN_BROWSER=false; shift ;;
-        --port)       PORT="$2";         shift 2 ;;
+        --port)       PORT="$2"; PORT_EXPLICIT=true; shift 2 ;;
         -h|--help)    show_usage;        exit 0 ;;
         *)
             err "Unknown option: $1"
@@ -84,13 +98,12 @@ while [[ $# -gt 0 ]]; do
     esac
 done
 
-export PORT
-
 # ─── Banner ───────────────────────────────────────────────────────────────────
 echo -e "${CYAN}"
-echo "╔══════════════════════════════════════════════════════════════════════════════╗"
-echo "║          Cisco SRE AgenticOps Intelligence Dashboard v2.0 (macOS)          ║"
-echo "╚══════════════════════════════════════════════════════════════════════════════╝"
+echo "=================================================================="
+echo "  Cisco SRE AgenticOps Intelligence Dashboard v2.0"
+echo "  Startup Script v7.0.0 | $(uname -s) $(uname -m)"
+echo "=================================================================="
 echo -e "${NC}"
 
 # ─── Helper: check Docker ─────────────────────────────────────────────────────
@@ -98,66 +111,164 @@ check_docker() {
     command -v docker >/dev/null 2>&1 && docker info >/dev/null 2>&1
 }
 
-# ─── Helper: find an available port ──────────────────────────────────────────
-find_free_port() {
+# ─── Port detection: is a port available for use? ─────────────────────────────
+# Returns 0 if port is AVAILABLE, 1 if blocked.
+# On macOS, ControlCenter (AirPlay) binding *:5000 is not considered blocking
+# because our server binds 127.0.0.1 specifically.
+is_port_available() {
     local p="$1"
-    while lsof -iTCP:"$p" -sTCP:LISTEN -t >/dev/null 2>&1; do
-        # Skip macOS system ports silently
-        ((p++))
-    done
-    echo "$p"
+    # No listener at all → available
+    if ! lsof -iTCP:"$p" -sTCP:LISTEN -t >/dev/null 2>&1; then
+        return 0
+    fi
+    # On macOS: check if the ONLY listener is ControlCenter (AirPlay Receiver)
+    local non_system
+    non_system=$(lsof -iTCP:"$p" -sTCP:LISTEN 2>/dev/null \
+        | awk 'NR>1 {print $1}' | grep -cvE '^ControlCe$' || true)
+    if [[ "$non_system" == "0" ]]; then
+        # Only AirPlay on this port; we can coexist on 127.0.0.1
+        return 0
+    fi
+    return 1
 }
 
-# ─── Helper: wait until a URL responds ────────────────────────────────────────
+# ─── Port resolution: find a usable port with fallback logic ──────────────────
+resolve_port() {
+    # If the requested port is available, use it
+    if is_port_available "$PORT"; then
+        return
+    fi
+
+    # If user explicitly chose a port, try to free it (only kills our processes)
+    if [[ "$PORT_EXPLICIT" == "true" ]]; then
+        warn "Port $PORT is in use. Attempting to free it..."
+        free_port "$PORT"
+        if is_port_available "$PORT"; then
+            info "Port $PORT freed successfully"
+            return
+        fi
+        err "Cannot free port $PORT. Another process is still listening."
+        lsof -iTCP:"$PORT" -sTCP:LISTEN -n -P 2>/dev/null | head -5
+        exit 1
+    fi
+
+    # Auto-fallback: try each candidate
+    warn "Default port $PORT is occupied — scanning fallback ports..."
+    for candidate in "${FALLBACK_PORTS[@]}"; do
+        if [[ "$candidate" == "$PORT" ]]; then continue; fi
+        if is_port_available "$candidate"; then
+            info "Using fallback port $candidate"
+            PORT="$candidate"
+            return
+        fi
+    done
+
+    # Last resort: scan from 8001 upward
+    local scan=8001
+    while [[ $scan -lt 9100 ]]; do
+        if is_port_available "$scan"; then
+            info "Using dynamically found port $scan"
+            PORT="$scan"
+            return
+        fi
+        ((scan++))
+    done
+
+    err "No available port found in range 5000-9100"
+    exit 1
+}
+
+# ─── Free a specific port (only kills node/tsx/vite processes) ────────────────
+free_port() {
+    local p="$1"
+    local pids
+    pids=$(lsof -iTCP:"$p" -sTCP:LISTEN -t 2>/dev/null || true)
+    [[ -z "$pids" ]] && return 0
+
+    # Only kill node/tsx/vite/npm processes (never system services)
+    for pid in $pids; do
+        local cmd
+        cmd=$(ps -p "$pid" -o comm= 2>/dev/null || true)
+        if echo "$cmd" | grep -qE '^(node|tsx|npm|vite)$'; then
+            kill -TERM "$pid" 2>/dev/null || true
+        fi
+    done
+    sleep 2
+
+    # Force-kill remaining (same filter)
+    pids=$(lsof -iTCP:"$p" -sTCP:LISTEN -t 2>/dev/null || true)
+    for pid in $pids; do
+        local cmd
+        cmd=$(ps -p "$pid" -o comm= 2>/dev/null || true)
+        if echo "$cmd" | grep -qE '^(node|tsx|npm|vite)$'; then
+            kill -9 "$pid" 2>/dev/null || true
+        fi
+    done
+    sleep 1
+}
+
+# ─── Wait until a URL responds ────────────────────────────────────────────────
 wait_for_url() {
-    local url="$1" retries=30 i=0
+    local url="$1" retries="${2:-30}" i=0
     while ! curl -sf "$url" >/dev/null 2>&1; do
         ((i++))
         if [[ $i -ge $retries ]]; then
-            warn "Health check timed out for $url"
             return 1
+        fi
+        if (( i % 5 == 0 )); then
+            log "  Still waiting... ($i/${retries}s)"
         fi
         sleep 1
     done
     return 0
 }
 
-# ─── Helper: open Chrome on macOS ─────────────────────────────────────────────
-open_chrome() {
+# ─── Open browser (macOS / Linux) ─────────────────────────────────────────────
+open_browser() {
     local url="$1"
-    if [[ "$OPEN_BROWSER" != "true" ]]; then return; fi
-    sleep 1  # slight delay so server is accepting connections
-    if open -a "Google Chrome" "$url" 2>/dev/null; then
-        info "Opened Chrome → $url"
-    elif open "$url" 2>/dev/null; then
-        info "Opened default browser → $url"
+    [[ "$OPEN_BROWSER" != "true" ]] && return 0
+    sleep 1
+    if [[ "$(uname)" == "Darwin" ]]; then
+        open -a "Google Chrome" "$url" 2>/dev/null \
+            || open "$url" 2>/dev/null \
+            || true
     else
-        warn "Could not open browser automatically. Visit: $url"
+        xdg-open "$url" 2>/dev/null || true
     fi
 }
 
-# ─── Helper: kill any project processes already on the relevant ports ─────────
+# ─── Stop existing dashboard processes (idempotent) ───────────────────────────
 stop_existing() {
-    step "Stopping any existing dashboard processes..."
-    # Stop by PID file
+    step "Checking for existing dashboard processes..."
+    local stopped=false
+
+    # 1. Stop by PID file
     if [[ -f "$PID_FILE" ]]; then
-        while IFS=: read -r _name pid; do
-            kill -TERM "$pid" 2>/dev/null || true
+        while IFS= read -r pid; do
+            [[ -z "$pid" ]] && continue
+            if kill -0 "$pid" 2>/dev/null; then
+                kill -TERM "$pid" 2>/dev/null || true
+                stopped=true
+            fi
         done < "$PID_FILE"
         rm -f "$PID_FILE"
     fi
-    # Graceful sweep by process name
-    pkill -TERM -f "node build/index" 2>/dev/null || true
-    pkill -TERM -f "tsx.*backend/index" 2>/dev/null || true
-    # Kill project node/tsx/vite processes on known ports (avoids macOS system services)
-    for _p in 8000 5000 5001 3000 3001 5173; do
-        local _pids
-        _pids=$(lsof -iTCP:"$_p" -sTCP:LISTEN -t 2>/dev/null | xargs -I{} sh -c \
-            'ps -p {} -o comm= 2>/dev/null | grep -qE "node|tsx|vite|npm" && echo {}' || true)
-        [[ -n "$_pids" ]] && echo "$_pids" | xargs kill -TERM 2>/dev/null || true
+
+    # 2. Graceful sweep by process pattern
+    pkill -TERM -f "node build/index" 2>/dev/null && stopped=true || true
+    pkill -TERM -f "tsx.*backend/index" 2>/dev/null && stopped=true || true
+
+    # 3. Free dashboard ports (only node/tsx/vite processes)
+    for p in 5000 8000 8080 3000 5173; do
+        free_port "$p"
     done
-    sleep 1
-    info "Existing processes stopped"
+
+    if [[ "$stopped" == "true" ]]; then
+        sleep 1
+        info "Previous dashboard processes stopped"
+    else
+        info "No existing dashboard processes found"
+    fi
 }
 
 # ─── Load .env ────────────────────────────────────────────────────────────────
@@ -169,39 +280,18 @@ load_env() {
         set +a
         info "Loaded .env"
     fi
-    # Ensure PORT is always exported (command-line wins over .env)
+    # CLI --port wins over .env PORT
     export PORT
-    # macOS: if port 5000 is occupied, check whether it's only the AirPlay Receiver
-    # (ControlCenter). Our Express server binds to 127.0.0.1 specifically, so it
-    # can coexist with ControlCenter which binds to *:5000.
-    if [[ "$PORT" == "5000" ]] && lsof -iTCP:5000 -sTCP:LISTEN -t >/dev/null 2>&1; then
-        local _non_system
-        _non_system=$(lsof -iTCP:5000 -sTCP:LISTEN 2>/dev/null \
-            | awk 'NR>1 {print $1}' | grep -vE '^ControlCe$' | head -1 || true)
-        if [[ -n "$_non_system" ]]; then
-            warn "Port 5000 is in use by $_non_system – force-killing"
-            lsof -iTCP:5000 -sTCP:LISTEN 2>/dev/null \
-                | awk 'NR>1 {print $1, $2}' | grep -vE '^ControlCe ' \
-                | awk '{print $2}' | sort -u | xargs kill -9 2>/dev/null || true
-            sleep 1
-        fi
-        # ControlCenter (AirPlay) on *:5000 is fine — our server binds 127.0.0.1:5000
-        if lsof -iTCP:5000 -sTCP:LISTEN 2>/dev/null | awk 'NR>1 {print $1}' | grep -vqE '^ControlCe$'; then
-            err "Cannot free port 5000. Another process is still listening."
-            exit 1
-        fi
-        info "Port 5000 is available (macOS AirPlay on *:5000 will coexist with 127.0.0.1 binding)"
-    fi
+    export NODE_ENV="${NODE_ENV:-production}"
 }
 
 # ─── Ensure dependencies installed ───────────────────────────────────────────
 ensure_deps() {
     if [[ ! -d "$SCRIPT_DIR/node_modules" ]]; then
-        step "node_modules not found – running npm install..."
-        (cd "$SCRIPT_DIR" && npm install) | tee -a "$LOG_FILE"
+        step "node_modules not found — running npm install..."
+        (cd "$SCRIPT_DIR" && npm install --omit=dev) 2>&1 | tee -a "$LOG_FILE"
         info "Dependencies installed"
     fi
-    # Put local .bin on PATH so npx fallback is never needed at runtime
     export PATH="$SCRIPT_DIR/node_modules/.bin:$PATH"
 }
 
@@ -217,73 +307,70 @@ detect_app_mode() {
 }
 
 # ─── PRODUCTION native start ──────────────────────────────────────────────────
-# Mirrors Windows: node build/index.js on $PORT
-# Single process — Express serves static dist/ AND the API.
 start_prod() {
-    step "Starting PRODUCTION server (node build/index.js) on port $PORT..."
+    step "Starting PRODUCTION server on port $PORT..."
 
     if [[ "$FORCE_BUILD" == "true" || ! -f "$SCRIPT_DIR/build/index.js" || ! -d "$SCRIPT_DIR/dist" ]]; then
         step "Building frontend + backend..."
-        (cd "$SCRIPT_DIR" && npm run build:prod) 2>&1 | tee -a "$LOG_FILE" || {
-            err "Build failed – check $LOG_FILE"
+        (cd "$SCRIPT_DIR" && npm run build) 2>&1 | tee -a "$LOG_FILE" || {
+            err "Build failed — check $LOG_FILE"
             exit 1
         }
         info "Build complete"
     fi
 
-    > "$PID_FILE"
-    NODE_ENV=production nohup node "$SCRIPT_DIR/build/index.js" \
+    export NODE_ENV=production
+    export PORT
+
+    nohup node "$SCRIPT_DIR/build/index.js" \
         > "$LOG_DIR/server.log" 2>&1 &
     local pid=$!
-    echo "server:$pid" >> "$PID_FILE"
+    echo "$pid" > "$PID_FILE"
     disown "$pid" 2>/dev/null || true
 
-    local host="127.0.0.1"
-    local url="http://${host}:$PORT"
+    local url="http://127.0.0.1:$PORT"
     if [[ "$SKIP_HEALTH" != "true" ]]; then
-        step "Waiting for server to be ready at $url..."
-        if wait_for_url "$url"; then
-            info "Server is ready"
+        step "Waiting for server at $url (up to 60s)..."
+        if wait_for_url "$url/api/data/health" 60; then
+            info "Server is healthy"
         else
-            err "Server did not respond in time – see $LOG_DIR/server.log"
-            tail -20 "$LOG_DIR/server.log"
+            err "Server did not respond — see $LOG_DIR/server.log"
+            tail -20 "$LOG_DIR/server.log" 2>/dev/null
             exit 1
         fi
     fi
 
     print_status "PRODUCTION" "$url" "$pid"
-    open_chrome "$url"
+    open_browser "$url"
 }
 
 # ─── DEVELOPMENT native start ─────────────────────────────────────────────────
-# Mirrors Windows dev path: tsx backend/index-dev.ts
-# Single process — Express embeds Vite as middleware (HMR included).
 start_dev() {
-    step "Starting DEVELOPMENT server (tsx backend/index-dev.ts) on port $PORT..."
+    step "Starting DEVELOPMENT server on port $PORT (HMR enabled)..."
 
-    > "$PID_FILE"
-    NODE_ENV=development nohup \
-        "$SCRIPT_DIR/node_modules/.bin/tsx" backend/index-dev.ts \
+    export NODE_ENV=development
+    export PORT
+
+    nohup npx tsx "$SCRIPT_DIR/backend/index-dev.ts" \
         > "$LOG_DIR/server.log" 2>&1 &
     local pid=$!
-    echo "server:$pid" >> "$PID_FILE"
+    echo "$pid" > "$PID_FILE"
     disown "$pid" 2>/dev/null || true
 
-    local host="127.0.0.1"
-    local url="http://${host}:$PORT"
+    local url="http://127.0.0.1:$PORT"
     if [[ "$SKIP_HEALTH" != "true" ]]; then
-        step "Waiting for Vite dev server to be ready at $url (HMR enabled)..."
-        if wait_for_url "$url"; then
-            info "Dev server is ready (HMR active)"
+        step "Waiting for dev server at $url (up to 30s)..."
+        if wait_for_url "$url" 30; then
+            info "Dev server ready (HMR active)"
         else
-            err "Dev server did not respond – see $LOG_DIR/server.log"
-            tail -30 "$LOG_DIR/server.log"
+            err "Dev server did not respond — see $LOG_DIR/server.log"
+            tail -30 "$LOG_DIR/server.log" 2>/dev/null
             exit 1
         fi
     fi
 
     print_status "DEVELOPMENT (HMR)" "$url" "$pid"
-    open_chrome "$url"
+    open_browser "$url"
 }
 
 # ─── DOCKER start ─────────────────────────────────────────────────────────────
@@ -298,24 +385,20 @@ start_docker() {
     (cd "$SCRIPT_DIR" && docker compose -f docker-compose.enhanced.yml up -d "${compose_args[@]}") \
         2>&1 | tee -a "$LOG_FILE"
 
-    local docker_port
-    docker_port=$(docker compose -f docker-compose.enhanced.yml port dashboard 5000 2>/dev/null \
-        | cut -d: -f2 || echo "$PORT")
-    local url="http://127.0.0.1:${docker_port:-$PORT}"
-
+    local url="http://127.0.0.1:$PORT"
     if [[ "$SKIP_HEALTH" != "true" ]]; then
         step "Waiting for Docker services..."
-        wait_for_url "$url" || warn "Docker health check timed out"
+        wait_for_url "$url/api/data/health" 30 || warn "Docker health check timed out"
     fi
     info "Docker services started"
-    print_status "DOCKER" "$url" "—"
-    open_chrome "$url"
+    print_status "DOCKER" "$url" "container"
+    open_browser "$url"
 }
 
 # ─── HYBRID start ─────────────────────────────────────────────────────────────
 start_hybrid() {
     if ! check_docker; then
-        warn "Docker unavailable – falling back to native mode"
+        warn "Docker unavailable — falling back to native mode"
         detect_app_mode
         [[ "$APP_MODE" == "prod" ]] && start_prod || start_dev
         return
@@ -324,7 +407,7 @@ start_hybrid() {
     (cd "$SCRIPT_DIR" && docker compose -f docker-compose.enhanced.yml up -d postgres redis) \
         2>&1 | tee -a "$LOG_FILE"
 
-    step "Waiting 8 s for PostgreSQL to accept connections..."
+    step "Waiting for PostgreSQL..."
     sleep 8
 
     if ! docker ps | grep -q "postgres"; then
@@ -339,16 +422,20 @@ start_hybrid() {
     [[ "$APP_MODE" == "prod" ]] && start_prod || start_dev
 }
 
-# ─── Final status box ─────────────────────────────────────────────────────────
+# ─── Status display ──────────────────────────────────────────────────────────
 print_status() {
     local mode="$1" url="$2" pid="$3"
     echo
-    echo -e "${GREEN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
-    echo -e "${GREEN}  Dashboard RUNNING  –  $url${NC}"
-    echo -e "${CYAN}  Mode: $mode   PID: $pid   Port: $PORT${NC}"
-    echo -e "${CYAN}  Logs: $LOG_DIR/${NC}"
-    echo -e "${YELLOW}  Stop:  ./stop.sh${NC}"
-    echo -e "${GREEN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
+    echo -e "${GREEN}=================================================================="
+    echo -e "  Dashboard Started Successfully"
+    echo -e "==================================================================${NC}"
+    echo -e "  ${BOLD}URL:${NC}   $url"
+    echo -e "  ${BOLD}Mode:${NC}  $mode"
+    echo -e "  ${BOLD}PID:${NC}   $pid"
+    echo -e "  ${BOLD}Port:${NC}  $PORT"
+    echo -e "  ${BOLD}Logs:${NC}  $LOG_DIR/"
+    echo -e "  ${BOLD}Stop:${NC}  ./stop.sh"
+    echo -e "${GREEN}==================================================================${NC}"
     echo
 }
 
@@ -356,20 +443,23 @@ print_status() {
 main() {
     stop_existing
     load_env
+    resolve_port
     ensure_deps
+
+    export PORT
+    step "Resolved port: $PORT"
 
     # Auto-detect top-level mode
     if [[ "$MODE" == "auto" ]]; then
-        if check_docker; then MODE="native"; fi  # prefer native on Mac for quick iteration
         MODE="native"
     fi
 
-    log "${CYAN}▶  Mode: $MODE${NC}"
+    log "Mode: $MODE | Port: $PORT"
 
     case "$MODE" in
         native)
             detect_app_mode
-            log "${CYAN}▶  App mode: $APP_MODE${NC}"
+            log "App mode: $APP_MODE"
             [[ "$APP_MODE" == "prod" ]] && start_prod || start_dev
             ;;
         docker)  start_docker  ;;
@@ -382,4 +472,3 @@ main() {
 
 trap 'log "${YELLOW}Script interrupted${NC}"' INT TERM
 main "$@"
-
