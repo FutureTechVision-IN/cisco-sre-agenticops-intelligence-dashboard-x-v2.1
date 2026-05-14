@@ -43,7 +43,7 @@ module.exports = {
     // Environment variables
     env: {
       NODE_ENV: 'production',
-      PORT: 5000,
+      PORT: 8000,
     },
     
     // Load environment file

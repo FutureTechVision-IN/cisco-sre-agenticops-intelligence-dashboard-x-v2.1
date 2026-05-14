@@ -2,7 +2,7 @@ const http = require('http');
 
 const options = {
   hostname: '127.0.0.1',
-  port: 5000,
+  port: 8000,
   path: '/api/analytics/vulnerability-reduction',
   method: 'GET'
 };

@@ -10,11 +10,11 @@
 #                  (Express + Vite-as-middleware on $PORT; HMR included)
 #
 # Port Management:
-#   - Default port: 5000 (overridable via --port or PORT env var)
-#   - Automatic fallback: if default port is occupied, tries 8000, then
+#   - Default port: 8000 (overridable via --port or PORT env var)
+#   - Automatic fallback: if default port is occupied, tries 8080, then
 #     incrementally scans until a free port is found.
-#   - macOS AirPlay (ControlCenter) on *:5000 is detected and coexists
-#     because this server binds 127.0.0.1 specifically.
+#   - macOS AirPlay (ControlCenter) on *:5000 is not a concern since
+#     default is now 8000.
 #
 # Usage:
 #   ./start.sh                  # auto-detect prod vs dev, open browser
@@ -46,9 +46,9 @@ APP_MODE="auto"      # auto | prod | dev  (native only)
 FORCE_BUILD=false
 SKIP_HEALTH=false
 OPEN_BROWSER=true
-PORT="${PORT:-5000}"
+PORT="${PORT:-8000}"
 PORT_EXPLICIT=false  # true if user passed --port; disables auto-fallback
-FALLBACK_PORTS=(8000 8080 9000 3000)
+FALLBACK_PORTS=(8080 9000 3000 5000)
 
 mkdir -p "$LOG_DIR"
 
@@ -71,7 +71,7 @@ show_usage() {
     echo "  --build       Force rebuild before start"
     echo "  --no-health   Skip health check"
     echo "  --no-open     Do not open browser automatically"
-    echo "  --port N      Override port (default: 5000; disables auto-fallback)"
+    echo "  --port N      Override port (default: 8000; disables auto-fallback)"
     echo "  -h, --help    Show this help"
     echo
     echo "Environment variables:"
@@ -174,7 +174,7 @@ resolve_port() {
         ((scan++))
     done
 
-    err "No available port found in range 5000-9100"
+    err "No available port found in range 8000-9100"
     exit 1
 }
 
@@ -293,6 +293,46 @@ ensure_deps() {
         info "Dependencies installed"
     fi
     export PATH="$SCRIPT_DIR/node_modules/.bin:$PATH"
+}
+
+# ─── Verify secrets module is loadable ────────────────────────────────────────
+verify_secrets_module() {
+    local secrets_path="$SCRIPT_DIR/scripts/secrets/load-secrets.mjs"
+    step "Verifying secrets module is loadable..."
+    if [[ ! -f "$secrets_path" ]]; then
+        err "Secrets module not found at: $secrets_path"
+        err "Create it or remove the import from backend/index-dev.ts"
+        exit 1
+    fi
+    # Verify it can be parsed by Node.js
+    if node --check "$secrets_path" 2>/dev/null; then
+        info "Secrets module loaded successfully"
+    else
+        warn "Secrets module has syntax issues — startup may fail"
+    fi
+}
+
+# ─── Verify critical backend modules exist ────────────────────────────────────
+verify_backend_modules() {
+    local missing=()
+    local critical_modules=(
+        "backend/data-validation-tests.ts"
+        "backend/routes.ts"
+        "backend/app.ts"
+        "backend/index-dev.ts"
+    )
+    for mod in "${critical_modules[@]}"; do
+        if [[ ! -f "$SCRIPT_DIR/$mod" ]]; then
+            missing+=("$mod")
+        fi
+    done
+    if [[ ${#missing[@]} -gt 0 ]]; then
+        err "Missing critical backend modules:"
+        for m in "${missing[@]}"; do
+            err "  - $m"
+        done
+        exit 1
+    fi
 }
 
 # ─── Auto-detect prod vs dev ──────────────────────────────────────────────────
@@ -443,6 +483,8 @@ print_status() {
 main() {
     stop_existing
     load_env
+    verify_secrets_module
+    verify_backend_modules
     resolve_port
     ensure_deps
 

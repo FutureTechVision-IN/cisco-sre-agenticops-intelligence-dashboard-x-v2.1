@@ -4,7 +4,7 @@ const fs = require('fs');
 const path = require('path');
 const { URL } = require('url');
 
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 8000;
 const CSV_PATH = path.join(__dirname, 'data', 'fn_aug25-feb26.csv');
 
 const corsHeaders = {
