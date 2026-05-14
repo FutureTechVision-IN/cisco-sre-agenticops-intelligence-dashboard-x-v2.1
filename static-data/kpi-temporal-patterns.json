@@ -1,0 +1,10 @@
+{
+  "seasonality_strength": "STRONG",
+  "pattern_type": "TRENDING",
+  "peak_periods": [],
+  "valley_periods": [
+    1,
+    2,
+    3
+  ]
+}

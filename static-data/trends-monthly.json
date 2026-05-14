@@ -1,0 +1,44 @@
+[
+  {
+    "month": "2025-08",
+    "vulnerable": 1167640,
+    "potentiallyVulnerable": 6444468,
+    "notVulnerable": 47789438,
+    "total": 55401546
+  },
+  {
+    "month": "2025-09",
+    "vulnerable": 1367238,
+    "potentiallyVulnerable": 6524177,
+    "notVulnerable": 48468610,
+    "total": 56360025
+  },
+  {
+    "month": "2025-10",
+    "vulnerable": 1367238,
+    "potentiallyVulnerable": 6524177,
+    "notVulnerable": 48468610,
+    "total": 56360025
+  },
+  {
+    "month": "2025-11",
+    "vulnerable": 1216525,
+    "potentiallyVulnerable": 6333456,
+    "notVulnerable": 49593862,
+    "total": 57143843
+  },
+  {
+    "month": "2026-01",
+    "vulnerable": 1311652,
+    "potentiallyVulnerable": 6554779,
+    "notVulnerable": 50154427,
+    "total": 58020858
+  },
+  {
+    "month": "2026-02",
+    "vulnerable": 1123173,
+    "potentiallyVulnerable": 6296402,
+    "notVulnerable": 50392252,
+    "total": 57811827
+  }
+]

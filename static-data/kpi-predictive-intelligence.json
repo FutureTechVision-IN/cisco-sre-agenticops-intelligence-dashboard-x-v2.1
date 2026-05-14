@@ -1,0 +1,11 @@
+{
+  "risk_level": "LOW",
+  "vulnerability_ratio_percent": 2.47,
+  "overall_health_score": 98,
+  "key_insights": [
+    "1,438,814 assets currently vulnerable (2.5% of fleet)",
+    "Vulnerability trend stable or improving",
+    "Potential vulnerabilities exceed current - prioritize assessment"
+  ],
+  "recommendation_priority": "STANDARD"
+}

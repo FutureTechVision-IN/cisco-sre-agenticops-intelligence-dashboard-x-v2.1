@@ -1,0 +1,7 @@
+{
+  "risk_score": 17,
+  "critical_vulnerabilities": 20,
+  "action_priority": "LOW",
+  "ml_confidence": 0.87,
+  "top_risk_asset": "WELLS FARGO MASTER ACCOUNT"
+}
