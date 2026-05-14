@@ -1,0 +1,43 @@
+{
+  "generated": "2026-04-27T17:16:15Z",
+  "dataset": "fn_aug25-feb26",
+  "monthRange": "Aug 2025 - Feb 2026",
+  "months": [
+    "2025-08",
+    "2025-09",
+    "2025-10",
+    "2025-11",
+    "2026-01",
+    "2026-02"
+  ],
+  "files": [
+    "customers.json",
+    "extreme-vulnerability-customers.json",
+    "field-notices.json",
+    "filters.json",
+    "index.json",
+    "intelligence-insights.json",
+    "kpi-anomaly-detection.json",
+    "kpi-comprehensive-intelligence.json",
+    "kpi-customer-risk-concentration.json",
+    "kpi-field-notice-impact.json",
+    "kpi-health-scores.json",
+    "kpi-predictive-analytics.json",
+    "kpi-predictive-intelligence.json",
+    "kpi-remediation-velocity.json",
+    "kpi-risk-prioritization.json",
+    "kpi-temporal-patterns.json",
+    "kpi-vulnerability-trend.json",
+    "kpi-vulnerable-growth.json",
+    "metrics-summary.json",
+    "metrics.json",
+    "reports-top-customers-2025.json",
+    "reports-top-customers.json",
+    "reports-top-field-notices-2025.json",
+    "reports-top-field-notices.json",
+    "sync-status.json",
+    "trends-forecast.json",
+    "trends-monthly-cumulative.json",
+    "trends-monthly.json"
+  ]
+}
