@@ -130,7 +130,7 @@ DATABASE_URL=postgresql://user:password@localhost:5432/database_name
 CSV_FILENAME=fn_aug25-feb26.csv
 
 # OneDrive Data Directory (for automated pipeline)
-ONEDRIVE_DATA_DIR=E:\Intelligent Systems\cisco-sre-agenticops-intelligence-dashboard-x-v2.0\data
+ONEDRIVE_DATA_DIR=E:\Intelligent Systems\cisco-sre-agenticops-intelligence-dashboard-x-v2.1\data
 
 # Session Security
 SESSION_SECRET=your-secret-key-change-in-production

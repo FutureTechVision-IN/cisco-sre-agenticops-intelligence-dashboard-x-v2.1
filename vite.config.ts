@@ -7,7 +7,7 @@ import path from "path";
 const getBase = () => {
   // For GitHub Pages deployment via CI/CD
   if (process.env.GITHUB_PAGES === "true" || process.env.CI === "true") {
-    const repoName = process.env.REPO_NAME || "cisco-sre-agenticops-intelligence-dashboard-x-v2.0";
+    const repoName = process.env.REPO_NAME || "cisco-sre-agenticops-intelligence-dashboard-x-v2.1";
     // Public GitHub Pages: https://<user>.github.io/<repo>/
     // Cisco GitHub Enterprise Pages: /pages/<user>/<repo>/
     if (process.env.CISCO_GH === "true") {

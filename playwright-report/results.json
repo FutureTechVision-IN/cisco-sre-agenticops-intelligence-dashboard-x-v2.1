@@ -1,7 +1,7 @@
 {
   "config": {
-    "configFile": "/Users/bipbabu/Documents/cisco-sre-agenticops-intelligence-dashboard-x-v2.0/playwright.config.ts",
-    "rootDir": "/Users/bipbabu/Documents/cisco-sre-agenticops-intelligence-dashboard-x-v2.0/tests",
+    "configFile": "/Users/bipbabu/Documents/cisco-sre-agenticops-intelligence-dashboard-x-v2.1/playwright.config.ts",
+    "rootDir": "/Users/bipbabu/Documents/cisco-sre-agenticops-intelligence-dashboard-x-v2.1/tests",
     "forbidOnly": false,
     "fullyParallel": false,
     "globalSetup": null,
@@ -14,13 +14,13 @@
     "preserveOutput": "always",
     "projects": [
       {
-        "outputDir": "/Users/bipbabu/Documents/cisco-sre-agenticops-intelligence-dashboard-x-v2.0/playwright-report/test-artifacts",
+        "outputDir": "/Users/bipbabu/Documents/cisco-sre-agenticops-intelligence-dashboard-x-v2.1/playwright-report/test-artifacts",
         "repeatEach": 1,
         "retries": 0,
         "metadata": {},
         "id": "setup",
         "name": "setup",
-        "testDir": "/Users/bipbabu/Documents/cisco-sre-agenticops-intelligence-dashboard-x-v2.0/tests",
+        "testDir": "/Users/bipbabu/Documents/cisco-sre-agenticops-intelligence-dashboard-x-v2.1/tests",
         "testIgnore": [],
         "testMatch": [
           "/.*\\.setup\\.ts/"
@@ -28,13 +28,13 @@
         "timeout": 120000
       },
       {
-        "outputDir": "/Users/bipbabu/Documents/cisco-sre-agenticops-intelligence-dashboard-x-v2.0/playwright-report/test-artifacts",
+        "outputDir": "/Users/bipbabu/Documents/cisco-sre-agenticops-intelligence-dashboard-x-v2.1/playwright-report/test-artifacts",
         "repeatEach": 1,
         "retries": 0,
         "metadata": {},
         "id": "webkit",
         "name": "webkit",
-        "testDir": "/Users/bipbabu/Documents/cisco-sre-agenticops-intelligence-dashboard-x-v2.0/tests",
+        "testDir": "/Users/bipbabu/Documents/cisco-sre-agenticops-intelligence-dashboard-x-v2.1/tests",
         "testIgnore": [
           "**/windows-server/**"
         ],
@@ -45,13 +45,13 @@
         "timeout": 120000
       },
       {
-        "outputDir": "/Users/bipbabu/Documents/cisco-sre-agenticops-intelligence-dashboard-x-v2.0/playwright-report/test-artifacts",
+        "outputDir": "/Users/bipbabu/Documents/cisco-sre-agenticops-intelligence-dashboard-x-v2.1/playwright-report/test-artifacts",
         "repeatEach": 1,
         "retries": 0,
         "metadata": {},
         "id": "chromium",
         "name": "chromium",
-        "testDir": "/Users/bipbabu/Documents/cisco-sre-agenticops-intelligence-dashboard-x-v2.0/tests",
+        "testDir": "/Users/bipbabu/Documents/cisco-sre-agenticops-intelligence-dashboard-x-v2.1/tests",
         "testIgnore": [],
         "testMatch": [
           "**/*.spec.ts",
@@ -60,13 +60,13 @@
         "timeout": 120000
       },
       {
-        "outputDir": "/Users/bipbabu/Documents/cisco-sre-agenticops-intelligence-dashboard-x-v2.0/playwright-report/test-artifacts",
+        "outputDir": "/Users/bipbabu/Documents/cisco-sre-agenticops-intelligence-dashboard-x-v2.1/playwright-report/test-artifacts",
         "repeatEach": 1,
         "retries": 0,
         "metadata": {},
         "id": "firefox",
         "name": "firefox",
-        "testDir": "/Users/bipbabu/Documents/cisco-sre-agenticops-intelligence-dashboard-x-v2.0/tests",
+        "testDir": "/Users/bipbabu/Documents/cisco-sre-agenticops-intelligence-dashboard-x-v2.1/tests",
         "testIgnore": [],
         "testMatch": [
           "**/*.spec.ts",
@@ -75,13 +75,13 @@
         "timeout": 120000
       },
       {
-        "outputDir": "/Users/bipbabu/Documents/cisco-sre-agenticops-intelligence-dashboard-x-v2.0/playwright-report/test-artifacts",
+        "outputDir": "/Users/bipbabu/Documents/cisco-sre-agenticops-intelligence-dashboard-x-v2.1/playwright-report/test-artifacts",
         "repeatEach": 1,
         "retries": 0,
         "metadata": {},
         "id": "edge",
         "name": "edge",
-        "testDir": "/Users/bipbabu/Documents/cisco-sre-agenticops-intelligence-dashboard-x-v2.0/tests",
+        "testDir": "/Users/bipbabu/Documents/cisco-sre-agenticops-intelligence-dashboard-x-v2.1/tests",
         "testIgnore": [
           "**/macos-only/**"
         ],
@@ -92,13 +92,13 @@
         "timeout": 120000
       },
       {
-        "outputDir": "/Users/bipbabu/Documents/cisco-sre-agenticops-intelligence-dashboard-x-v2.0/playwright-report/test-artifacts",
+        "outputDir": "/Users/bipbabu/Documents/cisco-sre-agenticops-intelligence-dashboard-x-v2.1/playwright-report/test-artifacts",
         "repeatEach": 1,
         "retries": 0,
         "metadata": {},
         "id": "chrome-windows",
         "name": "chrome-windows",
-        "testDir": "/Users/bipbabu/Documents/cisco-sre-agenticops-intelligence-dashboard-x-v2.0/tests",
+        "testDir": "/Users/bipbabu/Documents/cisco-sre-agenticops-intelligence-dashboard-x-v2.1/tests",
         "testIgnore": [
           "**/macos-only/**"
         ],
@@ -109,13 +109,13 @@
         "timeout": 120000
       },
       {
-        "outputDir": "/Users/bipbabu/Documents/cisco-sre-agenticops-intelligence-dashboard-x-v2.0/playwright-report/test-artifacts",
+        "outputDir": "/Users/bipbabu/Documents/cisco-sre-agenticops-intelligence-dashboard-x-v2.1/playwright-report/test-artifacts",
         "repeatEach": 1,
         "retries": 0,
         "metadata": {},
         "id": "mobile-safari",
         "name": "mobile-safari",
-        "testDir": "/Users/bipbabu/Documents/cisco-sre-agenticops-intelligence-dashboard-x-v2.0/tests",
+        "testDir": "/Users/bipbabu/Documents/cisco-sre-agenticops-intelligence-dashboard-x-v2.1/tests",
         "testIgnore": [
           "**/windows-server/**",
           "**/performance/**"
@@ -127,13 +127,13 @@
         "timeout": 120000
       },
       {
-        "outputDir": "/Users/bipbabu/Documents/cisco-sre-agenticops-intelligence-dashboard-x-v2.0/playwright-report/test-artifacts",
+        "outputDir": "/Users/bipbabu/Documents/cisco-sre-agenticops-intelligence-dashboard-x-v2.1/playwright-report/test-artifacts",
         "repeatEach": 1,
         "retries": 0,
         "metadata": {},
         "id": "mobile-chrome",
         "name": "mobile-chrome",
-        "testDir": "/Users/bipbabu/Documents/cisco-sre-agenticops-intelligence-dashboard-x-v2.0/tests",
+        "testDir": "/Users/bipbabu/Documents/cisco-sre-agenticops-intelligence-dashboard-x-v2.1/tests",
         "testIgnore": [
           "**/windows-server/**",
           "**/performance/**"

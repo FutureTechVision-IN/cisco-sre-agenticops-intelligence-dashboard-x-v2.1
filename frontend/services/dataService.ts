@@ -134,7 +134,7 @@ const isStaticHosting = (): boolean => {
 // Get the base path for static data files
 // IMPORTANT: Use import.meta.env.BASE_URL (Vite build-time replacement) so that
 // fetch() calls resolve to the correct absolute path on GitHub Pages
-// e.g. /pages/bipbabu/cisco-sre-agenticops-intelligence-dashboard-x-v2.0/static-data
+// e.g. /pages/bipbabu/cisco-sre-agenticops-intelligence-dashboard-x-v2.1/static-data
 const getStaticDataPath = (): string => {
   const base = (import.meta.env.BASE_URL || '/').replace(/\/$/, '');
   return `${base}/static-data`;

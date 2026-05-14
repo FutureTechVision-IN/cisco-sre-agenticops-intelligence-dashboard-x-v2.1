@@ -5,7 +5,7 @@ export GIT_EDITOR=true
 export EDITOR=true
 export VISUAL=true
 
-cd "/Users/bipbabu/Library/CloudStorage/OneDrive-Cisco/Personal/Future Tech Vision/Future Tech Vision AI/GitHub/cisco-sre-agenticops-intelligence-dashboard-x-v2.0" || exit 1
+cd "/Users/bipbabu/Library/CloudStorage/OneDrive-Cisco/Personal/Future Tech Vision/Future Tech Vision AI/GitHub/cisco-sre-agenticops-intelligence-dashboard-x-v2.1" || exit 1
 
 echo "╔════════════════════════════════════════════════╗"
 echo "║   Branch Synchronization & Deployment          ║"
@@ -48,5 +48,5 @@ echo ""
 echo "✅ Deployment complete!"
 echo ""
 echo "URLs:"
-echo "  Repository: https://wwwin-github.cisco.com/bipbabu/cisco-sre-agenticops-intelligence-dashboard-x-v2.0"
+echo "  Repository: https://wwwin-github.cisco.com/bipbabu/cisco-sre-agenticops-intelligence-dashboard-x-v2.1"
 echo "  Dashboard:  http://localhost:5001"

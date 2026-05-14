@@ -64,8 +64,8 @@
 
 ```bat
 cd C:\inetpub\apps
-git clone https://github.com/FutureTechVision-IN/cisco-sre-agenticops-intelligence-dashboard-x-v2.0.git
-cd cisco-sre-agenticops-intelligence-dashboard-x-v2.0
+git clone https://github.com/FutureTechVision-IN/cisco-sre-agenticops-intelligence-dashboard-x-v2.1.git
+cd cisco-sre-agenticops-intelligence-dashboard-x-v2.1
 ```
 
 Or copy the deployment package (`.zip`) and extract it.
@@ -202,7 +202,7 @@ The `web.config` in the project root handles all routing rules. Copy it to the I
 ```powershell
 # Run as Administrator
 New-WebSite -Name "SREDashboard" -Port 80 `
-  -PhysicalPath "C:\inetpub\apps\cisco-sre-agenticops-intelligence-dashboard-x-v2.0" `
+  -PhysicalPath "C:\inetpub\apps\cisco-sre-agenticops-intelligence-dashboard-x-v2.1" `
   -Force
 ```
 
@@ -261,8 +261,8 @@ New-NetFirewallRule -DisplayName "SRE Dashboard (IIS HTTPS)" `
 Windows Defender / corporate AV may scan `node_modules/` and CSV data files on every read, causing severe performance degradation with the 129 MB CSV. Add exclusions:
 
 ```powershell
-Add-MpPreference -ExclusionPath "C:\inetpub\apps\cisco-sre-agenticops-intelligence-dashboard-x-v2.0\node_modules"
-Add-MpPreference -ExclusionPath "C:\inetpub\apps\cisco-sre-agenticops-intelligence-dashboard-x-v2.0\data"
+Add-MpPreference -ExclusionPath "C:\inetpub\apps\cisco-sre-agenticops-intelligence-dashboard-x-v2.1\node_modules"
+Add-MpPreference -ExclusionPath "C:\inetpub\apps\cisco-sre-agenticops-intelligence-dashboard-x-v2.1\data"
 Add-MpPreference -ExclusionExtension ".csv"
 ```
 
@@ -349,8 +349,8 @@ pm2 logs sre-dashboard
 1. Download NSSM from https://nssm.cc/download
 2. Install:
 ```bat
-nssm install SREDashboard "C:\Program Files\nodejs\node.exe" "C:\inetpub\apps\cisco-sre-agenticops-intelligence-dashboard-x-v2.0\build\index.js"
-nssm set SREDashboard AppDirectory "C:\inetpub\apps\cisco-sre-agenticops-intelligence-dashboard-x-v2.0"
+nssm install SREDashboard "C:\Program Files\nodejs\node.exe" "C:\inetpub\apps\cisco-sre-agenticops-intelligence-dashboard-x-v2.1\build\index.js"
+nssm set SREDashboard AppDirectory "C:\inetpub\apps\cisco-sre-agenticops-intelligence-dashboard-x-v2.1"
 nssm set SREDashboard AppEnvironmentExtra "NODE_ENV=production" "PORT=8000"
 nssm set SREDashboard Start SERVICE_AUTO_START
 nssm start SREDashboard

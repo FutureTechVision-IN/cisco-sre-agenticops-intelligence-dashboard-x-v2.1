@@ -119,7 +119,7 @@ if ($Help) {
 # ─── Banner ───────────────────────────────────────────────────────────────────
 Write-Host ""
 Write-Host "==================================================================" -ForegroundColor Cyan
-Write-Host "  Cisco SRE AgenticOps Intelligence Dashboard v2.0" -ForegroundColor Cyan
+Write-Host "  Cisco SRE AgenticOps Intelligence Dashboard v2.1" -ForegroundColor Cyan
 Write-Host "  Startup Script v7.0.0 | Windows $($PSVersionTable.PSVersion)" -ForegroundColor Cyan
 Write-Host "==================================================================" -ForegroundColor Cyan
 Write-Host ""

@@ -1,12 +1,12 @@
 {
   "name": "sre-agenticops-intelligence-dashboard",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "type": "module",
   "license": "MIT",
-  "homepage": "https://FutureTechVision-IN.github.io/cisco-sre-agenticops-intelligence-dashboard-x-v2.0",
+  "homepage": "https://FutureTechVision-IN.github.io/cisco-sre-agenticops-intelligence-dashboard-x-v2.1",
   "repository": {
     "type": "git",
-    "url": "https://github.com/FutureTechVision-IN/cisco-sre-agenticops-intelligence-dashboard-x-v2.0.git"
+    "url": "https://github.com/FutureTechVision-IN/cisco-sre-agenticops-intelligence-dashboard-x-v2.1.git"
   },
   "scripts": {
     "dev:client": "npx vite dev --port 5000",

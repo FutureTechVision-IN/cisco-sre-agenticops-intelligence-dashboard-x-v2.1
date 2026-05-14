@@ -10,7 +10,7 @@
 
 **Enterprise-Grade Security Vulnerability Intelligence Platform with AI-Powered Analytics**
 
-[Live Demo](https://bipbabu.github.io/cisco-sre-agenticops-intelligence-dashboard-x-v2.0) · [Documentation](#-documentation) · [Features](#-key-features) · [Architecture](#-system-architecture)
+[Live Demo](https://bipbabu.github.io/cisco-sre-agenticops-intelligence-dashboard-x-v2.1) · [Documentation](#-documentation) · [Features](#-key-features) · [Architecture](#-system-architecture)
 
 </div>
 
@@ -319,8 +319,8 @@ User Interaction → React Component → Service Layer → Express API → Data 
 
 ```bash
 # Clone the repository
-git clone https://github.com/bipbabu/cisco-sre-agenticops-intelligence-dashboard-x-v2.0.git
-cd cisco-sre-agenticops-intelligence-dashboard-x-v2.0
+git clone https://github.com/bipbabu/cisco-sre-agenticops-intelligence-dashboard-x-v2.1.git
+cd cisco-sre-agenticops-intelligence-dashboard-x-v2.1
 
 # Install dependencies
 npm install

@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Quick push script
-cd "/Users/bipbabu/Library/CloudStorage/OneDrive-Cisco/Personal/Future Tech Vision/Future Tech Vision AI/GitHub/cisco-sre-agenticops-intelligence-dashboard-x-v2.0"
+cd "/Users/bipbabu/Library/CloudStorage/OneDrive-Cisco/Personal/Future Tech Vision/Future Tech Vision AI/GitHub/cisco-sre-agenticops-intelligence-dashboard-x-v2.1"
 
 echo "=== Pushing branches to remote ==="
 echo ""

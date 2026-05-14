@@ -101,7 +101,7 @@ done
 # ─── Banner ───────────────────────────────────────────────────────────────────
 echo -e "${CYAN}"
 echo "=================================================================="
-echo "  Cisco SRE AgenticOps Intelligence Dashboard v2.0"
+echo "  Cisco SRE AgenticOps Intelligence Dashboard v2.1"
 echo "  Startup Script v7.0.0 | $(uname -s) $(uname -m)"
 echo "=================================================================="
 echo -e "${NC}"
