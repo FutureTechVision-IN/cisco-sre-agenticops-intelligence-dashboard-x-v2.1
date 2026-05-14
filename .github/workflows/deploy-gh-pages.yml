@@ -36,7 +36,7 @@ jobs:
           VITE_STATIC_MODE: 'true'
         run: npm run build:gh-pages
 
-      - name: Copy static data to dist
+      - name: Copy static data and assets to dist
         run: |
           mkdir -p dist/static-data
           cp -r frontend/public/static-data/* dist/static-data/ 2>/dev/null || true
@@ -53,3 +53,27 @@ jobs:
           force_orphan: false
           commit_message: "Deploy: ${{ github.sha }}"
           exclude_assets: '.github,node_modules,.env,.env.*'
+
+      # Mirror the gh-pages branch to the enterprise remote (Cisco GitHub Enterprise)
+      - name: Mirror gh-pages to Enterprise GitHub
+        if: success()
+        env:
+          ENTERPRISE_DEPLOY_KEY: ${{ secrets.ENTERPRISE_DEPLOY_KEY }}
+        run: |
+          if [ -n "$ENTERPRISE_DEPLOY_KEY" ]; then
+            mkdir -p ~/.ssh
+            echo "$ENTERPRISE_DEPLOY_KEY" > ~/.ssh/enterprise_deploy
+            chmod 600 ~/.ssh/enterprise_deploy
+            cat >> ~/.ssh/config <<'EOF'
+          Host wwwin-github.cisco.com
+              HostName wwwin-github.cisco.com
+              User git
+              IdentityFile ~/.ssh/enterprise_deploy
+              IdentitiesOnly yes
+              StrictHostKeyChecking no
+          EOF
+            git remote add enterprise git@wwwin-github.cisco.com:bipbabu/cisco-sre-agenticops-intelligence-dashboard-x-v2.1.git || true
+            GIT_LFS_SKIP_PUSH=1 git push enterprise HEAD:gh-pages --force || echo "Enterprise mirror skipped"
+          else
+            echo "ENTERPRISE_DEPLOY_KEY not set — skipping enterprise mirror"
+          fi
