@@ -36,25 +36,14 @@ export const AdminPanelEnhanced: React.FC<AdminPanelProps> = ({ isOpen, onClose 
   const [apiKeys, setApiKeys] = useState<APIKey[]>([
     {
       id: '1',
-      providerName: 'OpenAI',
-      subName: 'GPT-4 Production',
-      apiKey: 'sk-proj-abc123def456...xyz789',
-      service: 'openai',
+      providerName: 'Cisco Circuit',
+      subName: 'Circuit API (Gemini + OpenAI Gateway)',
+      apiKey: 'egai-circuit-prd-cx-...****',
+      service: 'cisco-circuit',
       created: new Date('2024-01-15'),
       lastUsed: new Date(),
       isActive: true,
-      description: 'Primary GPT-4 model for SRE chatbot'
-    },
-    {
-      id: '2',
-      providerName: 'Google Cloud',
-      subName: 'Gemini Pro API',
-      apiKey: 'AIza-goog-SyD21u0FyH...kL9M0nO1p2Q',
-      service: 'gemini',
-      created: new Date('2024-02-01'),
-      lastUsed: new Date('2024-12-01'),
-      isActive: true,
-      description: 'Gemini Pro for multi-modal analysis'
+      description: 'Cisco Circuit API — routes all Gemini & OpenAI model access'
     },
   ]);
 

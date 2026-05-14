@@ -738,16 +738,16 @@ class AIOrchestrator {
 }
 
 // ============================================================================
-// GEMINI VOICE SESSION (for bidirectional audio streaming)
+// GEMINI VOICE SESSION (via Circuit API Gateway)
 // ============================================================================
 
 export class GeminiVoiceSession {
-  private apiKey: string;
+  private bearerToken: string;
   private sessionId: string;
   private history: Array<{ role: string; text: string }> = [];
 
-  constructor(apiKey: string, sessionId: string) {
-    this.apiKey = apiKey;
+  constructor(bearerToken: string, sessionId: string) {
+    this.bearerToken = bearerToken;
     this.sessionId = sessionId;
   }
 
@@ -782,11 +782,19 @@ export class GeminiVoiceSession {
       parts.push({ text: input as string });
     }
 
+    const circuitEndpoint = process.env.CISCO_CIRCUIT_ENDPOINT || 'https://circuit.cisco.com/api/v1';
+
     const response = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${this.apiKey}`,
+      `${circuitEndpoint}/gemini/generate`,
       {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${this.bearerToken}`,
+          'X-Cisco-App': 'SRE-AgenticOps-Dashboard',
+          'X-Model': model,
+          'X-Session-Id': this.sessionId,
+        },
         body: JSON.stringify({
           systemInstruction: {
             parts: [{
