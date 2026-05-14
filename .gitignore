@@ -2,6 +2,9 @@
 node_modules/
 node_modules
 
+# Data backup (local safety copy — never commit)
+.data-backup/
+
 # Build outputs
 dist/
 build/
@@ -194,5 +197,9 @@ COMPREHENSIVE_DATA_AUDIT_REPORT.md
 LOGIN_ISSUE_RCA.md
 PLAN_OF_ACTION.md
 
-# Large data files - too large for GitHub (>100MB); keep locally only
-data/fn_aug25-feb26.csv
+# Large data files - tracked via Git LFS (see .gitattributes)
+# Do NOT add data/fn_aug25-feb26.csv here; it is managed by Git LFS.
+# Ensure the data/ directory is always preserved:
+!data/
+!data/.gitkeep
+!data/fn_aug25-feb26.csv

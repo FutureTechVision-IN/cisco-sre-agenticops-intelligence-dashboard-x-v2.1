@@ -1,7 +1,6 @@
 # Normalize line endings on checkout.
 # All text files default to LF so the repo is consistent across platforms.
 * text=auto eol=lf
-
 # Shell scripts must always use LF (shebang breaks on CRLF).
 *.sh        text eol=lf
 *.bash      text eol=lf
@@ -46,4 +45,9 @@
 *.tar.gz    binary
 *.tgz       binary
 *.lock      text eol=lf
-
+# ─── Git LFS: Large data files ───────────────────────────────────────────────
+# The Vulnerability Tracker CSV is critical for the dashboard and must be
+# preserved across all Git operations. LFS stores the actual content externally
+# while keeping a pointer in the repo.
+data/fn_aug25-feb26.csv filter=lfs diff=lfs merge=lfs -text
+data/*.csv filter=lfs diff=lfs merge=lfs -text

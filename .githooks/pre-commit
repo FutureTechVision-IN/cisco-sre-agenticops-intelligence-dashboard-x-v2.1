@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+##############################################################################
+# Git pre-commit hook — backs up data/fn_aug25-feb26.csv before commit
+# Ensures a fresh backup exists before any commit that might trigger
+# subsequent operations (rebase, cherry-pick, etc.)
+#
+# Install: cp .githooks/pre-commit .git/hooks/ && chmod +x .git/hooks/pre-commit
+# Or run: git config core.hooksPath .githooks
+##############################################################################
+
+DATA_FILE="data/fn_aug25-feb26.csv"
+BACKUP_DIR=".data-backup"
+BACKUP_FILE="$BACKUP_DIR/fn_aug25-feb26.csv"
+
+if [[ -f "$DATA_FILE" ]]; then
+    file_size=$(stat -f%z "$DATA_FILE" 2>/dev/null || stat --printf="%s" "$DATA_FILE" 2>/dev/null || echo 0)
+    if [[ "$file_size" -gt 1000 ]]; then
+        mkdir -p "$BACKUP_DIR"
+        cp -p "$DATA_FILE" "$BACKUP_FILE" 2>/dev/null || true
+    fi
+fi
+
+# Always allow the commit to proceed
+exit 0

@@ -1,0 +1,40 @@
+#!/usr/bin/env bash
+##############################################################################
+# Git post-checkout hook — restores data/fn_aug25-feb26.csv after checkout
+# Ensures the Vulnerability Tracker data file is present after any branch
+# switch or file checkout operation.
+#
+# Install: cp .githooks/post-checkout .git/hooks/ && chmod +x .git/hooks/post-checkout
+# Or run: git config core.hooksPath .githooks
+##############################################################################
+
+DATA_FILE="data/fn_aug25-feb26.csv"
+BACKUP_DIR=".data-backup"
+BACKUP_FILE="$BACKUP_DIR/fn_aug25-feb26.csv"
+MIN_SIZE=1000
+
+restore_if_missing() {
+    local needs_restore=false
+
+    if [[ ! -f "$DATA_FILE" ]]; then
+        needs_restore=true
+    else
+        local file_size
+        file_size=$(stat -f%z "$DATA_FILE" 2>/dev/null || stat --printf="%s" "$DATA_FILE" 2>/dev/null || echo 0)
+        if [[ "$file_size" -lt "$MIN_SIZE" ]]; then
+            git lfs pull --include="$DATA_FILE" 2>/dev/null || true
+            file_size=$(stat -f%z "$DATA_FILE" 2>/dev/null || stat --printf="%s" "$DATA_FILE" 2>/dev/null || echo 0)
+            if [[ "$file_size" -lt "$MIN_SIZE" ]]; then
+                needs_restore=true
+            fi
+        fi
+    fi
+
+    if [[ "$needs_restore" == "true" && -f "$BACKUP_FILE" ]]; then
+        mkdir -p "$(dirname "$DATA_FILE")"
+        cp -p "$BACKUP_FILE" "$DATA_FILE" 2>/dev/null || true
+        echo "[data-preserve] Restored $DATA_FILE from backup"
+    fi
+}
+
+restore_if_missing

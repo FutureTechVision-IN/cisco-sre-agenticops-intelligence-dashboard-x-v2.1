@@ -335,6 +335,50 @@ verify_backend_modules() {
     fi
 }
 
+# ─── Verify Vulnerability Tracker data file ───────────────────────────────────
+verify_data_file() {
+    local data_file="$SCRIPT_DIR/data/fn_aug25-feb26.csv"
+    local backup_file="$SCRIPT_DIR/.data-backup/fn_aug25-feb26.csv"
+    local min_size=1000  # LFS pointer files are ~130 bytes
+
+    step "Verifying Vulnerability Tracker data file..."
+
+    if [[ -f "$data_file" ]]; then
+        local file_size
+        file_size=$(stat -f%z "$data_file" 2>/dev/null || stat --printf="%s" "$data_file" 2>/dev/null || echo 0)
+        if [[ "$file_size" -gt "$min_size" ]]; then
+            info "Data file present ($(du -h "$data_file" | cut -f1))"
+            # Refresh backup
+            mkdir -p "$SCRIPT_DIR/.data-backup"
+            cp -p "$data_file" "$backup_file" 2>/dev/null || true
+            return 0
+        fi
+        # Might be an LFS pointer — try pulling
+        warn "Data file appears to be an LFS pointer. Pulling from LFS..."
+        (cd "$SCRIPT_DIR" && git lfs pull --include="data/fn_aug25-feb26.csv" 2>/dev/null) || true
+        file_size=$(stat -f%z "$data_file" 2>/dev/null || stat --printf="%s" "$data_file" 2>/dev/null || echo 0)
+        if [[ "$file_size" -gt "$min_size" ]]; then
+            info "Data file pulled from LFS ($(du -h "$data_file" | cut -f1))"
+            return 0
+        fi
+    fi
+
+    # File missing or still a pointer — try backup restore
+    if [[ -f "$backup_file" ]]; then
+        step "Restoring data file from local backup..."
+        mkdir -p "$SCRIPT_DIR/data"
+        cp -p "$backup_file" "$data_file"
+        info "Data file restored from backup"
+        return 0
+    fi
+
+    # No backup either — warn but don't block (static-data JSON provides fallback)
+    warn "Data file not found: $data_file"
+    warn "The Vulnerability Tracker will use static data as fallback."
+    warn "To restore: place fn_aug25-feb26.csv in the data/ directory,"
+    warn "  or run: git lfs pull"
+}
+
 # ─── Auto-detect prod vs dev ──────────────────────────────────────────────────
 detect_app_mode() {
     if [[ "$APP_MODE" == "auto" ]]; then
@@ -485,6 +529,7 @@ main() {
     load_env
     verify_secrets_module
     verify_backend_modules
+    verify_data_file
     resolve_port
     ensure_deps
 
