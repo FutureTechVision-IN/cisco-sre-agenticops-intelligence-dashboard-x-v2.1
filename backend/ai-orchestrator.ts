@@ -360,17 +360,29 @@ class AIOrchestrator {
   }
 
   /**
-   * Google Gemini — Multi-modal AI with voice capabilities.
+   * Google Gemini via Cisco Circuit API Gateway.
+   * All Gemini model access is routed exclusively through Circuit.
    * Supports text, vision, and audio input/output.
    */
   private async callGemini(request: AIRequest, timeoutMs: number): Promise<AIResponse> {
     const start = Date.now();
-    const apiKey = secretsManager.get('GEMINI_API_KEY');
     const model = request.voiceInput
       ? (secretsManager.get('GEMINI_VOICE_MODEL') || 'gemini-2.0-flash-live')
       : (secretsManager.get('GEMINI_MODEL') || 'gemini-2.0-flash');
 
-    const baseUrl = 'https://generativelanguage.googleapis.com/v1beta';
+    // Route through Cisco Circuit API — no standalone Gemini key required
+    let bearerToken: string;
+    try {
+      bearerToken = await secretsManager.getOAuthToken('summarize');
+    } catch {
+      bearerToken = secretsManager.get('CISCO_CIRCUIT_API_KEY');
+    }
+
+    if (!bearerToken) {
+      throw new Error('Cisco Circuit API key not configured for Gemini routing');
+    }
+
+    const circuitEndpoint = secretsManager.get('CISCO_CIRCUIT_ENDPOINT') || 'https://circuit.cisco.com/api/v1';
 
     // Build content parts
     const parts: Array<{ text?: string; inlineData?: { mimeType: string; data: string } }> = [];
@@ -397,11 +409,15 @@ class AIOrchestrator {
       parts.push({ text: request.prompt });
     }
 
-    const url = `${baseUrl}/models/${model}:generateContent?key=${apiKey}`;
-
-    const response = await fetch(url, {
+    const response = await fetch(`${circuitEndpoint}/gemini/generate`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${bearerToken}`,
+        'X-Cisco-App': 'SRE-AgenticOps-Dashboard',
+        'X-Model': model,
+        'X-Request-Id': this.generateRequestId(),
+      },
       body: JSON.stringify({
         contents: [{ role: 'user', parts }],
         generationConfig: {
@@ -420,7 +436,7 @@ class AIOrchestrator {
     });
 
     if (!response.ok) {
-      throw new Error(`Gemini API returned ${response.status}`);
+      throw new Error(`Gemini via Circuit returned ${response.status}`);
     }
 
     const data = await response.json() as any;
@@ -453,38 +469,56 @@ class AIOrchestrator {
   }
 
   // ──────────────────────────────────────────────────────────────────────────
-  // GEMINI VOICE CAPABILITIES
+  // GEMINI VOICE CAPABILITIES (via Circuit API Gateway)
   // ──────────────────────────────────────────────────────────────────────────
 
   /**
    * Gemini Live Voice Session — Streams audio for real-time conversation.
-   * Uses Gemini 2.0 Flash Live for bidirectional audio streaming.
+   * Routed through Cisco Circuit API for secure access.
    */
   async startVoiceSession(sessionId: string): Promise<GeminiVoiceSession> {
-    const apiKey = secretsManager.get('GEMINI_API_KEY');
-    if (!apiKey) {
-      throw new Error('Gemini API key not configured for voice sessions');
+    let bearerToken: string;
+    try {
+      bearerToken = await secretsManager.getOAuthToken('summarize');
+    } catch {
+      bearerToken = secretsManager.get('CISCO_CIRCUIT_API_KEY');
+    }
+    if (!bearerToken) {
+      throw new Error('Cisco Circuit API key not configured for voice sessions');
     }
 
-    return new GeminiVoiceSession(apiKey, sessionId);
+    return new GeminiVoiceSession(bearerToken, sessionId);
   }
 
   /**
    * Text-to-Speech via Gemini — Generate natural speech from text.
+   * Routed through Cisco Circuit API gateway.
    */
   async synthesizeSpeech(text: string, options?: {
     voice?: string;
     speed?: number;
     emotion?: string;
   }): Promise<{ audio: Buffer; format: string; durationMs: number }> {
-    const apiKey = secretsManager.get('GEMINI_API_KEY');
+    let bearerToken: string;
+    try {
+      bearerToken = await secretsManager.getOAuthToken('summarize');
+    } catch {
+      bearerToken = secretsManager.get('CISCO_CIRCUIT_API_KEY');
+    }
+
+    const circuitEndpoint = secretsManager.get('CISCO_CIRCUIT_ENDPOINT') || 'https://circuit.cisco.com/api/v1';
     const model = secretsManager.get('GEMINI_VOICE_MODEL') || 'gemini-2.0-flash-live';
 
     const response = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`,
+      `${circuitEndpoint}/gemini/generate`,
       {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${bearerToken}`,
+          'X-Cisco-App': 'SRE-AgenticOps-Dashboard',
+          'X-Model': model,
+        },
         body: JSON.stringify({
           contents: [{
             role: 'user',
@@ -504,7 +538,7 @@ class AIOrchestrator {
     );
 
     if (!response.ok) {
-      throw new Error(`Gemini TTS returned ${response.status}`);
+      throw new Error(`Gemini TTS via Circuit returned ${response.status}`);
     }
 
     const data = await response.json() as any;

@@ -5,10 +5,11 @@
 
 import React, { useState, useEffect } from 'react';
 import {
-  X, Shield, Key, Eye, EyeOff, Trash2, Copy, Plus, AlertTriangle, CheckCircle, Lock
+  X, Shield, Key, Eye, EyeOff, Trash2, Copy, Plus, AlertTriangle, CheckCircle, Lock, Globe
 } from 'lucide-react';
 import { getAdminSettingsService, AdminSettings } from '../services/adminSettingsService';
 import { useAuth } from '../contexts/AuthContext';
+import { ApiSessionTracker } from './ApiSessionTracker';
 
 
 interface AdminPanelProps {
@@ -57,6 +58,7 @@ export const AdminPanelEnhanced: React.FC<AdminPanelProps> = ({ isOpen, onClose 
     },
   ]);
 
+  const [activeTab, setActiveTab] = useState<'api-keys' | 'api-tracker'>('api-keys');
   const [showNewKeyForm, setShowNewKeyForm] = useState(false);
   const [newKey, setNewKey] = useState({
     providerName: '',
@@ -144,7 +146,38 @@ export const AdminPanelEnhanced: React.FC<AdminPanelProps> = ({ isOpen, onClose 
           </button>
         </div>
 
+        {/* Tabs */}
+        <div className="flex border-b border-slate-700">
+          <button
+            onClick={() => setActiveTab('api-keys')}
+            className={`flex-1 flex items-center justify-center gap-2 px-4 py-3 text-sm font-medium border-b-2 transition-colors ${
+              activeTab === 'api-keys'
+                ? 'border-cyan-500 text-cyan-400 bg-slate-800/50'
+                : 'border-transparent text-slate-400 hover:text-slate-300'
+            }`}
+          >
+            <Key className="w-4 h-4" />
+            API Keys
+          </button>
+          <button
+            onClick={() => setActiveTab('api-tracker')}
+            className={`flex-1 flex items-center justify-center gap-2 px-4 py-3 text-sm font-medium border-b-2 transition-colors ${
+              activeTab === 'api-tracker'
+                ? 'border-cyan-500 text-cyan-400 bg-slate-800/50'
+                : 'border-transparent text-slate-400 hover:text-slate-300'
+            }`}
+          >
+            <Globe className="w-4 h-4" />
+            API Tracker
+          </button>
+        </div>
+
         {/* Content */}
+        {activeTab === 'api-tracker' ? (
+          <div className="p-6">
+            <ApiSessionTracker />
+          </div>
+        ) : (
         <div className="p-6 space-y-6">
           {/* Security Warning */}
           <div className="bg-cyan-500/10 border border-cyan-500/30 rounded-lg p-4">
@@ -336,6 +369,7 @@ export const AdminPanelEnhanced: React.FC<AdminPanelProps> = ({ isOpen, onClose 
             )}
           </div>
         </div>
+        )}
       </div>
     </div>
   );

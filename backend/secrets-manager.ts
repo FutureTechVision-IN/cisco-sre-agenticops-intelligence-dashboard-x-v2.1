@@ -148,15 +148,6 @@ const SECRET_REGISTRY: Omit<SecretEntry, 'status' | 'diagnostics' | 'maskedValue
     description: 'Azure OpenAI resource endpoint URL',
     rotationDays: 365,
   },
-  // Gemini
-  {
-    key: 'GEMINI_API_KEY',
-    provider: 'gemini',
-    required: false,
-    description: 'Google Gemini API key for multi-modal AI & voice',
-    validationEndpoint: 'https://generativelanguage.googleapis.com/v1beta/models',
-    rotationDays: 90,
-  },
   // Snowflake
   {
     key: 'SNOWFLAKE_ACCOUNT',
@@ -427,8 +418,6 @@ class SecretsManager {
           return await this.validateCiscoKey(key, value, entry, start);
         case 'azure-openai':
           return await this.validateAzureOpenAI(key, value, entry, start);
-        case 'gemini':
-          return await this.validateGemini(key, value, entry, start);
         case 'snowflake':
           return this.validateSnowflake(key, value, entry, start);
         case 'langchain':
@@ -564,37 +553,6 @@ class SecretsManager {
     }
 
     return { provider: 'azure-openai', key, status: 'valid', latencyMs: Date.now() - start, message: 'Value present' };
-  }
-
-  private async validateGemini(
-    key: string, value: string, entry: SecretEntry, start: number
-  ): Promise<ValidationResult> {
-    if (key === 'GEMINI_API_KEY') {
-      if (value.length < 20) {
-        return { provider: 'gemini', key, status: 'invalid', latencyMs: Date.now() - start, message: 'Key too short' };
-      }
-
-      // Validate against Gemini models endpoint
-      try {
-        const resp = await fetch(
-          `https://generativelanguage.googleapis.com/v1beta/models?key=${value}`,
-          { signal: AbortSignal.timeout(8000) }
-        );
-        if (resp.ok) {
-          const data = await resp.json() as { models?: { name: string }[] };
-          const modelCount = data.models?.length || 0;
-          return { provider: 'gemini', key, status: 'valid', latencyMs: Date.now() - start, message: `Authenticated (${modelCount} models available)`, details: { modelCount } };
-        }
-        if (resp.status === 401 || resp.status === 403) {
-          return { provider: 'gemini', key, status: 'invalid', latencyMs: Date.now() - start, message: `Authentication failed (HTTP ${resp.status})` };
-        }
-        return { provider: 'gemini', key, status: 'valid', latencyMs: Date.now() - start, message: `API responded (HTTP ${resp.status})` };
-      } catch {
-        return { provider: 'gemini', key, status: 'valid', latencyMs: Date.now() - start, message: 'Key format valid (endpoint not reachable)' };
-      }
-    }
-
-    return { provider: 'gemini', key, status: 'valid', latencyMs: Date.now() - start, message: 'Value present' };
   }
 
   private validateSnowflake(
